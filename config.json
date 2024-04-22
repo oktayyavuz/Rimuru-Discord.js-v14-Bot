@@ -1,4 +1,4 @@
 {
-    "TOKEN":"Tokenini Buraya yapıştırıp index.js 61 ve 71. satırlardaki "procces.env.TOKEN" kısımlarını "config.TOKEN" olarak değiştir.",
+    "TOKEN":"Tokenini Buraya yapıştırıp index.js 61 ve 71. satırlardaki procces.env.TOKEN kısımlarını config.TOKEN olarak değiştir.",
 	"log":"1229335611220168778"
 }
