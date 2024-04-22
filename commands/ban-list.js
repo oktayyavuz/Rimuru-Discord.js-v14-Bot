@@ -15,7 +15,7 @@ module.exports = {
     const embed = new EmbedBuilder()
     .setDescription("Sunucunuzda Banlanan Kimse Yok!")      
     .setColor("Red")
-    .setTitle("<:carpi:1040649840394260510> Hata!")
+    .setTitle("❌ | Hata!")
     interaction.reply({embeds: [embed]})
       
     } else {

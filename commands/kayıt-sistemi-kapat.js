@@ -23,7 +23,7 @@ module.exports = {
 			db.delete(`kayıtsistemiDate_${interaction.guild.id}`)
 
             
-        return interaction.reply({ embeds: [basarili], ephemeral: true }).catch((e) => { })
+        return interaction.reply({ embeds: [basarili], ephemeral: false }).catch((e) => { })
 
     }
 

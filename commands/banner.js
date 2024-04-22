@@ -20,13 +20,13 @@ const target = interaction.options.getMember('kullanıcı')
 const banner = await discordBanners.getBanner(target.user.id, { dynamic: true });
 if (banner.includes('https')) {
     const embed = new EmbedBuilder()
-    .setDescription(`**➥ \`(<@${target.user.id}>\`) adlı kullanıcının banneri!**`)
+    .setDescription(`**➥ <@${target.user.id}> adlı kullanıcının banneri!**`)
     .setImage(banner)
     .setColor("Random")
 return interaction.reply({embeds: [embed]})
 } else if (!banner.includes('https')) {
   const embed = new EmbedBuilder()
-  .setDescription(`:x: Bu kullanıcıda banner bulunmamaktadır! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](https://discord.gg/QtC7Cvh3MQ) sunucumuza gelebilir yada **bug** komutunu kullanabilirsiniz.`)
+  .setDescription(`:x: Bu kullanıcıda banner bulunmamaktadır! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](https://discord.gg/mondstadt) sunucumuza gelebilir yada **bug** komutunu kullanabilirsiniz.`)
   return interaction.reply({ embeds: [embed] });
   }  
 

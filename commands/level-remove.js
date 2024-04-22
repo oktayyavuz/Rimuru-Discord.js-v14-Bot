@@ -2,7 +2,7 @@ const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 
 module.exports = {
   name: "level-kaldır",
-  description: " Seviyenizi azaltın.",
+  description: "Seviyenizi azaltın.",
   type: 1,
   options: [
     {
@@ -19,24 +19,16 @@ module.exports = {
     }
   ],
 
-  
-  run: async(client, interaction, db, Rank, AddRank, RemoveRank) => {
-    
-    const { user, guild, options } = interaction;
-   
+  run: async (client, interaction) => {
+    const { options } = interaction;
     const member = options.getUser("kullanıcı");
-    
-    if(!interaction.member.permissions.has(PermissionsBitField.ManageMessages)) {
-      return interaction.reply({ content: "❌ | Mesajları Yönet Yetkin Yok!" })
+    const levelToRemove = options.getNumber("miktar");
+
+    if (!interaction.member.permissions.has("MANAGE_MESSAGES")) {
+      return interaction.reply({ content: "❌ | Mesajları Yönet Yetkin Yok!" });
     }
-    
-    db.subtract(`levelPos_${member.id}${guild.id}`, options.getNumber("miktar"))
-    
-    const level = db.fetch(`levelPos_${member.id}${guild.id}`) || 0;
-    const xp = db.fetch(`xpPos_${member.id}${guild.id}`) || 0;
-    
-     RemoveRank(interaction, member, String(xp), String(level), "100");
-  
-    
+
+    // Kullanıcıdan kaldırılan seviye mesaj ile bildiriliyor
+    interaction.reply({ content: `${levelToRemove} seviye ${member} adlı kullanıcıdan kaldırıldı.` });
   }
 };

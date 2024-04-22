@@ -52,12 +52,12 @@ module.exports = {
 
         const basarili = new EmbedBuilder()
             .setColor("Green")
-            .setDescription(`✅ | __**Kayıt Sistemi**__ başarıyla ayarlandı!\n\n<:kanal:1040649841996464139> Kayıt Kanalı: ${kayıtkanal}\n<:bot:1039607042291269703> Kayıtlı Rolü: ${kayıtlırol}\n<:bot:1039607042291269703> Kayıtsız Rolü: ${kayıtsızrol}`)
+            .setDescription(`✅ | __**Kayıt Sistemi**__ başarıyla ayarlandı!\n\n ***#*** |  Kayıt Kanalı: ${kayıtkanal}\n🤖 Kayıtlı Rolü: ${kayıtlırol}\n🤖 Kayıtsız Rolü: ${kayıtsızrol}`)
             db.set(`kayıtsistemi_${interaction.guild.id}`, { kayıtkanal: kayıtkanal.id, kayıtlırol: kayıtlırol.id, kayıtsızrol: kayıtsızrol.id })
 			db.set(`kayıtsistemiDate_${interaction.guild.id}`, { date: Date.now() } )
 
             
-        return interaction.reply({ embeds: [basarili], ephemeral: true }).catch((e) => { })
+        return interaction.reply({ embeds: [basarili], ephemeral: false }).catch((e) => { })
 
     }
 
