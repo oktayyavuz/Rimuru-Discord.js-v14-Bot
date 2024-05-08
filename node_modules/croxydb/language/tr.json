@@ -1,7 +1,0 @@
-{
-    "errors": {
-        "blankName": "Verinin adını gir.",
-        "blankData": "Ayarlanacak veriyi gir.",
-        "blankNumber": "Bir sayı gir."
-    }
-}
