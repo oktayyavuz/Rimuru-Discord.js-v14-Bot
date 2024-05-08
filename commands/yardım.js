@@ -18,7 +18,7 @@ module.exports = {
 
     .addComponents(
         new Discord.ButtonBuilder()
-            .setEmoji("1214988313090330684")
+            .setEmoji("🛡")
             .setLabel("Moderasyon")
             .setStyle(Discord.ButtonStyle.Secondary)
             .setCustomId("moderasyon_"+interaction.user.id)
@@ -26,7 +26,7 @@ module.exports = {
 
     .addComponents(
         new Discord.ButtonBuilder()
-            .setEmoji("1148311403518775496")
+            .setEmoji("🧾")
             .setLabel("Kayıt")
             .setStyle(Discord.ButtonStyle.Secondary)
             .setCustomId("kayıt_"+interaction.user.id)

@@ -1,0 +1,26 @@
+{
+  "name": "random-anime",
+  "version": "1.0.6",
+  "description": "Generate random anime images with many features.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/amistaa/random-anime.git"
+  },
+  "keywords": [
+    "anime",
+    "generator",
+    "images",
+    "discord",
+    "bot"
+  ],
+  "author": "Amista",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/amistaa/random-anime/issues"
+  },
+  "homepage": "https://github.com/amistaa/random-anime#readme"
+}

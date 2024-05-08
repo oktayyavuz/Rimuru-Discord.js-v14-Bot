@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { EmbedBuilder } = require("discord.js")
+const { EmbedBuilder,MessageEmbed } = require("discord.js")
 const fs = require("fs");
 const db = require('croxydb')
 const config = require("./config.json");
@@ -58,7 +58,7 @@ for(let eventName of fs.readdirSync("./events")) {
 //
 
 client.once("ready", async() => {
-	const rest = new Rest.REST({ version: "10" }).setToken(process.env.TOKEN);
+	const rest = new Rest.REST({ version: "10" }).setToken(config.token);
   try {
     await rest.put(DiscordApi.Routes.applicationCommands(client.user.id), {
       body: client.commands,  //
@@ -68,7 +68,7 @@ client.once("ready", async() => {
   }
 });
 
-client.login(process.env.TOKEN).then(() => {
+client.login(config.token).then(() => {
 	console.log(`[-] Discord API'ye istek gönderiliyor.`);
 	eval("console.clear()")
 }).catch(() => {

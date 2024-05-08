@@ -9,6 +9,7 @@ module.exports = {
 
     if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) return interaction.reply({content: "❌ | Kanalları Yönet Yetkin Yok!", ephemeral: true})
    db.delete(`hgbb_${interaction.guild.id}`)
+   db.delete(`hgbb1_${interaction.guild.id}`)
    interaction.reply("✅ | Hoşgeldin Güle Güle Kanalı Başarıyla Sıfırlandı!")
 }
 

@@ -17,7 +17,7 @@ module.exports = {
 
   run: async(client, interaction) => {
 
-    if(!interaction.member.permissions.has(PermissionsBitField.Flags.ManageMessages)) return interaction.reply({content: "❌ | Mesajları Yönet Yetkin Yok!", ephemeral: true})
+    if(!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) return interaction.reply({content: "❌ | Mesajları Yönet Yetkin Yok!", ephemeral: true})
     const kelime = interaction.options.getString('kelime')
     db.push(`yasaklı_kelime_${interaction.guild.id}`, kelime)
 interaction.reply({content: "✅ | Başarıyla yasaklı kelimeyi **"+kelime+"** olarak ayarladım!"})

@@ -19,6 +19,12 @@ module.exports = {
       required: true
     },
     {
+      name: "mod-rol",
+      description: "Uyarı yetkilisini ayarlarsın!",
+      type: 8,
+      required: true,
+    },
+    {
       name: "log-kanal",
       description: "Uyarıları kaydetmek için log kanalını belirleyin",
       type: 7,
@@ -27,15 +33,18 @@ module.exports = {
   ],
 
   run: async (client, interaction) => {
-    let muteRole = interaction.options.getRole("mute-rol") || interaction.guild.roles.cache.find(role => role.name === "Muted");
-    let jailRole = interaction.options.getRole("jail-rol") || interaction.guild.roles.cache.find(role => role.name === "Jailed");
+    const modRole = interaction.options.getRole("mod-rol") || interaction.guild.roles.cache.find(role => role.name === "Moderatör");
+    const muteRole = interaction.options.getRole("mute-rol") || interaction.guild.roles.cache.find(role => role.name === "Muted");
+    const jailRole = interaction.options.getRole("jail-rol") || interaction.guild.roles.cache.find(role => role.name === "Jailed");
 
+    const mod = interaction.options.getRole('mod-rol')
     const mute = interaction.options.getRole('mute-rol')
     const jail = interaction.options.getRole('jail-rol')
-    const logChannel = interaction.options.getChannel("log-kanal") || interaction.guild.channels.cache.find(channel => channel.name === "logs");
+    db.set(`Mod_${interaction.guild.id}`, mod);
+    db.set(`Mute_${interaction.guild.id}`, mute);
+    db.set(`Jail_${interaction.guild.id}`, jail);
 
-    db.set(`Mute_${interaction.guild.id}`, mute.id);
-    db.set(`Jail_${interaction.guild.id}`, jail.id);
+    const logChannel = interaction.options.getChannel("log-kanal") || interaction.guild.channels.cache.find(channel => channel.name === "logs");
 
     if (logChannel) {
       db.set(`logChannel_${interaction.guild.id}`, logChannel.id);

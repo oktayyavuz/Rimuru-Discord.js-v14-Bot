@@ -16,7 +16,7 @@ x.animated ? animEmotes.push(`<a:${x.name}:${x.id}>`) : staticEmotes.push(`<:${x
 const embed = new EmbedBuilder()
 .setTimestamp()
 .setColor('#ff0000')
-.setTitle(`Silex - Emoji List!`)
+.setTitle(`Rimuru - Emoji List!`)
 .setDescription(`${animEmotes} ${staticEmotes}`)
 interaction.reply({embeds: [embed]})
   }

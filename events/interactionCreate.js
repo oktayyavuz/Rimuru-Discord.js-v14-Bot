@@ -422,15 +422,15 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
               new Discord.ButtonBuilder()
               .setStyle("Secondary")
-              .setEmoji("1178711633682497599")
+              .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
-        .setLabel("Kayıt")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setEmoji('🧾')
-        .setCustomId("kayıt_"+interaction.user.id),
+              .setLabel("Kayıt")
+              .setStyle(Discord.ButtonStyle.Secondary)
+              .setEmoji('🧾')
+              .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
@@ -501,50 +501,51 @@ if(interaction.customId === 'giriscikis'){
         if (interaction.customId == "ileri_"+interaction.user.id) {
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
+              new Discord.ButtonBuilder()
+              .setStyle("Secondary")
+              .setEmoji("🛡")
+              .setLabel("Moderasyon")
+              .setDisabled(true)
+              .setCustomId("moderasyon_"+interaction.user.id),
+              new Discord.ButtonBuilder()
+              .setLabel("Kayıt")
+              .setStyle(Discord.ButtonStyle.Secondary)
+              .setEmoji('🧾')
+              .setCustomId("kayıt_"+interaction.user.id),
+        
             new Discord.ButtonBuilder()
-            .setStyle("Secondary")
-            .setEmoji("1214988313090330684")
-            .setLabel("Moderasyon")
-            .setDisabled(true)
-            .setCustomId("moderasyon_"+interaction.user.id),
+            .setLabel("Kullanıcı")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('👨‍⚖️')
+            .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
-      .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607052340834354')
-      .setCustomId("kayıt_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Kullanıcı")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607059357913098')
-          .setCustomId("kullanıcı_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Sistemler")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607040898781325')
-          .setCustomId("sistemler_"+interaction.user.id))
-      const row2 = new Discord.ActionRowBuilder()
+            .setLabel("Sistemler")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('⚙')
+            .setCustomId("sistemler_"+interaction.user.id))
+            const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
             .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji("1044325545925672976")
+            .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setLabel("Geri")
-        .setEmoji('1041737369436557393')
-        .setCustomId("geri_"+interaction.user.id),
+        .setEmoji('🔙')
+        .setDisabled(true)
+        .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
         .setStyle(Discord.ButtonStyle.Secondary)
-        .setEmoji('1044325564636471397')
+        .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setLabel("İleri")
-        .setEmoji('1041737371131056218')
-        .setDisabled(true)
-        .setCustomId("ileri"),
+        .setEmoji('⏩')
+        .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -578,49 +579,50 @@ if(interaction.customId === 'giriscikis'){
         if (interaction.customId == "geri_"+interaction.user.id) {
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
+              new Discord.ButtonBuilder()
+              .setStyle("Secondary")
+              .setEmoji("🛡")
+              .setLabel("Moderasyon")
+              .setDisabled(true)
+              .setCustomId("moderasyon_"+interaction.user.id),
+              new Discord.ButtonBuilder()
+              .setLabel("Kayıt")
+              .setStyle(Discord.ButtonStyle.Secondary)
+              .setEmoji('🧾')
+              .setCustomId("kayıt_"+interaction.user.id),
+        
             new Discord.ButtonBuilder()
-            .setStyle("Secondary")
-            .setEmoji("1039607060775571476")
-            .setLabel("Moderasyon")
-            .setDisabled(true)
-            .setCustomId("moderasyon_"+interaction.user.id),
+            .setLabel("Kullanıcı")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('👨‍⚖️')
+            .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
-      .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607052340834354')
-      .setCustomId("kayıt_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Kullanıcı")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607059357913098')
-          .setCustomId("kullanıcı_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Sistemler")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607040898781325')
-          .setCustomId("sistemler_"+interaction.user.id))
-      const row2 = new Discord.ActionRowBuilder()
+            .setLabel("Sistemler")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('⚙')
+            .setCustomId("sistemler_"+interaction.user.id))
+            const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
             .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji("1044325545925672976")
+            .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setLabel("Geri")
-        .setEmoji('1041737369436557393')
+        .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
         .setStyle(Discord.ButtonStyle.Secondary)
-        .setEmoji('1044325564636471397')
+        .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
         .setStyle(Discord.ButtonStyle.Secondary)
         .setLabel("İleri")
-        .setEmoji('1041737371131056218')
+        .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
         
@@ -658,51 +660,52 @@ if(interaction.customId === 'giriscikis'){
         if (interaction.customId == "kayıt_"+interaction.user.id) {
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
+              new Discord.ButtonBuilder()
+              .setStyle("Secondary")
+              .setEmoji("🛡")
+              .setLabel("Moderasyon")
+              .setDisabled(true)
+              .setCustomId("moderasyon_"+interaction.user.id),
+              new Discord.ButtonBuilder()
+              .setLabel("Kayıt")
+              .setStyle(Discord.ButtonStyle.Secondary)
+              .setEmoji('🧾')
+              .setCustomId("kayıt_"+interaction.user.id),
+        
             new Discord.ButtonBuilder()
-            .setStyle("Secondary")
-            .setEmoji("1214988313090330684")
-            .setLabel("Moderasyon")
-            .setCustomId("moderasyon_"+interaction.user.id),
+            .setLabel("Kullanıcı")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('👨‍⚖️')
+            .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
-      .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607052340834354')
-      .setDisabled(true)
-      .setCustomId("kayıt_"+interaction.user.id),
-      
-          new Discord.ButtonBuilder()
-          .setLabel("Kullanıcı")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607059357913098')
-          .setCustomId("kullanıcı_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Sistemler")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607040898781325')
-          .setCustomId("sistemler_"+interaction.user.id))
-          const row2 = new Discord.ActionRowBuilder()
-          .addComponents(
+            .setLabel("Sistemler")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('⚙')
+            .setCustomId("sistemler_"+interaction.user.id))
+            const row2 = new Discord.ActionRowBuilder()
+      .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
             .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji("1044325545925672976")
+            .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
-            new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setLabel("ㅤㅤㅤ")
-            .setDisabled(true)
-            .setCustomId("süsbutton2"),
-            new Discord.ButtonBuilder()
-            .setLabel("Ana Sayfa")
-            .setStyle(Discord.ButtonStyle.Secondary)
-           .setEmoji('1044325564636471397')
-            .setCustomId("anasayfa_"+interaction.user.id),
-            new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setLabel("ㅤㅤㅤBoş")
-            .setDisabled(true)
-            .setCustomId("süsbutton3"),
-            new Discord.ButtonBuilder()
+        new Discord.ButtonBuilder()
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setLabel("Geri")
+        .setEmoji('🔙')
+        .setDisabled(true)
+        .setCustomId("geri"),
+        new Discord.ButtonBuilder()
+        .setLabel("Ana Sayfa")
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setEmoji('◻')
+        .setCustomId("anasayfa_"+interaction.user.id),
+        new Discord.ButtonBuilder()
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setLabel("İleri")
+        .setEmoji('⏩')
+        .setCustomId("ileri_"+interaction.user.id),
+        new Discord.ButtonBuilder()
             
             .setLabel("Boş")
             .setStyle(Discord.ButtonStyle.Secondary)
@@ -722,51 +725,53 @@ if(interaction.customId === 'giriscikis'){
         if (interaction.customId == "kullanıcı_"+interaction.user.id) {
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
+              new Discord.ButtonBuilder()
+              .setStyle("Secondary")
+              .setEmoji("🛡")
+              .setLabel("Moderasyon")
+              .setDisabled(true)
+              .setCustomId("moderasyon_"+interaction.user.id),
+              new Discord.ButtonBuilder()
+              .setLabel("Kayıt")
+              .setStyle(Discord.ButtonStyle.Secondary)
+              .setEmoji('🧾')
+              .setCustomId("kayıt_"+interaction.user.id),
+        
             new Discord.ButtonBuilder()
-            .setStyle("Secondary")
-            .setEmoji("1214988313090330684")
-            .setLabel("Moderasyon")
-            .setCustomId("moderasyon_"+interaction.user.id),
+            .setLabel("Kullanıcı")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('👨‍⚖️')
+            .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
-      .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1148311403518775496')
-      .setCustomId("kayıt_"+interaction.user.id),
-          new Discord.ButtonBuilder()
-          .setLabel("Kullanıcı")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607059357913098')
-          .setDisabled(true)
-          .setCustomId("kullanıcı"),
-          new Discord.ButtonBuilder()
-          .setLabel("Sistemler")
-          .setStyle(Discord.ButtonStyle.Secondary)
-          .setEmoji('1039607040898781325')
-          .setCustomId("sistemler_"+interaction.user.id))
-          const row2 = new Discord.ActionRowBuilder()
-          .addComponents(
+            .setLabel("Sistemler")
+            .setStyle(Discord.ButtonStyle.Secondary)
+            .setEmoji('⚙')
+            .setCustomId("sistemler_"+interaction.user.id))
+            const row2 = new Discord.ActionRowBuilder()
+      .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
             .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji("1044325545925672976")
+            .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
-            new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setLabel("ㅤㅤㅤ")
-            .setDisabled(true)
-            .setCustomId("süsbutton2"),
-            new Discord.ButtonBuilder()
-            .setLabel("Ana Sayfa")
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji('1044325564636471397')
-            .setCustomId("anasayfa_"+interaction.user.id),
-            new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setLabel("Boşㅤㅤㅤ")
-            .setDisabled(true)
-            .setCustomId("süsbutton3"),
-            new Discord.ButtonBuilder()
-            
+        new Discord.ButtonBuilder()
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setLabel("Geri")
+        .setEmoji('🔙')
+        .setDisabled(true)
+        .setCustomId("geri"),
+        new Discord.ButtonBuilder()
+        .setLabel("Ana Sayfa")
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setEmoji('◻')
+        .setCustomId("anasayfa_"+interaction.user.id),
+        new Discord.ButtonBuilder()
+        .setStyle(Discord.ButtonStyle.Secondary)
+        .setLabel("İleri")
+        .setEmoji('⏩')
+        .setCustomId("ileri_"+interaction.user.id),
+        new Discord.ButtonBuilder()
+
             .setLabel("Boş")
             .setStyle(Discord.ButtonStyle.Secondary)
             .setCustomId(".clearMessageButton_"+interaction.user.id)
@@ -836,11 +841,6 @@ if(interaction.customId === 'giriscikis'){
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("Boşㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
-        new Discord.ButtonBuilder()
         
         .setLabel("Boş")
         .setStyle(Discord.ButtonStyle.Secondary)
@@ -870,46 +870,36 @@ if(interaction.customId === 'giriscikis'){
       new Discord.ButtonBuilder()
       .setLabel("Moderasyon")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1214988313090330684')
+      .setEmoji('🛡')
       .setCustomId("moderasyon_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kayıt")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607052340834354')
+      .setEmoji('🧾')
       .setCustomId("kayıt_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kullanıcı")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607059357913098')
+      .setEmoji('🤦‍♀️')
       .setCustomId("kullanıcı_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Sistemler")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607040898781325')
+      .setEmoji('⚙')
       .setCustomId("sistemler_"+interaction.user.id))
       const row2 = new Discord.ActionRowBuilder()
       .addComponents(
         new Discord.ButtonBuilder()
         .setLabel("Koruma")
         .setStyle(Discord.ButtonStyle.Secondary)
-        .setEmoji("1044325545925672976")
+        .setEmoji("🔐")
         .setCustomId("korumasystem_"+interaction.user.id)
         .setDisabled(true),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("ㅤㅤㅤBoş")
-        .setDisabled(true)
-        .setCustomId("süsbutton2"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
         .setStyle(Discord.ButtonStyle.Secondary)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("ㅤㅤㅤBoş")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -1023,11 +1013,7 @@ if(interaction.customId === 'giriscikis'){
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("Boşㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
-        new Discord.ButtonBuilder()
+
         
         .setLabel("Boş")
         .setStyle(Discord.ButtonStyle.Secondary)
@@ -1057,46 +1043,36 @@ if(interaction.customId === 'giriscikis'){
       new Discord.ButtonBuilder()
       .setLabel("Moderasyon")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1214988313090330684')
+      .setEmoji('🛡')
       .setCustomId("moderasyon_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kayıt")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607052340834354')
+      .setEmoji('🧾')
       .setCustomId("kayıt_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kullanıcı")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607059357913098')
+      .setEmoji('🤦‍♀️')
       .setCustomId("kullanıcı_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Sistemler")
       .setStyle(Discord.ButtonStyle.Secondary)
-      .setEmoji('1039607040898781325')
+      .setEmoji('⚙')
       .setCustomId("sistemler_"+interaction.user.id))
       const row2 = new Discord.ActionRowBuilder()
       .addComponents(
-            new Discord.ButtonBuilder()
-            .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setEmoji("1044325545925672976")
-            .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
+        .setLabel("Koruma")
         .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("ㅤㅤㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton2"),
+        .setEmoji("🔐")
+        .setCustomId("korumasystem_"+interaction.user.id)
+        .setDisabled(true),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
         .setStyle(Discord.ButtonStyle.Secondary)
         .setEmoji('1044325564636471397')
-        .setDisabled(true)
-        .setCustomId("anasayfa"),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("Boşㅤㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
+        .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -1148,11 +1124,6 @@ if(interaction.customId === 'giriscikis'){
         .setStyle(Discord.ButtonStyle.Secondary)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("ㅤBoş")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -1211,11 +1182,6 @@ if(interaction.customId === 'giriscikis'){
         .setStyle(Discord.ButtonStyle.Secondary)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("Boşㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -1279,11 +1245,6 @@ if(interaction.customId === 'giriscikis'){
         .setStyle(Discord.ButtonStyle.Secondary)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
-        new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setLabel("Boşㅤ")
-        .setDisabled(true)
-        .setCustomId("süsbutton3"),
         new Discord.ButtonBuilder()
         
         .setLabel("Boş")
@@ -1764,10 +1725,10 @@ if(interaction.customId === 'giriscikis'){
 		
 		        if(interaction.customId === `ticketnasilacilir_everyone`) {
         const embed = new Discord.EmbedBuilder()
-        .setAuthor({ name: " Destek Menüsü", iconURL: client.user.displayAvatarURL({ dynamic: true })})
+        .setAuthor({ name: "Rimuru Destek Menüsü", iconURL: client.user.displayAvatarURL({ dynamic: true })})
         .setTitle("・Destek talebi nasıl oluşturabilirsin.")
         .setDescription("**Destek Talebi Oluştur** butonuna tıkladıktan sonra karşına bir form gelecektir. O formu doldurduktan sonra destek talebin başarılı bir şekilde oluşturulacaktır.")
-        .setImage(`https://cdn.discordapp.com/attachments/1059089831604531243/1065995534730534972/image.png`)
+        .setImage(`https://cdn.discordapp.com/attachments/1235347548873425027/1235523499582296084/image.png?ex=663c976d&is=663b45ed&hm=29cf81a7f5892386833d39a790fec2852dc2136e8c0e6c34364c5ed8091f7218&`)
         .setColor('Blue')
           interaction.reply({ embeds: [embed], ephemeral: true })
         }

@@ -42,12 +42,12 @@ var yes4 = servers > 400
 var yes45 = servers > 450
 var yes5 = servers > 500
 
-var basDolu = "<:basdolubar:1095981131385544704>"
-var basBos = "<:basbosbar:1095981689144090654>"
-var ortaDolu = "<:ortadolubar:1095981133738561586>"
-var ortaBos = "<:ortabosbar:1095981373422051348>"
-var sonDolu = "<:sondolubar:1054411035374788708>"
-var sonBos = "<:sonbosbar:1095981520998649867>"
+var basDolu = "🟥🟧"
+var basBos = "🟥🟧"
+var ortaDolu = "🟥🟧"
+var ortaBos = "🟥🟧"
+var sonDolu = "🟥🟧"
+var sonBos = "🟥🟧"
 
 	let members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()
     const embed = new EmbedBuilder()

@@ -1,0 +1,7 @@
+{
+    "errors": {
+        "blankName": "Please give me a database name.",
+        "blankData": "Please give me a data.",
+        "blankNumber": "Please give me a number."
+    }
+}

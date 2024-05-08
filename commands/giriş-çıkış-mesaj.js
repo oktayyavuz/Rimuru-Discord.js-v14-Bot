@@ -24,7 +24,7 @@ module.exports = {
             .setCustomId("giriscikismesajsifirla_"+interaction.user.id)
     )
     const embed = new EmbedBuilder()
-    .setAuthor({ name: "Silex", iconURL: client.user.displayAvatarURL({ dynamic: true })})
+    .setAuthor({ name: "Rimuru", iconURL: client.user.displayAvatarURL({ dynamic: true })})
     .setDescription(`Merhaba <@${interaction.user.id}>! Giriş çıkış mesajını ayarlamak veya sıfırlamak için aşağıdaki butonları kullanabilirsin!`)
     .addFields([
         {
