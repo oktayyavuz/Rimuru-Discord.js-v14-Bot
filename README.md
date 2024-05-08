@@ -11,7 +11,7 @@ Genel Discord Botu
 
 ## Gereksinimler
 
-- [Düğüm](https://nodejs.org/en/) - Sürüm 16 veya üzeri
+- [Node](https://nodejs.org/en/) - Sürüm 16 veya üzeri
 - [NPM](https://www.npmjs.com/)
 
 ## Başlarken
