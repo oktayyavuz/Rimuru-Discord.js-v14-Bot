@@ -42,11 +42,11 @@ Enable the `Server Members Intent` and `Message Content Intent` which can be fou
 
 ### Configuration
 
-After cloning the project and installing all dependencies, you need to add your Discord API token in the `.env` file.
+After cloning the project and installing all dependencies, you need to add your Discord API token in the `config.token` file.
 
 ### Changing the status
 
-You can change the status of your discord bot by editing the `activity` and `activityType` variables inside the `config.json` file. `activityType` needs to be set to an integer with the following [options](https://discord-api-types.dev/api/discord-api-types-v10/enum/ActivityType).
+You can change the status of your discord bot by editing the `activity` and `activityType` variables inside the `/events/ready.js` file. `activityType` needs to be set to an integer with the following [options](https://discord-api-types.dev/api/discord-api-types-v10/enum/ActivityType).
 
 
 ### Starting the application
