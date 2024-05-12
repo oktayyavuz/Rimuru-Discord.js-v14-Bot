@@ -21,14 +21,14 @@ Genel Discord Botu
 ### Kurulum
 
 ``` bash
-# Depoyu klonla
-git klonu https://github.com/oktayyavuz/Rimuru-Discord.js-v14-Bot.git
+# Repoyu klonla
+git clone https://github.com/oktayyavuz/Rimuru-Discord.js-v14-Bot.git
 
 # Dizine girin
 cd Rimuru-Discord.js-v14-Bot/
 
-# Bağımlılıkları kurun
-npm kurulumu
+# npm kurun
+npm install
 
 # Discord Bot Token'ı Yapılandır
   echo "token='Tokenini yapıştır.'" > config.json
@@ -38,7 +38,7 @@ npm kurulumu
 
 Botunuzda, [geliştirici portalındaki](https://discord.com/developers/applications/) "OAuth2" sekmesi altında bulunabilecek "applications.commands" uygulama kapsamının etkinleştirildiğinden emin olun.
 
-[Geliştirici portalında](https://discord.com/developers/applications/) "Bot" sekmesi altında bulunabilecek "Sunucu Üyelerinin Amacı" ve "Mesaj İçeriği Amacı"nı etkinleştirin
+[Geliştirici portalında](https://discord.com/developers/applications/) "Bot" sekmesi altında bulunabilecek "Server_Member Intents" ve "Message Intents"nı etkinleştirin
 
 ### Yapılandırma
 
