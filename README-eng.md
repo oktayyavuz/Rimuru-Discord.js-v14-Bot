@@ -46,7 +46,7 @@ After cloning the project and installing all dependencies, you need to add your 
 
 ### Changing the status
 
-You can change the status of your discord bot by editing the `activity` and `activityType` variables inside the `/events/ready.js` file. `activityType` needs to be set to an integer with the following [options](https://discord-api-types.dev/api/discord-api-types-v10/enum/ActivityType).
+You can change the status of your discord bot by editing the `activities`  variable inside the `/events/ready.js` file. 
 
 
 ### Starting the application
