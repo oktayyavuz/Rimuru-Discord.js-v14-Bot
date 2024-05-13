@@ -46,7 +46,7 @@ Projeyi klonladıktan ve tüm bağımlılıkları yükledikten sonra Discord API
 
 ### Durumu değiştirme
 
-`/events/ready.js` dosyasındaki `activity` ve `activityType` değişkenlerini düzenleyerek discord botunuzun durumunu değiştirebilirsiniz. "activityType"ın aşağıdaki [seçenekler](https://discord-api-types.dev/api/discord-api-types-v10/enum/ActivityType) ile bir tam sayıya ayarlanması gerekir.
+`/events/ready.js` dosyasındaki `activities` değişkenlerini düzenleyerek discord botunuzun durumunu değiştirebilirsiniz.
 
 
 ### Uygulamanın başlatılması
