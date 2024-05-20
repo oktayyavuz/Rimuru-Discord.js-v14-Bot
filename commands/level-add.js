@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder , PermissionsBitField} = require("discord.js");
 
 module.exports = {
   name: "level-ekle",
