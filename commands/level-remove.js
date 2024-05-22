@@ -2,18 +2,18 @@ const { EmbedBuilder, PermissionsBitField } = require("discord.js");
 
 module.exports = {
   name: "level-kaldır",
-  description: "Belirtilen kullanıcıdan belirtilen seviye kadar çıkarır.",
+  description: "Belirtilen kullanıcıdan belirtilen seviyeyi kaldırır.",
   type: 1,
   options: [
     {
       name: "kullanıcı",
-      description: "Çıkarmak istediğiniz kullanıcıyı etiketleyin.",
+      description: "Seviye kaldırmak istediğiniz kullanıcıyı etiketleyin.",
       type: 6,
       required: true,
     },
     {
       name: "seviye",
-      description: "Çıkarmak istediğiniz seviyeyi belirtin.",
+      description: "Kaldırmak istediğiniz seviyeyi belirtin.",
       type: 4,
       required: true,
     },
@@ -28,7 +28,6 @@ module.exports = {
     if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
       return interaction.reply({ content: "❌ | Buna Yetkin Yok!", ephemeral: true });
     }
-
     if (!member) {
       return interaction.reply({
         content: "Belirtilen kullanıcı bulunamadı.",
@@ -36,22 +35,25 @@ module.exports = {
       });
     }
 
-    
-    const currentLevel = db.fetch(`level_${member.id}${guild.id}`) || 0;
-
-    if (currentLevel - level < 0) {
+    const currentLevel = db.fetch(`levelPos_${member.id}${guild.id}`) || 0;
+    if (currentLevel < level) {
       return interaction.reply({
-        content: "Belirtilen kullanıcının seviyesi, bu kadar çıkarmak için yeterli değil.",
+        content: `❌ | ${member.user.username}'in şu anki seviyesi ${currentLevel}. ${level} seviyesini kaldıramazsınız.`,
         ephemeral: true,
       });
     }
 
     db.subtract(`levelPos_${member.id}${guild.id}`, level);
 
+    let newLevel = db.fetch(`levelPos_${member.id}${guild.id}`);
+    if (newLevel === undefined) {
+      newLevel = 0;
+    }
+
     const embed = new EmbedBuilder()
       .setColor("Random")
-      .setTitle(`${member.user.username}'dan ${level} seviye çıkarıldı.`)
-      .setDescription(`${member} artık ${db.fetch(`levelPos_${member.id}${guild.id}`)} seviyeye ulaştı.`);
+      .setTitle(`${member.user.username}'dan ${level} seviye kaldırıldı.`)
+      .setDescription(`${member} artık ${newLevel} seviyesine düştü.`);
 
     interaction.reply({ embeds: [embed] });
   },
