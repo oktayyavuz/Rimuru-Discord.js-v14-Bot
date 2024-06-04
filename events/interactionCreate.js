@@ -1,5 +1,6 @@
 const { Collection, ButtonStyle, EmbedBuilder } = require("discord.js");
 const db = require("croxydb");
+const config = require("../config.json"); 
 const Discord = require("discord.js");
 const edb = require("croxydb")
 const { readdirSync } = require("fs");
@@ -47,191 +48,6 @@ name: Discord.Events.InteractionCreate,
     const idFind = (id_name) => {
       return `${id_name}_${id}`;
     } 
-
-    if(interaction.customId === idFind("kayitol")) {
-      const kayitmodel = new ModalBuilder()
-      .setCustomId('kayitform')  
-      .setTitle(' - Kayıt Menüsü!')
-        const isim = new TextInputBuilder()
-        .setCustomId('kayitisim')
-        .setLabel('isim')
-        .setStyle(TextInputStyle.Paragraph) 
-        .setMinLength(2)
-        .setPlaceholder('İsminiz Nedir?')
-        .setRequired(true)
-        const yas = new TextInputBuilder() 
-        .setCustomId('kayityas')
-        .setLabel('yaş')
-        .setStyle(TextInputStyle.Paragraph)  
-        .setMinLength(1)
-        .setPlaceholder('Yaşınız Kaçtır?')
-        .setRequired(true)
-        
-          const kayitisimrow = new ActionRowBuilder().addComponents(isim);
-          const kayityasrow3 = new ActionRowBuilder().addComponents(yas);
-          kayitmodel.addComponents(kayitisimrow, kayityasrow3);
-          
-          await interaction.showModal(kayitmodel);
-    }
-  }
-
-  if(interaction.isModalSubmit()) {
-    if (interaction.customId === 'kayitform') {
-      
-         const kayitisims = interaction.fields.getTextInputValue("kayitisim")
-         const kayityass = interaction.fields.getTextInputValue('kayityas')
-         interaction.member.setNickname(`${kayitisims} | ${kayityass}`)
-         interaction.update({content: `${interaction.user} Adlı kullanıcı başarılı bir şekilde kayıt oldu!`, embeds: [], components: []})
-         const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`)
-    
-         const kayıtlı = await interaction.guild.roles.cache.find( ch => ch.id === kayitsistemi.kayıtlırol );
-         const kayıtsız = await interaction.guild.roles.cache.find(rl => rl.id === kayitsistemi.kayıtsızrol);
-
-         interaction.guild.members.cache.get(interaction.member.id).roles.remove(kayıtsız.id)
-         interaction.guild.members.cache.get(interaction.member.id).roles.add(kayıtlı.id)
-		 db.set(`kayıtlıuye_${interaction.member.id}`, { isim: kayitisims, yas: kayityass })
-     }
-
-     if (interaction.customId === 'form') {
-              
-      let onay = db.get(`onay_${interaction.guild.id}`)
-      let logg = db.get(`log_${interaction.guild.id}`)
-      let botRol = db.get(`botRol_${interaction.guild.id}`)
-      let devRol = db.get(`devRol_${interaction.guild.id}`)
-      let botekle = db.get(`botekle_${interaction.guild.id}`)
-      let ayrildiLog = db.get(`ayrildiLog_${interaction.guild.id}`)
-      let adminRol = db.get(`adminRol_${interaction.guild.id}`)
-
-      if (!onay) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!logg) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!botRol) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!devRol) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!adminRol) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!botekle) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-      if (!ayrildiLog) interaction.reply({ content: ":x: | Botlist sistemi ayarlanmamış!", ephemeral: true })
-
-      const Discord = require("discord.js")
-      const id = interaction.fields.getTextInputValue("id")
-      const prefix = interaction.fields.getTextInputValue('prefix')
-      const sahip = (`<@${interaction.user.id}>`)
-	  const sunucuid = interaction.guild.id
-	  const botSira = db.fetch(`botSira_${interaction.guild.id}`)
-
-      const row = new Discord.ActionRowBuilder()
-          .addComponents(
-              new Discord.ButtonBuilder()
-                  .setLabel("Botu Ekle")
-                  .setStyle(Discord.ButtonStyle.Link)
-                  .setURL("https://discord.com/oauth2/authorize?client_id=" + id + "&scope=bot&permissions=0&guild_id=" + sunucuid + ""), 
-              new Discord.ButtonBuilder()
-                  .setLabel("Reddet")
-                  .setStyle(Discord.ButtonStyle.Danger)
-                  .setEmoji('❌')
-                  .setCustomId("reddet_everyone")
-          )
-
-      adminRol = db.get(`adminRol_${interaction.guild.id}`)
-      let a = await client.users.fetch(id);
-      let avatar = a.avatar
-      let link = "https://cdn.discordapp.com/avatars/" + id + "/" + avatar + ".png?size=1024"
-
-      const gonderildi = new EmbedBuilder()
-          .setTitle(":white_check_mark: | Başarılı!")
-          .setDescription("Bot başvurun başarıyla yetkililere gönderildi!")
-          .setColor("Green")
-      
-            const fetch = (await import ('node-fetch')).default
-      let response = await fetch("https://discord.com/api/v10/oauth2/authorize?client_id=" + id + "&scope=bot", { 
-        method: 'GET',  
-        headers: { 
-            'Authorization': "OTMyMjgzMzQxMzkzMjMxODgy.YfrPwg.COh2rR-zXju_fCN0VbMFqJqnSfg"
-        }
-      })
-      let body = await response.json();
-
-      const logembed = new EmbedBuilder()
-      .setTitle("Sisteme yeni bir bot başvuruldu!")
-      .setDescription("<@" + id + "> adlı bot sıraya eklendi!")
-      .addFields(
-        { name: "**> Ekleyen Hakkında**", value: `${interaction.user}`, inline: true },
-        { name: "**> Bot Hakkında**", value: `\`${body.bot.approximate_guild_count}\` Sunucu`, inline: true },
-		{ name: "**> Bot Sırası**", value: `**${botSira}** adet bot bekliyor!`}
-      )
-      .setColor('DarkGrey')
-      .setThumbnail(link)
-      client.channels.cache.get(logg).send({ embeds: [logembed] })
-
-      const embed = new EmbedBuilder()
-          .setTitle("Sıraya Yeni Bot Eklendi!")
-          .setDescription("Bot Sahibi: " + sahip + "\n\n**İD:** ```" + id + "``` **Prefix:** ```" + prefix + "```")
-          .setColor("Yellow")
-          .setThumbnail(link)
-      let log = db.get(`onay_${interaction.guild.id}`)
-
-        db.set(`ekleniyor_${id}${interaction.guild.id}`, { bot: id, user: interaction.user.id })
-
-         client.channels.cache.get(log).send({ content: `<@&${adminRol}>`, embeds: [embed], components: [row] }).then((mesaj) => {
-         db.set(`bot_${mesaj.id}`, { user: interaction.user.id, bot: id })
-          db.set(`ekledi_${interaction.user.id}`, id)
-		  db.add(`botSira_${interaction.guild.id}`, 1)
-         
-         return interaction.reply({ embeds: [gonderildi], ephemeral: true })
-          
-      })
-    }
-
-      if (interaction.customId === 'eklemenu2') {
-        const id = interaction.fields.getTextInputValue('cikarid')
-      let oda = interaction.member.voice.channel
-      oda.permissionOverwrites.create(
-        id, {ViewChannel: false}      
-        )
-        interaction.reply(":white_check_mark: | <@"+id+"> Adlı Kullanıcı Odadan Başarıyla Atıldı")
-      } else {
-    }
-
-    if (interaction.customId === 'eklemenu') {
-      const id = interaction.fields.getTextInputValue('uyeid')
-    let oda = interaction.member.voice.channel
-    oda.permissionOverwrites.create(
-      id, {ViewChannel: true}      
-      )
-      interaction.reply(":white_check_mark: | <@"+id+"> Adlı Kullanıcı Odaya Eklendi")
-    } else {
-  }
-    
-  if (interaction.customId === 'rcaptcha') {
-	      
-    const code = interaction.fields.getTextInputValue('rcaptchaInput');
-    
-    if(code === db.fetch(`beklenıyor_${interaction.guild.id}${interaction.user.id}`))
-      {
-        if(!db.fetch(`rcaptchaOnaylılar_${interaction.guild.id}`))
-          {
-            db.set(`rcaptchaOnaylılar_${interaction.guild.id}`, [])
-          }
-        
-        interaction.member.roles.add(db.fetch(`rcaptcha_${interaction.guild.id}`).rol)
-        db.delete(`beklenıyor_${interaction.guild.id}${interaction.user.id}`)
-        db.push(`rcaptchaOnaylılar_${interaction.guild.id}`, interaction.user.id)
-        
-        return interaction.update({ embeds: [
-          new Discord.EmbedBuilder()
-          .setColor("#36393F")
-          .setDescription('✅ **|** Tebrikler, doğrulama sistemini başarıyla geçtiniz.')
-          .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
-        ], files: [], components: [] })
-      }
-      else
-        {
-          return interaction.reply({ embeds: [
-          new Discord.EmbedBuilder()
-          .setColor("#36393F")
-          .setDescription(':x: **|** Yanlış kod, tekrar deneyiniz.')
-          .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true })})
-        ], ephemeral: true })
-        }
-  }
   
    if(interaction.customId === 'ticketforms'){
   const ticketSystem = db.fetch(`ticketSystem_${interaction.guild.id}`)
@@ -285,7 +101,7 @@ name: Discord.Events.InteractionCreate,
      .setCustomId(`ticketClose_everyone`)
      .setLabel('Destek kapatılsın.')
      .setEmoji("🔒")
-     .setStyle(Discord.ButtonStyle.Secondary),
+     .setStyle(Discord.ButtonStyle.Danger),
  );
  
   interaction.reply({ content: `:white_check_mark: **|** Senin için bir tane destek kanalı ${channel} oluşturldu.`, ephemeral: true })
@@ -328,7 +144,7 @@ if(interaction.customId === 'giriscikis'){
   .addComponents(
       new Discord.ButtonBuilder()
           .setLabel("Giriş Çıkış Mesajını Ayarla!")
-          .setStyle(Discord.ButtonStyle.Secondary)
+          .setStyle(Discord.ButtonStyle.Primary)
           .setCustomId("giriscikismesaj_"+interaction.user.id)
           .setDisabled(true)
   )
@@ -336,7 +152,7 @@ if(interaction.customId === 'giriscikis'){
   .addComponents(
       new Discord.ButtonBuilder()
           .setLabel("Giriş Çıkış Mesajını Sıfırla!")
-          .setStyle(Discord.ButtonStyle.Secondary)
+          .setStyle(Discord.ButtonStyle.Danger)
           .setCustomId("giriscikismesajsifirla_"+interaction.user.id)
   )
   const embed = new EmbedBuilder()
@@ -379,60 +195,62 @@ if(interaction.customId === 'giriscikis'){
     }
       }
 
+
+
         if (!interaction.isButton()) return;
         if (interaction.customId === "moderasyon_"+interaction.user.id) {
           const kayıt = new Discord.ActionRowBuilder()
           .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle("Secondary")
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Kayıt")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji('🧾')
               .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('👨‍⚖️')
             .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Sistemler")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('⚙')
             .setCustomId("sistemler_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Geri")
         .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("İleri")
         .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger  )
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setTitle("> Moderasyon Menüsü!")
@@ -465,55 +283,55 @@ if(interaction.customId === 'giriscikis'){
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle("Secondary")
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Kayıt")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji('🧾')
               .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('👨‍⚖️')
             .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Sistemler")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('⚙')
             .setCustomId("sistemler_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Geri")
         .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("İleri")
         .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
       const embed = new Discord.EmbedBuilder()
       .setTitle("> Moderasyon 2 Menüsü!")
@@ -539,55 +357,55 @@ if(interaction.customId === 'giriscikis'){
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle("Secondary")
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Kayıt")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji('🧾')
               .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('👨‍⚖️')
             .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Sistemler")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('⚙')
             .setCustomId("sistemler_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Geri")
         .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("İleri")
         .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
       const embed = new Discord.EmbedBuilder()
       .setTitle("> Moderasyon Menüsü!")
@@ -620,55 +438,55 @@ if(interaction.customId === 'giriscikis'){
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle("Secondary")
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Kayıt")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji('🧾')
               .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('👨‍⚖️')
             .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Sistemler")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('⚙')
             .setCustomId("sistemler_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Geri")
         .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("İleri")
         .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
-            
-            .setLabel("Boş")
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setCustomId(".clearMessageButton_"+interaction.user.id)
+            .setEmoji("1039607063443161158")
+            .setLabel(" ")
+            .setStyle(Discord.ButtonStyle.Danger)
+            .setCustomId("clearMessageButton_"+interaction.user.id)
           )
           const embed = new EmbedBuilder()
           .setTitle("> Kayıt Menüsü!")
@@ -685,55 +503,55 @@ if(interaction.customId === 'giriscikis'){
           const kayıt23 = new Discord.ActionRowBuilder()
           .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle("Secondary")
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji("🛡")
               .setLabel("Moderasyon")
               .setDisabled(true)
               .setCustomId("moderasyon_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Kayıt")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setEmoji('🧾')
               .setCustomId("kayıt_"+interaction.user.id),
         
             new Discord.ButtonBuilder()
             .setLabel("Kullanıcı")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('👨‍⚖️')
             .setCustomId("kullanıcı_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Sistemler")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('⚙')
             .setCustomId("sistemler_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
       .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Koruma")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji("🔐")
             .setCustomId("korumasystem_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Geri")
         .setEmoji('🔙')
         .setDisabled(true)
         .setCustomId("geri"),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('◻')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("İleri")
         .setEmoji('⏩')
         .setCustomId("ileri_"+interaction.user.id),
         new Discord.ButtonBuilder()
-
-            .setLabel("Boş")
-            .setStyle(Discord.ButtonStyle.Secondary)
-            .setCustomId(".clearMessageButton_"+interaction.user.id)
+            .setEmoji("1039607063443161158")
+            .setLabel(" ")
+            .setStyle(Discord.ButtonStyle.Danger)
+            .setCustomId("clearMessageButton_"+interaction.user.id)
           )
           const embed = new EmbedBuilder()
           .setTitle("> Kullanıcı Menüsü!")
@@ -761,42 +579,42 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
       new Discord.ButtonBuilder()
       .setLabel("Özel Oda")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('💒')
       .setCustomId("ozeloda_"+interaction.user.id),
       new Discord.ButtonBuilder()
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('💒')
       .setLabel("Ticket")
       .setCustomId("yardimticket_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Level Sistemi")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('📈')
       .setCustomId("levelsistemi_"+interaction.user.id))
       const row2 = new Discord.ActionRowBuilder()
       .addComponents(
         new Discord.ButtonBuilder()
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setLabel("Sistemler")
         .setEmoji('🧰')
 		.setDisabled(true)
         .setCustomId("sistemler_"+interaction.user.id),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('🏠')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setAuthor({ name: " Sistemler Menüsü", iconURL: client.user.displayAvatarURL({ dynamic: true })})
           .setTitle("・Hangi komutlarım hakkında bilgi almak istiyorsan o butona bas!")
-          .setDescription("\n\n**Linkler**\n>・**Botun davet linki: [Tıkla](https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands)**\n>・**Botun destek sunucusu: [Tıkla](https://discord.gg/mondstadt)**>")
+          .setDescription("\n\n**Linkler**\n>・**Botun davet linki: [Tıkla](" + config["bot-davet"] + ")**\n>・**Botun destek sunucusu: [Tıkla](" + config["desteksunucusu"] + ")**")
           .setColor('Blue')
           interaction.update({embeds: [embed], components: [row, row2]})
       
@@ -815,42 +633,42 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
       new Discord.ButtonBuilder()
       .setLabel("Moderasyon")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🛡')
       .setCustomId("moderasyon_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🧾')
       .setCustomId("kayıt_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kullanıcı")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🤦‍♀️')
       .setCustomId("kullanıcı_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Sistemler")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('⚙')
       .setCustomId("sistemler_"+interaction.user.id))
       const row2 = new Discord.ActionRowBuilder()
       .addComponents(
         new Discord.ButtonBuilder()
         .setLabel("Koruma")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setEmoji("🔐")
         .setCustomId("korumasystem_"+interaction.user.id)
         .setDisabled(true),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
       interaction.update({embeds: [embed], components: [row, row2]})
         }
@@ -861,37 +679,37 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Özel Oda")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setCustomId("ozeloda_"+interaction.user.id),
             new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setLabel("Ticket")
             .setCustomId("yardimticket_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Level Sistemi")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('📈')
             .setCustomId("levelsistemi_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
             .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setLabel("Sistemler")
               .setEmoji('🧰')
           .setDisabled(true)
               .setCustomId("sistemler_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Ana Sayfa")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Success)
               .setEmoji('🏠')
               .setCustomId("anasayfa_"+interaction.user.id),
               new Discord.ButtonBuilder()
         
         .setLabel(" ")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setTitle("> Botlist Menüsü!")
@@ -907,37 +725,37 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Özel Oda")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setCustomId("ozeloda_"+interaction.user.id),
             new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setLabel("Ticket")
             .setCustomId("yardimticket_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Level Sistemi")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('📈')
             .setCustomId("levelsistemi_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
             .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setLabel("Sistemler")
               .setEmoji('🧰')
           .setDisabled(true)
               .setCustomId("sistemler_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Ana Sayfa")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Success)
               .setEmoji('🏠')
               .setCustomId("anasayfa_"+interaction.user.id),
               new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
       const embed = new Discord.EmbedBuilder()
       .setTitle("> Özel Oda Menüsü!")
@@ -956,48 +774,48 @@ if(interaction.customId === 'giriscikis'){
           const embed = new EmbedBuilder()
           .setAuthor({ name: "Genel Bot Yardım Menüsü", iconURL: client.user.displayAvatarURL({ dynamic: true })})
           .setTitle("・Hangi komutlarım hakkında bilgi almak istiyorsan o butona bas!")
-          .setDescription("\n\n**Linkler**\n> ・**Botun davet linki: [Tıkla](https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands)**\n> ・**Botun destek sunucusu: [Tıkla](https://discord.gg/mondstadt)**>")
+          .setDescription("\n\n**Linkler**\n> ・**Botun davet linki: [Tıkla](" + config["bot-davet"] + ")**\n> ・**Botun destek sunucusu: [Tıkla](" + config["desteksunucusu"] + ")**")
           .setColor('Blue')
           const row = new Discord.ActionRowBuilder()
           .addComponents(
       new Discord.ButtonBuilder()
       .setLabel("Moderasyon")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🛡')
       .setCustomId("moderasyon_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kayıt")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🧾')
       .setCustomId("kayıt_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Kullanıcı")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('🤦‍♀️')
       .setCustomId("kullanıcı_"+interaction.user.id),
       new Discord.ButtonBuilder()
       .setLabel("Sistemler")
-      .setStyle(Discord.ButtonStyle.Secondary)
+      .setStyle(Discord.ButtonStyle.Primary)
       .setEmoji('⚙')
       .setCustomId("sistemler_"+interaction.user.id))
       const row2 = new Discord.ActionRowBuilder()
       .addComponents(
         new Discord.ButtonBuilder()
         .setLabel("Koruma")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Primary)
         .setEmoji("🔐")
         .setCustomId("korumasystem_"+interaction.user.id)
         .setDisabled(true),
         new Discord.ButtonBuilder()
         .setLabel("Ana Sayfa")
-        .setStyle(Discord.ButtonStyle.Secondary)
+        .setStyle(Discord.ButtonStyle.Success)
         .setEmoji('1044325564636471397')
         .setCustomId("anasayfa_"+interaction.user.id),
         new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158") 
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
             interaction.update({embeds: [embed], components: [row, row2]})
         }
@@ -1008,37 +826,37 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Özel Oda")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setCustomId("ozeloda_"+interaction.user.id),
             new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setLabel("Ticket")
             .setCustomId("yardimticket_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Level Sistemi")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('📈')
             .setCustomId("levelsistemi_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
             .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setLabel("Sistemler")
               .setEmoji('🧰')
           .setDisabled(true)
               .setCustomId("sistemler_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Ana Sayfa")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Success)
               .setEmoji('🏠')
               .setCustomId("anasayfa_"+interaction.user.id),
               new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setTitle("> Ticket Menüsü!")
@@ -1056,37 +874,37 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Özel Oda")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setCustomId("ozeloda_"+interaction.user.id),
             new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setLabel("Ticket")
             .setCustomId("yardimticket_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Level Sistemi")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('📈')
             .setCustomId("levelsistemi_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
             .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setLabel("Sistemler")
               .setEmoji('🧰')
           .setDisabled(true)
               .setCustomId("sistemler_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Ana Sayfa")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Success)
               .setEmoji('🏠')
               .setCustomId("anasayfa_"+interaction.user.id),
               new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setTitle("> Level Menüsü!")
@@ -1107,37 +925,37 @@ if(interaction.customId === 'giriscikis'){
           .addComponents(
             new Discord.ButtonBuilder()
             .setLabel("Özel Oda")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setCustomId("ozeloda_"+interaction.user.id),
             new Discord.ButtonBuilder()
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('💒')
             .setLabel("Ticket")
             .setCustomId("yardimticket_"+interaction.user.id),
             new Discord.ButtonBuilder()
             .setLabel("Level Sistemi")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setEmoji('📈')
             .setCustomId("levelsistemi_"+interaction.user.id))
             const row2 = new Discord.ActionRowBuilder()
             .addComponents(
               new Discord.ButtonBuilder()
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Primary)
               .setLabel("Sistemler")
               .setEmoji('🧰')
           .setDisabled(true)
               .setCustomId("sistemler_"+interaction.user.id),
               new Discord.ButtonBuilder()
               .setLabel("Ana Sayfa")
-              .setStyle(Discord.ButtonStyle.Secondary)
+              .setStyle(Discord.ButtonStyle.Success)
               .setEmoji('🏠')
               .setCustomId("anasayfa_"+interaction.user.id),
               new Discord.ButtonBuilder()
-        
-        .setLabel("Boş")
-        .setStyle(Discord.ButtonStyle.Secondary)
-        .setCustomId(".clearMessageButton_"+interaction.user.id)
+        .setEmoji("1039607063443161158")
+        .setLabel(" ")
+        .setStyle(Discord.ButtonStyle.Danger)
+        .setCustomId("clearMessageButton_"+interaction.user.id)
       )
           const embed = new EmbedBuilder()
           .setTitle("> Captcha Menüsü!")
@@ -1229,7 +1047,7 @@ if(interaction.customId === 'giriscikis'){
             );
             const dmb = deleteMessageButton(interaction, {
               label: "Mesajı sil.",
-              style: Discord.ButtonStyle.Secondary,
+              style: Discord.ButtonStyle.Danger,
         });
             let muterol = db.fetch(`rol_${interaction.guild.id}`)
             let ucanEssek = interaction.guild.members.cache.get(kullanıcı)
@@ -1258,7 +1076,7 @@ if(interaction.customId === 'giriscikis'){
             );
             const dmb = deleteMessageButton(interaction, {
               label: "Mesajı sil.",
-              style: Discord.ButtonStyle.Secondary,
+              style: Discord.ButtonStyle.Danger,
         });
             const embed = new EmbedBuilder()
             .setDescription(`:white_check_mark: | Başarılı bir şekilde mute iptal edildi.
@@ -1317,7 +1135,7 @@ if(interaction.customId === 'giriscikis'){
             interaction.guild.channels.create({name: "▬▬ SOHBET KANALLARI ▬▬", type: ChannelType.GuildCategory}).then(katagori2 => {
             interaction.guild.channels.create({name: "💬・sohbet", type: ChannelType.GuildText}).then(sohbet => {
                 const embed2 = new EmbedBuilder()
-                .setTitle(' Rimuru Bot - İyi günler diler.')
+                .setTitle(`${config["bot-adi"]} Bot - İyi günler diler.`)
                 .setDescription(`Unutma ${interaction.user}, senin için her şeyini ben ayarladım artık başka bir şey yapmana gerek yok.\n\nArtık sunucunu güvenli bir şekilde açabilirsin.`)
                 .setColor("Blue")
                 sohbet.send({embeds: [embed2]})
@@ -1364,6 +1182,13 @@ if(interaction.customId === 'giriscikis'){
                                       })
             })
           
+            const existingRoles = interaction.guild.roles.cache.filter(role => role.name !== '@everyone');
+
+              existingRoles.forEach(role => {
+                  role.delete()
+                      .then(deletedRole => console.log(`Silinen rol: ${deletedRole.name}`))
+                      .catch(error => console.log(`Rol silinirken bir hata oluştu: ${error}`));
+              });
             
             interaction.guild.roles.create({ name: 'Kurucu', color: "#0d0101", permissions: [PermissionsBitField.Flags.Administrator]}).then(rol => {
                 client.guilds.cache.get(interaction.guild.id).members.cache.get(interaction.guild.ownerId).roles.add(rol)
@@ -1388,58 +1213,44 @@ if(interaction.customId === 'giriscikis'){
               .addComponents(
           new Discord.ButtonBuilder()
           .setLabel("Yenile")
-          .setStyle(Discord.ButtonStyle.Secondary)
+          .setStyle(Discord.ButtonStyle.Primary)
           .setEmoji('1039607071093567658')
           .setCustomId(interaction.user.id))
           .addComponents(
             new Discord.ButtonBuilder()
                 .setEmoji("1039607063443161158")
                 .setLabel(" ")
-                .setStyle(Discord.ButtonStyle.Secondary)
-                .setCustomId(".clearMessageButton_"+interaction.user.id)
+                .setStyle(Discord.ButtonStyle.Danger)
+                .setCustomId("clearMessageButton_"+interaction.user.id)
           )
           let zaman = db.get(`botAcilis_`)
           let date = `<t:${Math.floor(zaman / 1000)}:R>`
           
-          let servers = client.guilds.cache.size
-          var yes1 = servers > 100
-          var yes15 = servers > 150
-          var yes2 = servers > 200
-          var yes25 = servers > 250
-          var yes3 = servers > 300
-          var yes35 = servers > 350
-          var yes4 = servers > 400
-          var yes45 = servers > 450
-          var yes5 = servers > 500
-
-
-          var basDolu = "👫"
-          var basBos = "👨‍👩‍👦"
-          var ortaDolu = "👨‍👩‍👧‍👦"
-          var ortaBos = "👨‍👩‍👧‍👧"
-          var sonDolu = "👨‍👧‍👦"
-          var sonBos = "👫"
+         
           
             let members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString()
-            const author = "<@!1193730158042021988>";
-            const otkaydev = "[Oktay.Dev](https://oktaydev.com.tr)";
+            const botsahip = `<@${config["sahip"]}>`;
+            const website = `${config["website"]}`;
 
 
               const embed = new EmbedBuilder()
     .setThumbnail(interaction.client.user.displayAvatarURL({ dynamic: true }))
     .addFields(
-      { name: '</> Bot Sahibi', value: `${author}`, inline: true },
-      { name: '🌐 Websitesi', value: `${otkaydev}`, inline: true },
+      { name: '</> Bot Sahibi', value: `${botsahip}`, inline: true },
+      { name: '🌐 Websitesi', value: `${website}`, inline: true },
       { name: "👥 Kullanıcılar", value: `${members}`, inline: true },
       { name: "🧩 Sunucular", value: `${servers}`, inline: true },
       { name: "📼 Bellek Kullanımı", value: `${(process.memoryUsage().heapUsed / 1024 / 512).toFixed(2)}MB`, inline: true },
       { name: "⏳ Açılma Süresi", value: `${date}`, inline: true },
       { name: "⏺️ Ping", value: `${client.ws.ping}`, inline: true },
-      { name: `📋 Sunucu Hedef Barı [${servers}/500]`, value: `${yes1 ? `${basDolu}` : `${basBos}`}${yes15 ? `${ortaDolu}` : `${ortaBos}`}${yes2 ? `${ortaDolu}` : `${ortaBos}`}${yes25 ? `${ortaDolu}` : `${ortaBos}`}${yes3 ? `${ortaDolu}` : `${ortaBos}`}${yes35 ? `${ortaDolu}` : `${ortaBos}`}${yes4 ? `${ortaDolu}` : `${ortaBos}`}${yes45 ? `${ortaDolu}` : `${ortaBos}`}${yes5 ? `${sonDolu}` : `${sonBos}`}`, inline: true },
     )
     interaction.reply({embeds: [embed], components: [row]})
               }
 
+              if (interaction.customId === "clearMessageButton_" + interaction.user.id) {
+                await interaction.deferUpdate();
+                await interaction.message.delete().catch(console.error);
+              }
             if (interaction.customId === "botekle_everyone") {
 
               const zatenEklenmis = new EmbedBuilder()
@@ -1632,10 +1443,10 @@ if(interaction.customId === 'giriscikis'){
 		
 		        if(interaction.customId === `ticketnasilacilir_everyone`) {
         const embed = new Discord.EmbedBuilder()
-        .setAuthor({ name: "Rimuru Destek Menüsü", iconURL: client.user.displayAvatarURL({ dynamic: true })})
+        .setAuthor({ name: `${config["bot-adi"]} Destek Menüsü`, iconURL: client.user.displayAvatarURL({ dynamic: true })})
         .setTitle("・Destek talebi nasıl oluşturabilirsin.")
         .setDescription("**Destek Talebi Oluştur** butonuna tıkladıktan sonra karşına bir form gelecektir. O formu doldurduktan sonra destek talebin başarılı bir şekilde oluşturulacaktır.")
-        .setImage(`https://cdn.discordapp.com/attachments/1235347548873425027/1235523499582296084/image.png?ex=6634ae6d&is=66335ced&hm=c9b678963889765b82be76868f9f40e5dc6a85425e7badb843d91caa85ac07d3&`)
+        .setImage(`https://i.hizliresim.com/gsj3vyw.png`)
         .setColor('Blue')
           interaction.reply({ embeds: [embed], ephemeral: true })
         }
@@ -1681,7 +1492,7 @@ if(interaction.customId === 'giriscikis'){
               .setCustomId(`ticketDelete_everyone`)
               .setLabel('Destek silinsin.')
               .setEmoji("🗑️")
-              .setStyle(Discord.ButtonStyle.Secondary),
+              .setStyle(Discord.ButtonStyle.Danger),
           );
           const ticketClose = new Discord.EmbedBuilder()
           .setDescription(`:white_check_mark: | Bu destek talebi kapatılmıştır.`)
@@ -1793,7 +1604,7 @@ if(interaction.customId === `benıdogrula_everyone_${interaction.guild.id}${inte
           .addComponents(
               new Discord.ButtonBuilder()
                   .setLabel("Giriş Çıkış Mesajını Ayarla!")
-                  .setStyle(Discord.ButtonStyle.Secondary)
+                  .setStyle(Discord.ButtonStyle.Primary)
                   .setCustomId("giriscikismesaj_"+interaction.user.id)
           )
         
@@ -1801,7 +1612,7 @@ if(interaction.customId === `benıdogrula_everyone_${interaction.guild.id}${inte
               new Discord.ButtonBuilder()
                   .setLabel("Giriş Çıkış Mesajını Sıfırla!")
                   .setDisabled(true)
-                  .setStyle(Discord.ButtonStyle.Secondary)
+                  .setStyle(Discord.ButtonStyle.Danger)
                   .setCustomId("giriscikismesajsifirla_"+interaction.user.id)
           )
           const embed = new EmbedBuilder()

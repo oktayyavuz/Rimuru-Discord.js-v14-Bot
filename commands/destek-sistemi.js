@@ -1,6 +1,8 @@
 const { Client, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const db = require("croxydb")
 const Discord = require("discord.js")
+const config = require("../config.json"); 
+
 module.exports = {
     name: "destek-sistemi",
     description: " Destek sistemini ayarlarsın!",
@@ -46,7 +48,7 @@ module.exports = {
         
         
         const category = await guild.channels.create({
-            name: 'Rimuru Ticket',
+            name: `${config["bot-adi"]} Ticket`,
             type: Discord.ChannelType.GuildCategory,
             permissionOverwrites: [
               {
@@ -69,7 +71,7 @@ module.exports = {
             .setTitle("❔ | Destek talebi nasıl açabilirim?")
             .setDescription("> Aşağıdaki **Destek Talebi Oluştur** butonuna basarak destek talebi oluşturabilirsin!")
 			.setThumbnail(interaction.guild.iconURL({ dynamic: true }))
-            .setFooter({ text: "Rimuru" })
+            .setFooter({ text: `${config["bot-adi"]}` })
   
         const row11 = new Discord.ActionRowBuilder()
   
@@ -77,7 +79,7 @@ module.exports = {
                 new Discord.ButtonBuilder()
                     .setEmoji("1044325577064190033")
                     .setLabel("Destek Talebi Oluştur")
-                    .setStyle(Discord.ButtonStyle.Secondary)
+                    .setStyle(Discord.ButtonStyle.Primary)
                     .setCustomId("ticketolustur_everyone"),
                 new Discord.ButtonBuilder()
                     .setEmoji("1039607065045385256")

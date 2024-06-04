@@ -1,7 +1,7 @@
 {
-  "name": "Oktay",
-  "version": "9.9.9",
-  "description": "Oktay",
+  "name": "oktaydev",
+  "version": "2.5.0",
+  "description": "oktaydev",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"

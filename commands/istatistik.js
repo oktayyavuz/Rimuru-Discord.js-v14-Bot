@@ -4,8 +4,9 @@ const moment = require("moment");
 const db = require("croxydb")
 require("moment-duration-format");
 const os = require("os");
-const author = "<@!1193730158042021988>";
-const otkaydev = "[Oktay.Dev](https://oktaydev.com.tr)";
+const config = require("../config.json"); 
+const botsahip = `<@${config["sahip"]}>`;
+const website = `${config["website"]}`;
 
 
 module.exports = {
@@ -22,36 +23,18 @@ module.exports = {
     .addComponents(
 new Discord.ButtonBuilder()
 .setLabel("Yenile")
-.setStyle(Discord.ButtonStyle.Secondary)
+.setStyle(Discord.ButtonStyle.Primary)
 .setEmoji('1039607071093567658')
 .setCustomId("yenile_"+interaction.user.id))
 .addComponents(
   new Discord.ButtonBuilder()
       .setEmoji("1039607063443161158")
       .setLabel(" ")
-      .setStyle(Discord.ButtonStyle.Secondary)
-      .setCustomId(".clearMessageButton_"+interaction.user.id)
+      .setStyle(Discord.ButtonStyle.Danger)
+      .setCustomId("clearMessageButton_"+interaction.user.id)
 )
 let zaman = db.get(`botAcilis_`)
 let date = `<t:${Math.floor(zaman / 1000)}:R>`
-
-let servers = client.guilds.cache.size
-var yes1 = servers > 100
-var yes15 = servers > 150
-var yes2 = servers > 200
-var yes25 = servers > 250
-var yes3 = servers > 300
-var yes35 = servers > 350
-var yes4 = servers > 400
-var yes45 = servers > 450
-var yes5 = servers > 500
-
-var basDolu = "👫"
-var basBos = "👨‍👩‍👦"
-var ortaDolu = "👨‍👩‍👧‍👦"
-var ortaBos = "👨‍👩‍👧‍👧"
-var sonDolu = "👨‍👧‍👦"
-var sonBos = "👫"
 
 	let members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)
 
@@ -60,14 +43,13 @@ var sonBos = "👫"
     const embed = new EmbedBuilder()
     .setThumbnail(interaction.client.user.displayAvatarURL({ dynamic: true }))
     .addFields(
-      { name: '</> Bot Sahibi', value: `${author}`, inline: true },
+      { name: '</> Bot Sahibi', value: `${botsahip}`, inline: true },
       { name: "👥 Kullanıcılar", value: `${members}`, inline: true },
-      { name: '🌐 Websitesi', value: `${otkaydev}`, inline: true },
+      { name: '🌐 Websitesi', value: `${website}`, inline: true },
       { name: "🧩 Sunucular", value: `${servers}`, inline: true },
       { name: "📼 Bellek Kullanımı", value: `${(process.memoryUsage().heapUsed / 1024 / 512).toFixed(2)}MB`, inline: true },
       { name: "⏳ Açılma Süresi", value: `${date}`, inline: true },
       { name: "⏺️ Ping", value: `${client.ws.ping}`, inline: true },
-      { name: `📋 Sunucu Hedef Barı [${servers}/500]`, value: `${yes1 ? `${basDolu}` : `${basBos}`}${yes15 ? `${ortaDolu}` : `${ortaBos}`}${yes2 ? `${ortaDolu}` : `${ortaBos}`}${yes25 ? `${ortaDolu}` : `${ortaBos}`}${yes3 ? `${ortaDolu}` : `${ortaBos}`}${yes35 ? `${ortaDolu}` : `${ortaBos}`}${yes4 ? `${ortaDolu}` : `${ortaBos}`}${yes45 ? `${ortaDolu}` : `${ortaBos}`}${yes5 ? `${sonDolu}` : `${sonBos}`}`, inline: true },
     )
     interaction.reply({embeds: [embed], components: [row]})
 

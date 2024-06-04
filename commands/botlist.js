@@ -85,7 +85,7 @@ module.exports = {
                 new Discord.ButtonBuilder()
                     .setEmoji("1039607040898781325")
                     .setLabel("Ayarlar")
-                    .setStyle(Discord.ButtonStyle.Secondary)
+                    .setStyle(Discord.ButtonStyle.Primary)
                     .setCustomId("ayarlar_"+interaction.user.id)
             )
 
@@ -116,7 +116,7 @@ module.exports = {
                 new Discord.ButtonBuilder()
                     .setEmoji("1039607042291269703")
                     .setLabel("Bot Ekle")
-                    .setStyle(Discord.ButtonStyle.Secondary)
+                    .setStyle(Discord.ButtonStyle.Primary)
                     .setCustomId("botekle_everyone")
             )
 

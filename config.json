@@ -1,4 +1,13 @@
 {
-    "token":"tokeninin buraya yapıştır",
-	"log":"Botun Diğer Sunucularla ilgili temel bilgileri tutacağı kanal id"
+    "token":"",
+	"log":"",
+    "sahip":"",
+    "giris-cikis":"",
+    "desteksunucusu": "https://discord.gg/",
+    "bot-davet":"https://discord.com/oauth2/",
+    "bot-adi":"Rimuru",
+    "website":"https://<website>.com.tr",
+    "mesajXp": 1,
+    "sesXp":2,
+    "levelXp": 99
 }

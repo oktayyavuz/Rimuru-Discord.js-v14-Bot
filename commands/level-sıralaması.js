@@ -1,35 +1,116 @@
-const { AttachmentBuilder, EmbedBuilder } = require("discord.js");
-
+const { EmbedBuilder, ButtonBuilder, ButtonStyle, ActionRowBuilder, Client, CommandInteraction, ComponentType } = require("discord.js");
+const db = require('croxydb');
 module.exports = {
   name: "level-sıralaması",
-  description: " Sunucunun level sıralamasını görüntüleyin.",
+  description: "Sunucunun level sıralamasını görüntüleyin.",
   type: 1,
   options: [],
 
-  run: async (client, interaction, db, Rank, AddRank, RemoveRank) => {
-    const { user, guild, options } = interaction;
+  /**
+   * 
+   * @param {Client} client 
+   * @param {CommandInteraction} interaction
+   */
 
-    let sayi = 1;
+  run: async (client, interaction, Rank, AddRank, RemoveRank) => {
+    try {
+      const { user, guild, options } = interaction;
 
-    const content = client.users.cache
-    .filter((x) => (db.fetch(`levelPos_${x.id}${guild.id}`)) || 0)
-    .sort((x, y) => (db.fetch(`levelPos_${y.id}${guild.id}`) || 0) - (db.fetch(`levelPos_${x.id}${guild.id}`)) || 0)
-    .map((x) => {
-      return `${sayi++}. <@${x.id}> **|** ${db.fetch(`levelPos_${x.id}${guild.id}`) || 0} Seviye`;
-    });
+      let page = 0;
+      const pageSize = 10;
+
+      const usersWithRank = client.users.cache
+      .filter(user => {
+        const xpPos = db.fetch(`xpPos_${user.id}${guild.id}`) || 0;
+        const levelPos = db.fetch(`levelPos_${user.id}${guild.id}`) || 0;
   
-  if (content.length === 0) {
-    return interaction.reply({
-      content: "Hiçbir kullanıcı bulunamadı.",
-      ephemeral: false,
-    });
-  }
-  
-  const embed = new EmbedBuilder()
-    .setColor("Random")
-    .setTitle(`${guild.name} Sunucusunun Level Sıralaması`)
-    .setDescription(`${content.slice(0, 10).join("\n")}`);
-  
-  interaction.reply({ embeds: [embed] });
+        return !user.bot && (xpPos !== 0 || levelPos !== 0);
+      })
+        .map((user) => ({
+          user,
+          levelPos: db.fetch(`levelPos_${user.id}${guild.id}`) || 0,
+          xpPos: db.fetch(`xpPos_${user.id}${guild.id}`) || 0
+        }))
+        .sort((a, b) => b.levelPos - a.levelPos || b.xpPos - a.xpPos);
+
+      const content = usersWithRank
+        .map(({ user, levelPos, xpPos }, index) => {
+          return `${index + 1}. <@${user.id}> **|** ${levelPos} Seviye, ${xpPos} Xp`;
+        });
+
+      const totalPages = Math.ceil(content.length / pageSize);
+
+      const embed = new EmbedBuilder()
+        .setColor("Random")
+        .setTitle(`${guild.name} Sunucusunun Level Sıralaması`);
+
+      if (content.length > 0) {
+        embed.setDescription(`${content.slice(page * pageSize, (page + 1) * pageSize).join("\n")}`);
+      } else {
+        embed.setDescription("Level sıralaması bulunamadı.");
+      }
+
+      const backButton = new ButtonBuilder()
+        .setLabel("Geri")
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId("back");
+
+      const disabledButton = new ButtonBuilder()
+        .setEmoji("⏰")
+        .setStyle(ButtonStyle.Primary)
+        .setDisabled(true)
+        .setCustomId("qewqwewq");
+
+      const nextButton = new ButtonBuilder()
+        .setLabel("İleri")
+        .setStyle(ButtonStyle.Secondary)
+        .setCustomId("next");
+
+      let int = interaction.reply({ embeds: [embed], components: [
+        new ActionRowBuilder().addComponents(backButton, disabledButton, nextButton)
+      ] });
+      const filtre = (i) => i.user.id === interaction.user.id;
+      const xxx = (await int).createMessageComponentCollector({
+        filter: filtre, 
+        componentType: ComponentType.Button
+      });
+
+      xxx.on('collect', async (i) => {
+      
+        if (!i.isButton()) return;
+      
+        if (i.customId === "back") {
+          if (page > 0) {
+            page--;
+          }
+        } else if (i.customId === "next") {
+          if (page < totalPages - 1) {
+            page++;
+          }
+        }
+      
+        const embed = new EmbedBuilder()
+          .setColor("Random")
+          .setTitle(`${guild.name} Sunucusunun Level Sıralaması`);
+      
+        if (content.length > 0) {
+          embed.setDescription(`${content.slice(page * pageSize, (page + 1) * pageSize).join("\n")}`);
+        } else {
+          embed.setDescription("Level sıralaması bulunamadı.");
+        }
+      
+        embed.setFooter({
+          text: `Sayfa ${page + 1}/${totalPages}`,
+          iconURL: interaction.guild.iconURL({ dynamic: true })
+        });
+      
+        await i.update({ embeds: [embed] });
+      
+      })
+      
+
+    } catch (error) {
+      console.error(error);
+    }
   },
 };

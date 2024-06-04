@@ -38,7 +38,7 @@ module.exports = {
  .addComponents(
  new Discord.ButtonBuilder()
  .setLabel(rol.name)
- .setStyle(Discord.ButtonStyle.Secondary)
+ .setStyle(Discord.ButtonStyle.Primary)
  .setCustomId("rol_everyone")
  )
  interaction.reply({embeds: [embed], components: [row]}).then((mesaj) => {

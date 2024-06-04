@@ -1,6 +1,8 @@
 const { PermissionsBitField, EmbedBuilder } = require("discord.js");
 const Discord = require('discord.js')
 const db = require("croxydb")
+const config = require("../config.json"); 
+
 module.exports = {
     name:"giriş-çıkış-mesaj",
     description: ' Giriş Çıkış Mesajını Ayarlarsın!',
@@ -14,7 +16,7 @@ module.exports = {
     .addComponents(
         new Discord.ButtonBuilder()
             .setLabel("Giriş Çıkış Mesajını Ayarla!")
-            .setStyle(Discord.ButtonStyle.Secondary)
+            .setStyle(Discord.ButtonStyle.Primary)
             .setCustomId("giriscikismesaj_"+interaction.user.id)
     )
     .addComponents(
@@ -24,7 +26,7 @@ module.exports = {
             .setCustomId("giriscikismesajsifirla_"+interaction.user.id)
     )
     const embed = new EmbedBuilder()
-    .setAuthor({ name: "Rimuru", iconURL: client.user.displayAvatarURL({ dynamic: true })})
+    .setAuthor({ name: `${config["bot-adi"]}`, iconURL: client.user.displayAvatarURL({ dynamic: true })})
     .setDescription(`Merhaba <@${interaction.user.id}>! Giriş çıkış mesajını ayarlamak veya sıfırlamak için aşağıdaki butonları kullanabilirsin!`)
     .addFields([
         {

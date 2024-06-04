@@ -1,4 +1,4 @@
-# Rimuru Discord.js v14 Bot v2.4
+# Rimuru Discord.js v14 Bot v2.6
 
 Genel Discord Botu
 
@@ -77,12 +77,12 @@ Projeyi klonladıktan ve tüm bağımlılıkları yükledikten sonra Discord API
 
 ### Durumu değiştirme
 
-`/events/ready.js` dosyasındaki `activities` değişkenlerini düzenleyerek discord botunuzun durumunu değiştirebilirsiniz.
+`/events/ready.js` dosyasındaki `activities` değişkenlerini düzenleyerek discord botunuzun durumunu değiştirebilirsiniz. `ActivityType.Watching` kısmını değiştirerek `İzliyor`,`Oynuyor` gibi şeyler yapabilirsiniz.
 
 
 ### Uygulamanın başlatılması
 
-``` bash
+```bash
 node index.js
 ```
 

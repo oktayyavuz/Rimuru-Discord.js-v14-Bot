@@ -1,5 +1,5 @@
 const { AttachmentBuilder, EmbedBuilder, time } = require("discord.js");
-
+const config = require("../config.json");
 module.exports = {
   name: "ayarlar",
   description: " Sunucu ayarlarına bakarsın!",
@@ -28,7 +28,7 @@ module.exports = {
     const levelSystem = db.fetch(`acikmiLevel_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
 
     const embed = new EmbedBuilder()
-    .setTitle("⚙ | Rimuru - Ayarlar Menüsü!")
+      .setTitle(`⚙ | ${config["bot-adi"]} - Ayarlar Menüsü!`)
     .addFields(
       { name: "**Botlist Sistemi:**", value: `${botlistSystem}`, inline: true },
       { name: "**Buton Rol Sistemi**", value: `${butonrolSystem}`, inline: true  },

@@ -16,13 +16,13 @@ module.exports = {
 
             const acikmi = db.fetch(`acikmiLevel_${message.guild.id}`) ? true : false;
             if (acikmi) {
-                if (xp >= 100) {
+				if (xp >= 99) {
                     db.subtract(`xpPos_${message.author.id}${message.guild.id}`, xp);
                     db.add(`levelPos_${message.author.id}${message.guild.id}`, 1);
 
                     client.channels.cache.get(levellog).send(`${message.author} GG!, artık yeni seviyene ulaştın, tebrikler! Yeni seviyen: **${level + 1}**`);
                 } else {
-                    db.add(`xpPos_${message.author.id}${message.guild.id}`, 0.5);
+                    db.add(`xpPos_${message.author.id}${message.guild.id}`, 1);
                 }
             }
 

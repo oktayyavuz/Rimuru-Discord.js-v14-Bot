@@ -3,7 +3,7 @@ const { EmbedBuilder,MessageEmbed } = require("discord.js")
 const fs = require("fs");
 const db = require('croxydb')
 const config = require("./config.json");
-
+const functions = require('./function/functions');
 const Rest = require("@discordjs/rest");
 const DiscordApi = require("discord-api-types/v10");
 
@@ -111,7 +111,9 @@ client.once("ready", async() => {
     await rest.put(DiscordApi.Routes.applicationCommands(client.user.id), {
       body: client.commands,  //
     });
+	
 	console.log(`${client.user.tag} Aktif! 💕`);
+	db.set("botAcilis_", Date.now());
 
   } catch (error) {
     throw error;

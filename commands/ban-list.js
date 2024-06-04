@@ -1,5 +1,5 @@
 const { Client, EmbedBuilder } = require("discord.js");
-
+const config = require("../config.json"); 
 module.exports = {
   name: "ban-list",
   description: " Banlı Olan Kullanıcıları Görürsün!",
@@ -21,7 +21,7 @@ module.exports = {
     } else {
     const data = collection.map(mr => "`"+mr.user.username+"`").slice(0, 60).join(", ")
     const embed2 = new EmbedBuilder()
-    .setTitle("Rimuru - Ban List")
+    .setTitle(`${config["bot-adi"]} - Ban List`)
     .setColor("#ff0000")
     .setDescription(data)
     interaction.reply({embeds: [embed2]})

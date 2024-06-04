@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require("discord.js");
 const db = require("croxydb");
 const ms = require("ms");
+const config = require("../config.json"); 
 
 module.exports = {
   name: "Uyarı",
@@ -46,7 +47,7 @@ if (!interaction.member.roles.cache.has(mod.id)) {
       .setDescription(`${user} üyesinin uyarı sayısı: ${warningCount}`)
       .addFields({ name: "Uyarı Sebebi", value: reason })
       .setTimestamp()
-      .setFooter({ text: "Rimuru", iconURL: interaction.guild.iconURL({ format: "png", dynamic: true, size: 2048 }) });
+      .setFooter({ text: `${config["bot-adi"]}`, iconURL: interaction.guild.iconURL({ format: "png", dynamic: true, size: 2048 }) });
 
     const logChannelID = db.get(`logChannel_${interaction.guild.id}`);
     const logChannel = interaction.guild.channels.cache.get(logChannelID);

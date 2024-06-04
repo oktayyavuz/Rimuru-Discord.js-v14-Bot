@@ -35,12 +35,21 @@ module.exports = {
       });
     }
 
-    db.add(`xpPos_${member.id}${guild.id}`, xp);
+    const currentXP = db.fetch(`xpPos_${member.id}${guild.id}`) || 0;
+    const currentLevel = db.fetch(`levelPos_${member.id}${guild.id}`) || 0;
+    const newXP = currentXP + xp;
+    
+    const newLevel = Math.floor(newXP / 100);
+    const remainingXP = newXP % 100;
+    const totalLevel = currentLevel + newLevel;
+
+    db.set(`xpPos_${member.id}${guild.id}`, remainingXP);
+    db.set(`levelPos_${member.id}${guild.id}`, totalLevel);
 
     const embed = new EmbedBuilder()
       .setColor("Random")
       .setTitle(`${member.user.username}'a ${xp} XP eklendi.`)
-      .setDescription(`${member} artık ${db.fetch(`xpPos_${member.id}${guild.id}`)} XP'ye ulaştı.`);
+      .setDescription(`${member} artık ${remainingXP} XP'ye ve ${totalLevel} seviyesine ulaştı.`);
 
     interaction.reply({ embeds: [embed] });
   },

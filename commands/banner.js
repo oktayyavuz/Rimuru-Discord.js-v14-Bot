@@ -1,5 +1,7 @@
 const { Client, EmbedBuilder } = require("discord.js");
 const Discord = require("discord.js")
+const config = require("../config.json"); 
+
 module.exports = {
     name:"banner",
     description: 'Bannerine bakarsın.',
@@ -27,14 +29,14 @@ module.exports = {
           return interaction.reply({embeds: [embed]})
       } else if (!banner.includes('https')) {
         const embed = new EmbedBuilder()
-        .setDescription(`:x: Bu kullanıcıda banner bulunmamaktadır! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](https://discord.gg/mondstadt) sunucumuza gelebilir yada [Websitem](https://oktaydev.com.tr/) üzerinden bana mail atarbilirsiniz.`)
+        .setDescription(`:x: Bu kullanıcıda banner bulunmamaktadır! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](${config["desteksunucu"]}) sunucumuza gelebilir yada [Websitem](${config["website"]}) üzerinden bana mail atarbilirsiniz.`)
         return interaction.reply({ embeds: [embed] });
       }
     } catch (error) {
         console.error(error);
 
         const embed = new EmbedBuilder()
-            .setDescription(`:x: Bu kullanıcıda banner bulunamadı! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](https://discord.gg/mondstadt) sunucumuza gelebilir yada [Websitem](https://oktaydev.com.tr/) üzerinden bana mail atarbilirsiniz.`)
+            .setDescription(`:x: Bu kullanıcıda banner bulunamadı! \n\n 📔 Not: Hata olduğunu düşünüyorsanız [Discord](${config["desteksunucu"]}) sunucumuza gelebilir yada [Websitem](${config["website"]}) üzerinden bana mail atarbilirsiniz.`)
         return interaction.reply({ embeds: [embed] });
     }
   }

@@ -1,5 +1,6 @@
 const { Client, EmbedBuilder, PermissionsBitField } = require("discord.js");
 const Discord = require("discord.js")
+const config = require("../config.json"); 
 module.exports = {
   name: "say",
   description: " Sunucuda kaç üye olduğunu gösterir.",
@@ -17,7 +18,7 @@ module.exports = {
         const retmekişi = interaction.guild.members.cache.filter(o => !o.user.bot && o.presence && o.presence.status === 'dnd').size
 
     const embed = new EmbedBuilder()
-    .setTitle('Rimuru Bot')
+    .setTitle(`${config["bot-adi"]} Bot`)
     .setThumbnail(`${interaction.guild.iconURL({ dynamic: true })}`)
     .setFooter({text: interaction.user.tag+" İstedi."})
     .setDescription(`👤 | Toplam Üye: **${interaction.guild.memberCount}** ( Çevrimiçi: **${onlinekişi}** | Boşta: **${boştakişi}** | Rahatsız Etmeyin **${retmekişi}** )\n✅ | Gerçek: **${memberCount}**\n❗ | Sahte: **${fakeMemberCount}**\n🤖 | Bot: **${botCount}**\n 🛡 | Yönetici Yetkili: **${permissionsMemberCount}**`)

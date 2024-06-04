@@ -23,7 +23,7 @@ module.exports = {
     const { user, guild, options } = interaction;
 
     const member = guild.members.cache.get(options.getUser("kullanıcı").id);
-    const xp = options.getInteger("miktar");
+    const xpToRemove = options.getInteger("miktar");
 
     if (!interaction.member.permissions.has(PermissionsBitField.Flags.ManageChannels)) {
       return interaction.reply({ content: "❌ | Buna Yetkin Yok!", ephemeral: true });
@@ -36,21 +36,27 @@ module.exports = {
     }
 
     const currentXP = db.fetch(`xpPos_${member.id}${guild.id}`) || 0;
-    if (currentXP < xp) {
+    const currentLevel = db.fetch(`levelPos_${member.id}${guild.id}`) || 0;
+    const totalXP = (currentLevel * 100) + currentXP;
+
+    if (totalXP < xpToRemove) {
       return interaction.reply({
-        content: `❌ | ${member.user.username}'ın şu anki XP'si ${currentXP}. Bu miktarda XP kaldıramazsınız.`,
+        content: `❌ | ${member.user.username}'ın şu anki toplam XP'si ${totalXP}. Bu miktarda XP kaldıramazsınız.`,
         ephemeral: true,
       });
     }
 
-    db.subtract(`xpPos_${member.id}${guild.id}`, xp);
+    const newTotalXP = totalXP - xpToRemove;
+    const newLevel = Math.floor(newTotalXP / 100);
+    const remainingXP = newTotalXP % 100;
 
-    const newXP = db.fetch(`xpPos_${member.id}${guild.id}`) || 0;
+    db.set(`xpPos_${member.id}${guild.id}`, remainingXP);
+    db.set(`levelPos_${member.id}${guild.id}`, newLevel);
 
     const embed = new EmbedBuilder()
       .setColor("Random")
-      .setTitle(`${member.user.username}'dan ${xp} XP kaldırıldı.`)
-      .setDescription(`${member} artık ${newXP} XP'ye sahip.`);
+      .setTitle(`${member.user.username}'dan ${xpToRemove} XP kaldırıldı.`)
+      .setDescription(`${member} artık ${remainingXP} XP'ye ve ${newLevel} seviyesine sahip.`);
 
     interaction.reply({ embeds: [embed] });
   },

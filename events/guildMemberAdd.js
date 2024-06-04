@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const db = require("croxydb");
 const moment = require("moment");
 const rp = require("../helpers/rcapchta");
+const config = require("../config.json"); 
 
 module.exports = {
     name: "guildMemberAdd",
@@ -82,7 +83,7 @@ module.exports = {
                 .setColor('#0099ff')
                 .setTitle('Hoşgeldin')
                 .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 256 }))
-                .setURL('https://oktaydev.com.tr')
+                .setURL(`${config["website"]}`)
                 .setDescription(`:inbox_tray: | ${member} Sunucumuza Katıldı! \n Sunucumuz **${member.guild.memberCount}** kişi oldu!`)
                 .setImage('https://i.hizliresim.com/fp8i1ot.jpeg')
                 .setTimestamp();
@@ -136,83 +137,6 @@ module.exports = {
         const acc = member.user.bot ? db.fetch(`botrol_${member.guild.id}`) : db.fetch(`otorol_${member.guild.id}`);
         if (acc) {
             member.roles.add(acc).catch(() => {});
-        }
-
-        // captcha sistemi
-        if (db.fetch(`rcaptcha_${member.guild.id}`)) {
-            const channel = member.guild.channels.cache.get(db.fetch(`rcaptcha_${member.guild.id}`).kanal);
-            if (!channel) return;
-
-            function randPassword(letters, numbers, either) {
-                var chars = [
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz",
-                    "0123456789",
-                    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // either
-                ];
-
-                return [letters, numbers, either].map(function (len, i) {
-                    return Array(len).fill(chars[i]).map(function (x) {
-                        return x[Math.floor(Math.random() * x.length)];
-                    }).join('');
-                }).concat().join('').split('').sort(function () {
-                    return 0.5 - Math.random();
-                }).join('');
-            }
-            const random = randPassword(3, 2, 1);
-
-            const attachment = new Discord.MessageAttachment(rp(random), { name: `rcaptcha-${member.user.id}.png` });
-
-            const row = new Discord.MessageActionRow()
-                .addComponents(
-                    new Discord.MessageButton()
-                        .setCustomId(`benıdogrula_everyone_${member.guild.id}${member.user.id}`)
-                        .setLabel("Beni Doğrula")
-                        .setEmoji("1026818020120723476")
-                        .setStyle("SECONDARY"),
-                    new Discord.MessageButton()
-                        .setCustomId(`randomGöster_everyone_${member.guild.id}${member.user.id}`)
-                        .setLabel("Kodu Görüntüle")
-                        .setStyle("SECONDARY")
-                );
-
-            db.set(`beklenıyor_${member.guild.id}${member.user.id}`, random);
-            try {
-                channel.send({
-                    content: `<@${member.user.id}>`, embeds: [
-                        new Discord.EmbedBuilder()
-                            .setColor("#36393F")
-                            .setAuthor(client.user.tag, client.user.displayAvatarURL({ dynamic: true }))
-                            .setDescription('• Merhaba Rimuru kullanıcısı, seni sunucumuza güvenle alabilmek için altta bulunan yazıyı butona tıklayarak yazman gerekiyor.')
-                            .setImage("attachment://rcaptcha-" + member.user.id + ".png")
-                            .setTimestamp()
-                            .setFooter(member.user.tag, member.user.displayAvatarURL({ dynamic: true })) // Footer'ı düzeltildi
-                    ], files: [attachment], components: [row], fetchReply: true
-                });
-            } catch(err) {
-                console.error("Captcha mesajı gönderirken bir hata oluştu:", err);
-            }
-        }
-
-        const uye = db.fetch(`kayıtlıuye_${member.id}`);
-        if (uye) {
-            const kayitsistemi = db.fetch(`kayıtsistemi_${member.guild.id}`);
-            const registerChannel = member.guild.channels.cache.find(ch => ch.id === kayitsistemi.kayıtkanal);
-            const kayıtlırol = member.guild.roles.cache.find(rl => rl.id === kayitsistemi.kayıtlırol);
-            const kayıtsızrol = member.guild.roles.cache.find(rl => rl.id === kayitsistemi.kayıtsızrol);
-            await member.setNickname(`${uye.isim} | ${uye.yas}`).catch(console.error);
-            await member.roles.add(kayıtlırol).catch(console.error);
-            await member.roles.remove(kayıtsızrol).catch(console.error);
-            try {
-                registerChannel.send({
-                    embeds: [
-                        {
-                            description: `${member} sunucuya tekrar katıldı ve otomatik olarak kaydı yapıldı!`
-                        }
-                    ],
-                });
-            } catch(err) {
-                console.error("Kayıt işlemi sırasında bir hata oluştu:", err);
-            }
         }
 
         const hesapKoruma1 = db.fetch(`hesapkoruma1_${member.guild.id}`);
