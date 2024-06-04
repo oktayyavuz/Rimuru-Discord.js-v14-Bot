@@ -49,17 +49,7 @@ module.exports = {
       { name: "**Level Sistemi**", value: `${levelSystem}`, inline: true  }
             )
     .setColor('Blue')
-
-    const row = new Discord.ActionRowBuilder()
-  
-        .addComponents(
-          new Discord.ButtonBuilder()
-          .setEmoji("1039607063443161158")
-          .setLabel(" ")
-          .setStyle(Discord.ButtonStyle.Danger)
-          .setCustomId("clearMessageButton_"+interaction.user.id)
-            )
-    interaction.reply({ embeds: [embed], components: [row] })
+    interaction.reply({ embeds: [embed]})
 
 
   }
