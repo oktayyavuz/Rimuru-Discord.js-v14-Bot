@@ -12,10 +12,10 @@ module.exports = {
     const butonrolSystem = db.fetch(`buton_rol${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const botlistSystem =  db.fetch(`botekle_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const capslockEngelSystem = db.fetch(`capslockengel_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
-    const gorselEngelSystem = db.fetch(`görselengel_${interaction.guild.id}`) ? "✅ | Açık" : "❌> | Kapalı";
+    const gorselEngelSystem = db.fetch(`görselengel_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const giriscikisSystem = db.fetch(`hgbb_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const kayitSystem = db.fetch(`kayıt_kanal_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
-    const kufurEngelSystem = db.fetch(`kufurengel_${interaction.guild.id}`) ? "✅ | Açık" : "❌> | Kapalı";
+    const kufurEngelSystem = db.fetch(`kufurengel_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const modLogSystem = db.fetch(`modlogK_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const muteSystem = db.fetch(`yetkili_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
     const otorolSystem = db.fetch(`otorol_${interaction.guild.id}`) ? "✅ | Açık" : "❌ | Kapalı";
@@ -49,7 +49,17 @@ module.exports = {
       { name: "**Level Sistemi**", value: `${levelSystem}`, inline: true  }
             )
     .setColor('Blue')
-    interaction.reply({ embeds: [embed]})
+
+    const row = new Discord.ActionRowBuilder()
+  
+        .addComponents(
+          new Discord.ButtonBuilder()
+          .setEmoji("1039607063443161158")
+          .setLabel(" ")
+          .setStyle(Discord.ButtonStyle.Danger)
+          .setCustomId("clearMessageButton_"+interaction.user.id)
+            )
+    interaction.reply({ embeds: [embed], components: [row] })
 
 
   }
