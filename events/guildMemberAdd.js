@@ -90,7 +90,7 @@ module.exports = {
                 try {
                     channel.send({ embeds: [normalmeesage] });
                 } catch(err) {
-                    console.error("Normal mesaj gönderirken bir hata oluştu:", err);
+                    console.error("Normal mesaj gönderirken bir hata oluştu.");
                 }
             } 
         } 
