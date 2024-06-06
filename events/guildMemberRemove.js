@@ -34,7 +34,9 @@ module.exports = {
                         .setTimestamp();
                     try {
                         kanal.send({ embeds: [normalmesaj] });
-                    } catch (err) { }
+                    } catch (err) {
+                        console.error("Normal mesaj gönderirken bir hata oluştu.");
+                        }
                 }
             }
         } catch (err) {
