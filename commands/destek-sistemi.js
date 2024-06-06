@@ -60,7 +60,7 @@ module.exports = {
 
         const basarili = new EmbedBuilder()
             .setColor("Green")
-            .setDescription(`✅ | __**Destek Sistemi**__ başarıyla ayarlandı!\n\n<:kanal:1040649841996464139> Destek Kanalı: ${ticketkanal}\n<:kanal:1040649841996464139> Log Kanalı: ${logkanal}\n<:bot:1039607042291269703> Yetkili Rolü: ${rol}`)
+            .setDescription(`✅ | __**Destek Sistemi**__ başarıyla ayarlandı!\n\n✅ Destek Kanalı: ${ticketkanal}\n✅ Log Kanalı: ${logkanal}\n✅ Yetkili Rolü: ${rol}`)
             db.set(`ticketKanal_${interaction.guild.id}`, logkanal.id)
             db.set(`ticketSystem_${interaction.guild.id}`, { yetkili: rol.id, ticketchannel: ticketkanal.id })
             db.set(`ticketCategory_${interaction.guild.id}`, { category:  category.id, log: logkanal.id });
