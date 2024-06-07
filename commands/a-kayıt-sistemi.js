@@ -17,8 +17,20 @@ module.exports = {
             channel_types: [0]
         },
         {
-            name: "kayıtlı-rol",
-            description: "Kayıtlı rolünü ayarlarsın!",
+            name: "kayıt-yetkilisi",
+            description: "Kayıt yetkilisi rolünü ayarlarsın!",
+            type: 8,
+            required: true,
+        },
+        {
+            name: "kız-rol",
+            description: "Kız rolünü ayarlarsın!",
+            type: 8,
+            required: true,
+        },
+        {
+            name: "erkek-rol",
+            description: "Erkek rolünü ayarlarsın!",
             type: 8,
             required: true,
         },
@@ -36,7 +48,9 @@ module.exports = {
             .setDescription("❌ | Bu komutu kullanabilmek için `Yönetici` yetkisine sahip olmalısın!");
 
         const kayıtkanal = interaction.options.getChannel('kayıt-kanalı');
-        const kayıtlırol = interaction.options.getRole('kayıtlı-rol');
+        const kayityetkilisi = interaction.options.getRole('kayıt-yetkilisi');
+        const kızrol = interaction.options.getRole('kız-rol');
+        const erkekrol = interaction.options.getRole('erkek-rol');
         const kayıtsızrol = interaction.options.getRole('kayıtsız-rol');
 
         if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) return interaction.reply({ embeds: [yetki], ephemeral: true });
@@ -52,9 +66,9 @@ module.exports = {
 
         const basarili = new EmbedBuilder()
             .setColor("Random")
-            .setDescription(`✅ | __**Kayıt Sistemi**__ başarıyla ayarlandı!\n\n ***#*** |  Kayıt Kanalı: ${kayıtkanal}\n🤖 Kayıtlı Rolü: ${kayıtlırol}\n🤖 Kayıtsız Rolü: ${kayıtsızrol}`);
+            .setDescription(`✅ | __**Kayıt Sistemi**__ başarıyla ayarlandı!\n\n ***#*** |  Kayıt Kanalı: ${kayıtkanal}\n🤖 Kayıt Yetkilisi Rolü: ${kayityetkilisi}\n🤖 Kız Rolü: ${kızrol}\n🤖 Erkek Rolü: ${erkekrol}\n🤖 Kayıtsız Rolü: ${kayıtsızrol}`);
         
-        db.set(`kayıtsistemi_${interaction.guild.id}`, { kayıtkanal: kayıtkanal.id, kayıtlırol: kayıtlırol.id, kayıtsızrol: kayıtsızrol.id });
+        db.set(`kayıtsistemi_${interaction.guild.id}`, { kayıtkanal: kayıtkanal.id, kayityetkilisi: kayityetkilisi.id, kızrol: kızrol.id, erkekrol: erkekrol.id, kayıtsızrol: kayıtsızrol.id });
         db.set(`kayıtsistemiDate_${interaction.guild.id}`, { date: Date.now() });
 
         return interaction.reply({ embeds: [basarili], ephemeral: false }).catch((e) => { });
@@ -66,24 +80,29 @@ client.on("guildMemberAdd", async (member) => {
     if (!kayitSistemi) return;
 
     const kayıtsız = member.guild.roles.cache.get(kayitSistemi.kayıtsızrol);
-    if (!kayıtsız) return;
+    if (!kayıtsız) return console.error("Kayıtsız rolü bulunamadı.");
 
     member.setNickname("İsim | Yaş").catch(console.error);
-    member.roles.add(kayıtsız).catch(console.error); // Add the kayıtsız role to the member
+    member.roles.add(kayıtsız).catch(console.error); 
     const kayıtKanalı = member.guild.channels.cache.get(kayitSistemi.kayıtkanal);
-    if (!kayıtKanalı) return;
+    if (!kayıtKanalı) return console.error("Kayıt kanalı bulunamadı.");
 
     const kayıtMesajı = new EmbedBuilder()
         .setColor("Blue")
         .setTitle(`${member.guild.name} Sunucusuna Hoşgeldin`)
-        .setDescription(`Kayıt olmak için ✅ Kayıt Ol butonuna basabilirsiniz.\n\nCreate By ${botsahip} 💖`);
+        .setDescription(`Kayıt olmak için yetkili kişilerden birine ulaşabilirsiniz.\n\nCreate By ${botsahip} 💖`);
 
-    const kayıtButonu = new ButtonBuilder()
-        .setCustomId("kayitol")
-        .setLabel("✅ Kayıt Ol")
+    const kızButonu = new ButtonBuilder()
+        .setCustomId("kizkayit")
+        .setLabel("Kız Kayıt")
         .setStyle(ButtonStyle.Success);
 
-    const row = new ActionRowBuilder().addComponents(kayıtButonu);
+    const erkekButonu = new ButtonBuilder()
+        .setCustomId("erkekkayit")
+        .setLabel("Erkek Kayıt")
+        .setStyle(ButtonStyle.Primary);
+
+    const row = new ActionRowBuilder().addComponents(kızButonu, erkekButonu);
 
     kayıtKanalı.send({
         content: `Hoş geldin, ${member}!`,
@@ -92,15 +111,22 @@ client.on("guildMemberAdd", async (member) => {
     });
 });
 
-client.on("guildMemberRemove", async (member) => {
-    db.delete(`kayıtlıuye_${member.id}`);
-    console.error('Üyenin kaydı silinemedi')
-});
 client.on("interactionCreate", async (interaction) => {
     if (interaction.isButton()) {
-        if (interaction.customId === "kayitol") {
+        const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`);
+        if (!kayitsistemi) return;
+
+        const yetkiliRol = kayitsistemi.kayityetkilisi;
+
+        if (!interaction.member.roles.cache.has(yetkiliRol)) {
+            return interaction.reply({ content: "Bu butonu kullanmak için gerekli yetkiye sahip değilsiniz.", ephemeral: true });
+        }
+
+        const hedefUye = interaction.message.mentions.members.first(); // Katılan üyeyi seçiyoruz
+
+        if (interaction.customId === "kizkayit" || interaction.customId === "erkekkayit") {
             const kayitmodel = new ModalBuilder()
-                .setCustomId('kayitform')
+                .setCustomId(interaction.customId === "kizkayit" ? 'kizkayitform' : 'erkekkayitform')
                 .setTitle(' - Kayıt Menüsü!');
 
             const isim = new TextInputBuilder()
@@ -126,20 +152,34 @@ client.on("interactionCreate", async (interaction) => {
             await interaction.showModal(kayitmodel);
         }
     } else if (interaction.isModalSubmit()) {
-        if (interaction.customId === 'kayitform') {
+        const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`);
+        if (!kayitsistemi) return;
+
+        if (interaction.customId === 'kizkayitform' || interaction.customId === 'erkekkayitform') {
             const kayitisims = interaction.fields.getTextInputValue("kayitisim");
             const kayityass = interaction.fields.getTextInputValue('kayityas');
 
-            interaction.member.setNickname(`${kayitisims} | ${kayityass}`);
-            interaction.reply({ content: `${interaction.user} adlı kullanıcı başarılı bir şekilde kayıt oldu!`, ephemeral: true });
+            const hedefUye = interaction.message.mentions.members.first(); 
 
-            const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`);
-            const kayıtlı = await interaction.guild.roles.cache.find(role => role.id === kayitsistemi.kayıtlırol);
-            const kayıtsız = await interaction.guild.roles.cache.find(role => role.id === kayitsistemi.kayıtsızrol);
+            if (!hedefUye) {
+                return interaction.reply({ content: "Kayıt yapılacak üye bulunamadı.", ephemeral: true });
+            }
 
-            interaction.member.roles.remove(kayıtsız.id);
-            interaction.member.roles.add(kayıtlı.id);
-            db.set(`kayıtlıuye_${interaction.member.id}`, { isim: kayitisims, yas: kayityass });
+            hedefUye.setNickname(`${kayitisims} | ${kayityass}`).catch(console.error);
+
+            interaction.reply({ content: `${hedefUye} adlı kullanıcı başarılı bir şekilde kayıt oldu!`, ephemeral: true });
+
+            const rol = interaction.customId === 'kizkayitform' ? kayitsistemi.kızrol : kayitsistemi.erkekrol;
+            const kayıtsız = kayitsistemi.kayıtsızrol;
+
+            hedefUye.roles.remove(kayıtsız).catch(console.error);
+            hedefUye.roles.add(rol).catch(console.error);
+            db.set(`uye_${hedefUye.id}`, { isim: kayitisims, yas: kayityass });
         }
     }
+});
+
+client.on("guildMemberRemove", async (member) => {
+    db.delete(`uye_${member.id}`);
+    console.log(`${member.user.tag} sunucudan ayrıldı ve veritabanından silindi.`);
 });
