@@ -35,8 +35,9 @@ new Discord.ButtonBuilder()
 )
 let zaman = db.get(`botAcilis_`)
 let date = `<t:${Math.floor(zaman / 1000)}:R>`
+let servers = client.guilds.cache.size
+let members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)
 
-	let members = client.guilds.cache.reduce((a, b) => a + b.memberCount, 0)
 
 
 
