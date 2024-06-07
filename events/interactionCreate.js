@@ -1098,6 +1098,7 @@ if(interaction.customId === 'giriscikis'){
                         })
 
                         interaction.guild.channels.create({name: "▬▬ ÖNEMLİ ▬▬", type: ChannelType.GuildCategory}).then(katagori1 => {
+                          katagori1.permissionOverwrites.create(katagori1.guild.roles.everyone, { SendMessages: false });
                             interaction.guild.channels.create({name: "📜・Kurallar", type: ChannelType.GuildText}).then(kurallar => {
                                 const embed = new EmbedBuilder()
             .setTitle(':blue_book:  Sunucu Kuralları  :blue_book:')
