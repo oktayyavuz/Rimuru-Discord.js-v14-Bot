@@ -258,12 +258,11 @@ module.exports = {
 
     const randomAnime = animeList[Math.floor(Math.random() * animeList.length)];
 
-    const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
     const embed = new EmbedBuilder()
       .setTitle('Random Anime Önerisi:')
       .setDescription(`**${randomAnime}**`)
-      .setColor(`#${randomColor}`);
+      .setColor('Random');
 
     interaction.reply({ embeds: [embed] });
   }
