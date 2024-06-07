@@ -1198,8 +1198,11 @@ if(interaction.customId === 'giriscikis'){
             interaction.guild.roles.create({ name: 'Admin', color: "#d41313", permissions: [PermissionsBitField.Flags.ManageGuild, PermissionsBitField.Flags.BanMembers, PermissionsBitField.Flags.SendMessages]});
             interaction.guild.roles.create({ name: 'Mod', color: "#1367d4", permissions: [PermissionsBitField.Flags.ManageMessages, PermissionsBitField.Flags.KickMembers, PermissionsBitField.Flags.SendMessages]});
             interaction.guild.roles.create({ name: 'Destek Ekibi', color: "#d4c713", permissions: [PermissionsBitField.Flags.ManageRoles, PermissionsBitField.Flags.SendMessages]});
+            interaction.guild.roles.create({ name: 'Kayıt Yetkilisi', color: "#c28274", permissions: [PermissionsBitField.Flags.ManageRoles, PermissionsBitField.Flags.SendMessages]});
             interaction.guild.roles.create({ name: 'Özel Üye', color: "#d413c4", permissions: [PermissionsBitField.Flags.ViewChannel, PermissionsBitField.Flags.SendMessages]});
             interaction.guild.roles.create({ name: 'Üye', color: "#ffffff", permissions: [PermissionsBitField.Flags.SendMessages]});
+            interaction.guild.roles.create({ name: 'Kız', color: "#ffc0cb", permissions: [PermissionsBitField.Flags.SendMessages]});
+            interaction.guild.roles.create({ name: 'Erkek', color: "#00008b", permissions: [PermissionsBitField.Flags.SendMessages]});
             interaction.guild.roles.create({ name: 'Mute', color: "#878383", permissions: [PermissionsBitField.Flags.MuteMembers]});
             }
         
