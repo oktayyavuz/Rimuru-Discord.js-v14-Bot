@@ -162,10 +162,7 @@ client.on('interactionCreate', async interaction => {
 
             await interaction.showModal(modal);
         } else {
-            const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
-            if (!interaction.member.roles.cache.has(adminRol)) {
-                return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
-            }
+
 
             if (customId.startsWith('botlist_onayla_')) {
                 const botId = customId.split('_')[2];
