@@ -26,31 +26,40 @@ module.exports = {
     const isim = options.getString("isim");
     const category = await guild.channels.create({
       name: "ÖZEL ODA",
-      type: Discord.ChannelType.GuildCategory,
+      type: ChannelType.GuildCategory,
       permissionOverwrites: [
         {
-          id: interaction.guild.id,
+          id: guild.id,
+          deny: [PermissionsBitField.Flags.ViewChannel], 
         },
       ],
     });
 
     db.set(`ozelOdaSystemCategory_${interaction.guild.id}`, { category: category.id });
     const ozelOdaCategory = db.fetch(`ozelOdaSystemCategory_${interaction.guild.id}`);
-    const channel = await interaction.guild.channels.create({
+    const channel = await guild.channels.create({
       name: `${isim}`,
-      type: Discord.ChannelType.GuildVoice,
+      type: ChannelType.GuildVoice,
       parent: ozelOdaCategory.category,
-      permissionOverwrites: [],
+      permissionOverwrites: [
+        {
+          id: guild.id,
+          deny: [PermissionsBitField.Flags.Connect], 
+        },
+        {
+          id: user.id,
+          allow: [PermissionsBitField.Flags.Connect, PermissionsBitField.Flags.ViewChannel], 
+        },
+      ],
     });
 
     db.set(`ozelodasistemi_${interaction.guild.id}`, isim);
     db.set(`ozelOdaSystemDate_${interaction.guild.id}`, { date: Date.now() });
     db.set(`oda_${interaction.user.id}`, channel.id);
 
-    // Bir dakika sonra çalışacak zamanlayıcı
     setTimeout(async () => {
       try {
-        const channelCheck = await interaction.guild.channels.fetch(channel.id);
+        const channelCheck = await guild.channels.fetch(channel.id);
         if (channelCheck.members.size === 0) {
           await channelCheck.delete();
           const categoryCheck = await guild.channels.fetch(ozelOdaCategory.category);
@@ -62,7 +71,7 @@ module.exports = {
           interaction.followUp({ embeds: [embed] });
         }
       } catch (error) {
-        console.error("Özel oda silinirken bir hata oluştu:", error);
+        console.error("Özel oda bulunamadı.");
         const embed = new Discord.EmbedBuilder()
           .setColor("Random")
           .setDescription(`❌ | Özel oda **zaten** silinmiş!`);
@@ -75,7 +84,7 @@ module.exports = {
       .setTitle("✅ | Başarılı")
       .setDescription(
         `> Sesli Kanal Başarıyla Oluşturuldu. \n > Ses kanalına girmek için 20 saniyen var yoksa kanal otomatik olarak silinecektir.`
-     );
+      );
     interaction.reply({ embeds: [embed] });
   },
 };

@@ -4,9 +4,9 @@
     "sahip":"",
     "giris-cikis":"",
     "desteksunucusu": "https://discord.gg/",
-    "bot-davet":"https://discord.com/oauth2/",
+    "bot-davet":"https://discord.com/oauth2/authorize",
     "bot-adi":"Rimuru",
-    "website":"https://<website>.com.tr",
+    "website":"https://oktaydev.com.tr",
     "mesajXp": 1,
     "sesXp":2,
     "levelXp": 99
