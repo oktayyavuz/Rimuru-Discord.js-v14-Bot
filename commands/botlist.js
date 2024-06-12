@@ -165,6 +165,10 @@ client.on('interactionCreate', async interaction => {
 
 
             if (customId.startsWith('botlist_onayla_')) {
+                const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+                if (!interaction.member.roles.cache.has(adminRol)) {
+                    return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+                }
                 const botId = customId.split('_')[2];
                 const botRol = db.fetch(`botRol_${interaction.guild.id}`);
                 const devRol = db.fetch(`devRol_${interaction.guild.id}`);
@@ -200,6 +204,10 @@ client.on('interactionCreate', async interaction => {
                     await interaction.reply({ content: 'Bot eklenirken bir hata oluştu.', ephemeral: true });
                 }
             } else if (customId.startsWith('botlist_ayarlar_')) {
+                const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+                if (!interaction.member.roles.cache.has(adminRol)) {
+                    return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+                }
                 const menu = new Discord.StringSelectMenuBuilder()
                     .setCustomId('select_ayarlar')
                     .setPlaceholder('Bir ayar seçin...')
@@ -216,6 +224,10 @@ client.on('interactionCreate', async interaction => {
                 const row = new Discord.ActionRowBuilder().addComponents(menu);
                 await interaction.reply({ content: 'Ayarlar menüsü:', components: [row], ephemeral: true });
             } else if (customId.startsWith('botlist_kapat_')) {
+                const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+                if (!interaction.member.roles.cache.has(adminRol)) {
+                    return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+                }
                 db.delete(`log_${interaction.guild.id}`);
                 db.delete(`botRol_${interaction.guild.id}`);
                 db.delete(`devRol_${interaction.guild.id}`);
@@ -227,6 +239,10 @@ client.on('interactionCreate', async interaction => {
 
                 await interaction.reply({ content: 'Botlist sistemi başarıyla sıfırlandı!', ephemeral: true });
             } else if (customId.startsWith('botlist_reddet_')) {
+                const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+                if (!interaction.member.roles.cache.has(adminRol)) {
+                    return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+                }
                 const botId = customId.split('_')[2];
                 const userId = db.fetch(`botOwner_${botId}`);
 
@@ -253,6 +269,10 @@ client.on('interactionCreate', async interaction => {
 
                 await interaction.reply({ content: `Botu test etmek için [buraya tıklayın](${botInviteLink})`, ephemeral: true });
             } else if (customId.startsWith('botlist_bilgilendirme_')) {
+                const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+                if (!interaction.member.roles.cache.has(adminRol)) {
+                    return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+                }
                 const bilgilendirmeEmbed = new Discord.EmbedBuilder()
                     .setColor("Yellow")
                     .setTitle("Bot-List Sistemi")

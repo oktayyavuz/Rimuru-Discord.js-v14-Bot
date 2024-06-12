@@ -116,15 +116,14 @@ client.on("interactionCreate", async (interaction) => {
         const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`);
         if (!kayitsistemi) return;
 
-        const yetkiliRol = kayitsistemi.kayityetkilisi;
 
-        if (!interaction.member.roles.cache.has(yetkiliRol)) {
-            return interaction.reply({ content: "Bu butonu kullanmak için gerekli yetkiye sahip değilsiniz.", ephemeral: true });
-        }
 
-        const hedefUye = interaction.message.mentions.members.first(); // Katılan üyeyi seçiyoruz
-
+        const hedefUye = interaction.message.mentions.members.first(); 
         if (interaction.customId === "kizkayit" || interaction.customId === "erkekkayit") {
+            const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
+            if (!interaction.member.roles.cache.has(adminRol)) {
+                return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
+            }
             const kayitmodel = new ModalBuilder()
                 .setCustomId(interaction.customId === "kizkayit" ? 'kizkayitform' : 'erkekkayitform')
                 .setTitle(' - Kayıt Menüsü!');

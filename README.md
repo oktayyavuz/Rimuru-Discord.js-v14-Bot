@@ -1,4 +1,4 @@
-# Rimuru Discord.js v14 Bot v2.7
+# Rimuru Discord.js v14 Bot v2.6
 
 Genel Discord Botu
 
