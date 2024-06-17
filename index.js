@@ -38,10 +38,14 @@ for(let commandName of fs.readdirSync("./commands")) {
 }
 
 client.on('messageCreate', msg => { 
+	
+	if (msg.mentions.has(client.user)) {
+        msg.reply('Birisi Beni Çağırdı Sanırım Komutlarıma `/yardım` ile bakabilirsin  💕');
+    }
+	
 	if (msg.content === 'sa') {
 	  msg.reply('as cnm la naber 😋 ');
 	}
-  
 	if (msg.content === 'yardım') {
 	  msg.reply('/yardım ı kullan ');
 	}
