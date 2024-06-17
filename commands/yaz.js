@@ -11,7 +11,6 @@ module.exports = {
       return interaction.reply({ content: "❌ | Yetkin Yok!", ephemeral: true });
     }
 
-    // Modal oluşturma
     const modal = new ModalBuilder()
       .setCustomId('sendMessageModal')
       .setTitle('Mesaj Gönder');
@@ -28,7 +27,6 @@ module.exports = {
   }
 };
 
-// Modal submit event'i dinleyicisi
 client.on('interactionCreate', async interaction => {
   if (!interaction.isModalSubmit()) return;
 
