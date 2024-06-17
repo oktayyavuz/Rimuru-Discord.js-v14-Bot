@@ -7,7 +7,6 @@ module.exports = {
   run: async (client, message) => {
     let kanal = db.get(`modlogK_${message.guild.id}`);
 
-    // Check if message.author exists and is not null
     if (!message.author || !message.author.tag) return;
 
     const embed = new EmbedBuilder()
