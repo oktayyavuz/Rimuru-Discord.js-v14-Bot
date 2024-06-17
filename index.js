@@ -43,52 +43,23 @@ client.on('messageCreate', msg => {
         msg.reply('Birisi Beni Çağırdı Sanırım Komutlarıma `/yardım` ile bakabilirsin  💕');
     }
 	
-	if (msg.content === 'sa') {
-	  msg.reply('as cnm la naber 😋 ');
-	}
-	if (msg.content === 'yardım') {
-	  msg.reply('/yardım ı kullan ');
-	}
-	if (msg.content === 'naber') {
-	  msg.reply('iyi senden naber 😃 ');
-	}
-	if (msg.content === 'Sa') {
-		msg.reply('as cnm la naber 😋 ');
-		}
-		if (msg.content === 'SA') {
-			msg.reply('as cnm la naber 😋 ');
-			}
-			if (msg.content === 'Sea') {
-				msg.reply('as cnm la naber 😋');
-				}
-				if (msg.content === 'sea') {
-					msg.reply('as cnm la naber 😋');
-					}
-					if (msg.content === 'Selam') {
-						msg.reply('as cnm la naber 😋');
-						}
-						if (msg.content === 'selam') {
-							msg.reply('as cnm la naber 😋');
-							}
-							if (msg.content === 'Selamun aleyküm') {
-								msg.reply('as cnm la naber 😋');
-								}
-								if (msg.content === 'selamun aleyküm') {
-									msg.reply('as cnm la naber 😋');
-									}
-									if (msg.content === 'Selamunaleyküm') {
-										msg.reply('as cnm la naber 😋');
-										}
-										if (msg.content === 'selamunaleyküm') {
-											msg.reply('as cnm la naber 😋');
-											}
-											if (msg.content === 'Selamunaleykum') {
-												msg.reply('as cnm la naber 😋');
-												}
-												if (msg.content === 'selamunaleykum') {
-													msg.reply('as cnm la naber 😋');
-													}
   });
+  client.on('messageCreate', msg => {
+    const content = msg.content.toLowerCase(); 
+
+    const replies = {
+        'sa': 'as cnm la naber 😋',
+        'naber': 'iyi senden naber 😃',
+        'sea': 'as cnm la naber 😋',
+        'selam': 'as cnm la naber 😋',
+        'selamun aleyküm': 'as cnm la naber 😋',
+        'selamunaleyküm': 'as cnm la naber 😋',
+        'selamunaleykum': 'as cnm la naber 😋'
+    };
+		if (replies[content]) {
+			msg.reply(replies[content]);
+		}
+	});
 // 
 
 console.log(`[-] ${fs.readdirSync("./events").length} olay algılandı.`)
