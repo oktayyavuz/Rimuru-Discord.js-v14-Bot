@@ -1,4 +1,11 @@
-# Rimuru Discord.js v14 Bot v2.6
+# Rimuru Discord.js v14 Bot v2.7
+
+<p align="center">
+  <a href="https://api.weblutions.com/discord/invite/dvCKjxHn35">
+    <img src="https://api.weblutions.com/discord/invite/dvCKjxHn35" alt="O.dev Discord" />
+  </a>
+</p>
+ 
 
 Genel Discord Botu
 
