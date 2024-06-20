@@ -120,8 +120,10 @@ client.on("interactionCreate", async (interaction) => {
 
         const hedefUye = interaction.message.mentions.members.first(); 
         if (interaction.customId === "kizkayit" || interaction.customId === "erkekkayit") {
-            const adminRol = db.fetch(`adminRol_${interaction.guild.id}`);
-            if (!interaction.member.roles.cache.has(adminRol)) {
+
+            const kayityetkilisi = kayitsistemi.kayityetkilisi;
+    
+            if (!interaction.member.roles.cache.has(kayityetkilisi)) {
                 return interaction.reply({ content: 'Bu butonu kullanmak için yetkili rolüne sahip olmalısın!', ephemeral: true });
             }
             const kayitmodel = new ModalBuilder()
@@ -180,5 +182,4 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on("guildMemberRemove", async (member) => {
     db.delete(`uye_${member.id}`);
-    console.log(`${member.user.tag} sunucudan ayrıldı ve veritabanından silindi.`);
 });
