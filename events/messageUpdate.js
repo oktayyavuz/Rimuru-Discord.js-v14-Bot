@@ -5,6 +5,9 @@ module.exports = {
   name: Events.MessageUpdate,
 
   run: async (client, oldMsg, newMsg) => {
+
+    if (!db.has(`modlogK_${oldMsg.guild.id}`)) return;
+
     if (!db.fetch(`modlogK_${oldMsg.guild.id}`)) return;
 
     const kanal = db.fetch(`modlogK_${oldMsg.guild.id}`);
