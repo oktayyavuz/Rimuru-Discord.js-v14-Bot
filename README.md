@@ -29,32 +29,10 @@ Genel Discord Botu
 
 ### Kurulum
 
-* [Glitch Kurulum](#glitch)
+*  // Glitch desteğimiz kalkmıştır. [Oksitweb](https://www.oksitweb.com/kategori/discord-bot-hosting) üzerinden botlarınızı ücretsiz veya ücretli şekilde host edebilirsiniz.
 * [Vds Kurulum](#vds)
 
 
-
-## Glitch
-
-
-``` bash
-
-# Glitch'e gir.
-# Yeni bir proje oluşturun.
-# Projenizi açın.
-# Projenin alt tarafında bulunan "Tools" butonuna tıklayın.
-# "Import/Export" seçeneğini seçin.
-# "Import from GitHub" seçeneğini seçin.
-# "https://github.com/RimuruBot/Rimuru-Discord.js-v14-Bot.git" adresini girin.
-# "Import" butonuna tıklayın.
-# `index.js` dosyasına gidin.
-# `config.token` değerini 'process.env.token' değişkenini değiştirin.
-# .env dosyasına gidin.
-# `token` değerini botunuzun tokeni ile değiştirin.
-
-
-
-```
 
 
 ## Vds
