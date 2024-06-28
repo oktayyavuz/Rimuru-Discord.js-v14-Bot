@@ -1,11 +1,11 @@
 # Rimuru Discord.js v14 Bot v2.8
 
 <p align="center">
-  <a href="https://api.weblutions.com/discord/invite/dvCKjxHn35">
-    <img src="https://api.weblutions.com/discord/invite/dvCKjxHn35" alt="Rimuru Shop Discord" />
+  <a href="https://api.weblutions.com/discord/invite/2xp5Vn4DVt">
+    <img src="https://api.weblutions.com/discord/invite/2xp5Vn4DVt" alt="Rimuru Shop" />
   </a>
 </p>
- 
+
 
 Genel Discord Botu
 
