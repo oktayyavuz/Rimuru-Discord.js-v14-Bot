@@ -1,0 +1,16 @@
+{
+    "token":"",
+	"log":"",
+    "sahip":"",
+    "desteksunucusu": "https://discord.gg/rimurushops",
+    "bot-davet":"https://discord.com/oauth2/",
+    "bot-adi":"Rimuru",
+    "bot-id":"",
+    "website":"https://oktaydev.com.tr",
+    "durum":"Seni",
+    "prefix":"!",
+    "": "Prefix sadece şu işinze yaricaktır. /customcommands komudu kullanıldığında özel komutları eklerken başına bu prefix gelir",
+    "mesajXp": 1,
+    "sesXp":2,
+    "levelXp": 99
+}
