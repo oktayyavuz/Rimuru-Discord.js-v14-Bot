@@ -28,8 +28,5 @@
     "request": "^2.88.2",
     "rhino-ms": "^0.4.0",
     "sharp": "^0.33.4"
-  },
-  "engines": {
-    "node": "16.x"
   }
 }
