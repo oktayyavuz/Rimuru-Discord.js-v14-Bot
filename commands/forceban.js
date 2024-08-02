@@ -1,5 +1,6 @@
 const { PermissionsBitField } = require("discord.js");
 const { EmbedBuilder } = require("discord.js");
+const db = require("croxydb");
 
 module.exports = {
   name: "forceban",
@@ -27,6 +28,28 @@ module.exports = {
         .setColor("Random")
         .setDescription(`${id} ✅ | IDLI Kullanıcı Başarıyla Yasaklandı!`);
       interaction.reply({ embeds: [embed] });
+
+      // Modlog kanalına mesaj gönderme
+      try {
+        const modLogChannelId = db.get(`modlogK_${interaction.guild.id}`);
+        if (modLogChannelId) {
+          const modLogChannel = client.channels.cache.get(modLogChannelId);
+          if (modLogChannel) {
+            const logEmbed = new EmbedBuilder()
+              .setTitle('Kullanıcı Yasaklandı')
+              .addFields(
+                { name: 'Yasaklanan Kullanıcı ID', value: `${id}` },
+                { name: 'Yasaklayan Yetkili', value: `${interaction.user}` },
+              )
+              .setTimestamp();
+
+            modLogChannel.send({ embeds: [logEmbed] });
+          }
+        }
+      } catch (error) {
+        console.error('Modlog gönderiminde hata:', error);
+      }
+
     } catch (error) {
       let errorMessage = "❌ | Kullanıcı yasaklanırken bir hata oluştu!";
       if (error.code === 50013) {

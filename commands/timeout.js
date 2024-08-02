@@ -28,12 +28,13 @@ module.exports = {
     type: 1,
 
     run: async (client, interaction) => {
-
         let data = db.get(`timeoutSistemi_${interaction.guild.id}`);
+
         if (!data) return interaction.reply({ content: "❌ | Dostum **__Timeout Sistemi__** ayarlanmamış.", ephemeral: true });
 
         let yetkili = data.yetkili;
         let kanal = data.log;
+
         let channel = client.channels.cache.get(kanal);
         if (!channel) return interaction.reply({ content: `❌ | Dostum **__Timeout Sistemi__** log kanalı bulunamadı.`, ephemeral: true });
 

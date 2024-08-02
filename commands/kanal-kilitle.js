@@ -8,7 +8,7 @@ module.exports = {
     {
       name: "durum",
       description: "Kanalın durumunu belirleyin.",
-      type: 3, // 3: STRING
+      type: 3, 
       required: true,
       choices: [
         {

@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const db = require("croxydb");
 const moment = require("moment");
-const rp = require("../helpers/rcapchta");
 const config = require("../config.json"); 
 
 module.exports = {
@@ -27,7 +26,7 @@ module.exports = {
                 } catch(err) {
                     console.error("HGBB mesajı gönderirken bir hata oluştu:", err);
                 }
-            } else{
+            } else {
                 const normalmeesage = new Discord.EmbedBuilder()
                 .setColor('#0099ff')
                 .setTitle('Hoşgeldin')
@@ -89,29 +88,25 @@ module.exports = {
         }
 
         const hesapKoruma1 = db.fetch(`hesapkoruma1_${member.guild.id}`);
-        if (hesapKoruma1) {
+        const hesapkorumaSystem = db.fetch(`hesapkoruma_${member.guild.id}`);
+        if (hesapKoruma1 && hesapkorumaSystem) {
             const logChannel = member.guild.channels.cache.get(hesapKoruma1.channel);
 
-            if (hesapKoruma1) {
-                const now = new Date().getTime() - client.users.cache.get(member.id).createdAt.getTime() < 1296000000;
-                if (now) {
-                    try {
-                        member.ban({ reason: "Yeni riskli hesap" });
-                        logChannel.send({ 
-                            embeds: [
-                                new Discord.EmbedBuilder()
-                                    .setDescription(`⚠️ | **${member.user.tag}**, Hesabı yeni olduğu için sunucudan yasaklandı.`)
-                                    .setColor(`#FEE75C`)
-                                    .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
-
-                            ]
-                        });
-                    } catch(err) {
-                        console.error("Hesap koruma işlemi sırasında bir hata oluştu:", err);
-                    }
+            const now = new Date().getTime() - client.users.cache.get(member.id).createdAt.getTime() < 1296000000;
+            if (now) {
+                try {
+                    member.ban({ reason: "Yeni riskli hesap" });
+                    logChannel.send({ 
+                        embeds: [
+                            new Discord.EmbedBuilder()
+                                .setDescription(`⚠️ | **${member.user.tag}**, Hesabı yeni olduğu için sunucudan yasaklandı.`)
+                                .setColor(`#FEE75C`)
+                                .setFooter({ text: `${member.user.tag}`, iconURL: member.user.displayAvatarURL({ dynamic: true }) })
+                        ]
+                    });
+                } catch(err) {
+                    console.error("Hesap koruma işlemi sırasında bir hata oluştu:", err);
                 }
-            } else {
-                console.error("Hesap koruma kanalı bulunamadı.");
             }
         }
     }

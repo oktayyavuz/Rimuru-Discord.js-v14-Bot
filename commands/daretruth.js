@@ -39,7 +39,7 @@ module.exports = {
 
             const spinningEmbed = new EmbedBuilder()
                 .setTitle("Şişe Çevriliyor...")
-                .setImage("https://media.giphy.com/media/3o7aD2saalBwwftBIY/giphy.gif")
+                .setImage("https://i.hizliresim.com/jutmnkv.gif")
                 .setColor("Random")
                 .setTimestamp();
             await interaction.followUp({ embeds: [spinningEmbed] });

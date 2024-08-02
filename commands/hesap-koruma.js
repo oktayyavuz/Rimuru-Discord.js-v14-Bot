@@ -24,7 +24,7 @@ module.exports = {
     },
     {
       name: "kanal",
-      description: "Açıklaması Değiştirilecek Kanalı Ayarlarsın!",
+      description: "logların düşeceği kanal!",
       type: 7,
       required: true
     }
@@ -35,8 +35,6 @@ module.exports = {
     if (!interaction.member.permissions.has("MANAGE_ROLES")) return interaction.reply({ content: "❌ | Rolleri Yönet Yetkin Yok!", ephemeral: true });
 
     const kanal4 = options.getChannel("kanal");
-    db.set(`hesapkoruma1_${interaction.guild.id}`, { channel: kanal4.id });
-
     const hesapkorumaSystemTrue = options.getString("seçenek");
     const hesapkorumaSystem = db.fetch(`hesapkoruma_${interaction.guild.id}`);
 
@@ -51,6 +49,7 @@ module.exports = {
 
         db.set(`hesapkoruma_${interaction.guild.id}`, true);
         db.set(`hesapkorumaDate_${interaction.guild.id}`, { date: Date.now() });
+        db.set(`hesapkoruma1_${interaction.guild.id}`, { channel: kanal4.id });
         return interaction.reply({ content: "✅ | Başarılı bir şekilde sistem açıldı!" });
       }
 
@@ -59,6 +58,7 @@ module.exports = {
 
         db.delete(`hesapkoruma_${interaction.guild.id}`);
         db.delete(`hesapkorumaDate_${interaction.guild.id}`);
+        db.delete(`hesapkoruma1_${interaction.guild.id}`);
         return interaction.reply({ content: "✅ | Başarılı bir şekilde sistem kapatıldı!" });
       }
     }

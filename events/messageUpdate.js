@@ -5,16 +5,17 @@ module.exports = {
   name: Events.MessageUpdate,
 
   run: async (client, oldMsg, newMsg) => {
-    // Sunucunun mod log kanalının ayarlı olup olmadığını kontrol et
+    if (!oldMsg.guild) {
+      return;
+    }
+
     const kanalId = db.fetch(`modlogK_${oldMsg.guild.id}`);
     if (!kanalId) {
-      console.log("Modlog kanalı ayarlı değil.");
       return;
     }
 
     const kanal = client.channels.cache.get(kanalId);
     if (!kanal) {
-      console.log("Modlog kanalı bulunamadı.");
       return;
     }
 

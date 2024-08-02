@@ -65,25 +65,41 @@ module.exports = {
             ödül,
             kazananSayisi,
             katilimcilar: [],
-            bitis: bitişZamanı
+            bitis: bitişZamanı,
+            kanal: msg.channel.id,
+            mesaj: msg.id
         });
 
-        const filter = i => i.customId === 'katil';
+        const filter = i => i.customId === 'katil' && i.message.id === msg.id;
         const collector = msg.createMessageComponentCollector({ filter, time: süreMs });
 
         collector.on('collect', async i => {
             if (i.customId === 'katil') {
                 const çekilişData = db.get(`çekiliş_${msg.id}`);
-                çekilişData.katilimcilar.push(i.user.id);
-                db.set(`çekiliş_${msg.id}`, çekilişData);
-                await i.reply({ content: "Çekilişe katıldınız! 🎉", ephemeral: true });
+                if (!çekilişData.katilimcilar.includes(i.user.id)) {
+                    çekilişData.katilimcilar.push(i.user.id);
+                    db.set(`çekiliş_${msg.id}`, çekilişData);
+                    await i.reply({ content: "Çekilişe katıldınız! 🎉", ephemeral: true });
+                } else {
+                    await i.reply({ content: "Zaten çekilişe katıldınız! 🎉", ephemeral: true });
+                }
             }
         });
 
         collector.on('end', async () => {
             const çekilişData = db.get(`çekiliş_${msg.id}`);
-            await cekilisYap(new Set(çekilişData.katilimcilar), çekilişData.kazananSayisi, çekilişData.ödül, interaction, serverIcon);
+            if (çekilişData) {
+                await cekilisYap(new Set(çekilişData.katilimcilar), çekilişData.kazananSayisi, çekilişData.ödül, interaction, serverIcon);
+            }
         });
+
+        // Çekilişi süresi dolunca otomatik bitir
+        setTimeout(async () => {
+            const çekilişData = db.get(`çekiliş_${msg.id}`);
+            if (çekilişData) {
+                await cekilisYap(new Set(çekilişData.katilimcilar), çekilişData.kazananSayisi, çekilişData.ödül, interaction, serverIcon);
+            }
+        }, süreMs);
     }
 };
 

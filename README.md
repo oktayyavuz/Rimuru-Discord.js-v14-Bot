@@ -7,61 +7,39 @@
 </p>
  
 
-Genel Discord Botu
+Genel Discord Botu 
+
+[Click here for the English version of this README](READMEENG.md)
+
 
 # Yapılan Değişiklikler: 
-   * doğruluk cesaretlik, 
-   * çekiliş, 
-   * emoji kopyalama veya toplu emoji çekme, 
-   * random anime, random manga, 
-   * bazı bugların fixlenmesi ve kritik hata çözümleri
+
+   * Öneri alma sistemi
+   * Sunucu Banner
+   * Snipe (Kanalda son silinen mesajı gösterme)
+   * Buton Rol
+   * Özel Oda sistemi
 
 ## İçerik tablosu
 
 * [Gereksinimler](#gereksinimler)
 * [Başlarken](#başlarken)
 * [Yazar](#yazar)
+* [Kurulum](#kurulum)
 
 
 
 ## Gereksinimler
 
-- [Node](https://nodejs.org/en/) - Sürüm 16 veya üzeri
-- [NPM](https://www.npmjs.com/)
+- [Node](https://nodejs.org/en/) 
 
 ## Başlarken
 
 Öncelikle yerel makinenizde gerekli tüm araçların kurulu olduğundan emin olun ve ardından bu adımlara devam edin.
 
-### Kurulum
+## Kurulum
 
-* [Glitch Kurulum](#glitch)
 * [Vds Kurulum](#vds)
-
-
-
-## Glitch
-
-
-``` bash
-
-# Glitch'e gir.
-# Yeni bir proje oluşturun.
-# Projenizi açın.
-# Projenin alt tarafında bulunan "Tools" butonuna tıklayın.
-# "Import/Export" seçeneğini seçin.
-# "Import from GitHub" seçeneğini seçin.
-# "https://github.com/RimuruBot/Rimuru-Discord.js-v14-Bot.git" adresini girin.
-# "Import" butonuna tıklayın.
-# `index.js` dosyasına gidin.
-# `config.token` değerini 'process.env.token' değişkenini değiştirin.
-# .env dosyasına gidin.
-# `token` değerini botunuzun tokeni ile değiştirin.
-
-
-
-```
-
 
 ## Vds
 ``` bash
@@ -98,8 +76,16 @@ Projeyi klonladıktan ve tüm bağımlılıkları yükledikten sonra Discord API
 ```bash
 node index.js
 ```
+veya 
 
+```bash
+npm run start
+```
+veya 
 
+```bash
+# start.bat dosyasını çalıştırın.
+```
 ## Yazar
 
 [Oktay Yavuz](https://oktaydev.com.tr/)
