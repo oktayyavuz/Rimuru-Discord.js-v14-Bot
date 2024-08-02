@@ -1,4 +1,4 @@
-# Rimuru Discord.js v14 Bot v2.9
+# Rimuru Discord.js v14 Bot v3.0
 
 <p align="center">
   <a href="https://api.weblutions.com/discord/invite/dvCKjxHn35">
