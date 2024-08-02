@@ -1,4 +1,4 @@
-```markdown
+
 # Rimuru Discord.js v14 Bot v3.0
 
 <p align="center">
@@ -91,4 +91,3 @@ or
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
-```
