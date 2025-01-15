@@ -1,0 +1,16 @@
+{
+    "token": "TOKENİNİZİ GİRİN",
+	"log":"LOG KANALI IDSİ GİRİN",
+    "sahip":"SAHİP ID GİRİN",
+    "giris-cikis":"BOTUN EKLENİP ÇIKARILDIĞI KANALLARIN LOGUNU TUTACAPI KANAL ID",
+    "desteksunucusu":"https://discord.gg/dvCKjxHn35",
+    "bot-davet":"https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands",
+    "bot-adi":"Rimuru",
+    "bot-id":"BOTUN IDSİ",
+    "website":"https://oktaydev.com.tr",
+    "durum":"HENTAİ",
+    "prefix":"!",
+    "mesajXp": 1,
+    "sesXp":2,
+    "levelXp": 99
+}
