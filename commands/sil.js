@@ -40,7 +40,7 @@ module.exports = {
             const embed = new EmbedBuilder()
                 .setColor("Random")
                 .setDescription(`✅ | Başarıyla ${deletedMessages.size} mesajı sildim.`)
-                .setImage("https://i.hizliresim.com/t7sp6n3.gif");
+                .setImage("https://i.imgur.com/hqtMMmM.gif");
             
             interaction.reply({ embeds: [embed] });
         } catch (error) {

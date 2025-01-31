@@ -101,7 +101,7 @@ module.exports = {
             .setColor("Green")
             .setTitle("✅ | Başarıyla Ayarlandı!")
             .setDescription("✅ | Botlist sistemi başarıyla ayarlandı!")
-            .setImage("https://i.hizliresim.com/8a09g00.gif")
+            .setImage("https://i.imgur.com/Yfz9IQA.gif")
             .setFooter({ text: `${config["bot-adi"]}` });
 
         const menu = new Discord.EmbedBuilder()

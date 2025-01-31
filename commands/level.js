@@ -25,7 +25,7 @@ module.exports = {
       .setTitle(`${targetUser.username} kullanıcısının Seviyesi`)
       .setDescription(`Seviye: **${level}**\nXP: **${xp}**`)
       .setThumbnail(targetUser.displayAvatarURL({ dynamic: true }))
-      .setImage("https://i.hizliresim.com/t7sp6n3.gif")
+      .setImage("https://i.imgur.com/hqtMMmM.gif")
       .setTimestamp()
       .setFooter({ text: `${guild.name}`, iconURL: guild.iconURL() });
 

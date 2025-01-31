@@ -58,7 +58,7 @@ module.exports = {
         const embed = new EmbedBuilder()
           .setTitle(`${config["bot-adi"]} - Buton Rol Al Sistemi!`)
           .setDescription(yazı)
-          .setImage("https://i.hizliresim.com/8a09g00.gif")
+          .setImage("https://i.imgur.com/Yfz9IQA.gif")
           .setColor("#ff0000");
 
         const rows = [];

@@ -16,7 +16,7 @@ module.exports = {
     .setTitle("・Hangi komutlarım hakkında bilgi almak istiyorsan o butona bas!")
     .setDescription("\n\n**Linkler**\n> ・**Botun davet linki: [Tıkla](" + config["bot-davet"] + ")**\n> ・**Botun destek sunucusu: [Tıkla](" + config["desteksunucusu"] + ")**")
     .setColor('Blue')
-    .setImage("https://i.hizliresim.com/h5tn98a.gif")
+    .setImage("https://i.imgur.com/RiZM8TO.gif")
     const row1 = new Discord.ActionRowBuilder()
 
     .addComponents(

@@ -27,7 +27,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setColor("#ff0000")
         .setTitle(`${config["bot-adi"]} - Ban List`)
-        .setImage("https://i.hizliresim.com/5a4q2rc.gif");
+        .setImage("https://imgur.com/R7aK39t.gif");
 
       if (content.length > 0) {
         embed.setDescription(`${content.slice(page * pageSize, (page + 1) * pageSize).join(", ")}`);
@@ -72,7 +72,7 @@ module.exports = {
         const newEmbed = new EmbedBuilder()
           .setColor("#ff0000")
           .setTitle(`${config["bot-adi"]} - Ban List`)
-          .setImage("https://i.hizliresim.com/5a4q2rc.gif");
+          .setImage("https://i.imgur.com/R7aK39tçgif");
 
         if (content.length > 0) {
           newEmbed.setDescription(`${content.slice(page * pageSize, (page + 1) * pageSize).join(", ")}`);

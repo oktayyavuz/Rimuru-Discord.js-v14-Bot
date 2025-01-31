@@ -28,7 +28,7 @@ module.exports = {
       const startEmbed = new EmbedBuilder()
         .setTitle('Emoji Çekme Başladı')
         .setDescription(`"${sourceServer.name}" sunucusundan emojiler çekiliyor...`)
-        .setImage("https://i.hizliresim.com/t7avr37.gif")
+        .setImage("https://i.imgur.com/9cm08AA.gif")
         .setColor('Yellow');
 
       initialMessage = await interaction.reply({ embeds: [startEmbed], fetchReply: true });
@@ -61,7 +61,7 @@ module.exports = {
       const completeEmbed = new EmbedBuilder()
         .setTitle('Emoji Çekme Tamamlandı')
         .setDescription(`Başarıyla "${sourceServer.name}" sunucusundan emojiler çekildi ve bu sunucuya eklendi!`)
-        .setImage("https://i.hizliresim.com/t7avr37.gif")
+        .setImage("https://i.imgur.com/9cm08AA.gif")
         .setColor('Green')
         .setFooter({
           text: `Kullanıldığı zaman: ${new Date().toLocaleString()}`,

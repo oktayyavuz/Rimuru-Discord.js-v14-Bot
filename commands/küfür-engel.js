@@ -56,7 +56,7 @@ module.exports = {
             { name: "Sunucu", value: guild.name, inline: true },
             { name: "Açılma Zamanı", value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: true }
           )
-          .setImage("https://i.hizliresim.com/4142ql1.gif")
+          .setImage("https://i.imgur.com/l3lksSb.gif")
 
         return interaction.reply({ embeds: [embed] });
       }
@@ -77,7 +77,7 @@ module.exports = {
             { name: "Sunucu", value: guild.name, inline: true },
             { name: "Kapatılma Zamanı", value: `<t:${Math.floor(Date.now() / 1000)}:F>`, inline: true }
           )
-          .setImage("https://i.hizliresim.com/4142ql1.gif")
+          .setImage("https://i.imgur.com/l3lksSb.gif")
 
         return interaction.reply({ embeds: [embed] });
       }

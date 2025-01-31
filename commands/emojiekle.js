@@ -41,7 +41,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setTitle('Emoji Ekleme Başarılı')
         .setDescription(`Başarıyla "${addedEmoji}" emojisi oluşturuldu!`)
-        .setImage("https://i.hizliresim.com/od0qefy.gif")
+        .setImage("https://i.imgur.com/o45c0gS.gif")
         .setColor('Green')
         .setFooter({
           text: `Kullanıldığı zaman: ${new Date().toLocaleString()}`,

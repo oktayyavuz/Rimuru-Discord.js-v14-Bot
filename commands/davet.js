@@ -26,7 +26,7 @@ module.exports = {
       .setAuthor({ name: `Merhaba, Ben ${config["bot-adi"]}!`, iconURL: interaction.client.user.displayAvatarURL({ dynamic: true })})
       .setTitle(`${config["bot-adi"]}'yu Davet Et!`)
       .setDescription(`🤖 | Botu çağırdığın için teşekkür ederim 😇`)
-      .setImage("https://i.hizliresim.com/lpcfmca.gif")
+      .setImage("https://i.imgur.com/NFAwpC6.gif")
       .setColor('#2F3136')
       .setTimestamp()
       .setFooter({ text: `${interaction.user.tag} İstedi.`, iconURL: interaction.user.displayAvatarURL({ dynamic: true }) });

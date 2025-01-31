@@ -1,13 +1,27 @@
 const Discord = require("discord.js");
 const db = require("croxydb");
 const moment = require("moment");
+const rp = require("../helpers/rcapchta");
 const config = require("../config.json"); 
 
 module.exports = {
     name: "guildMemberAdd",
 
     run: async (client, member) => {
-        
+        const etiketKanalID = db.get(`etiket_kanal_${member.guild.id}`);
+        if (etiketKanalID) {
+          const kanal = member.guild.channels.cache.get(etiketKanalID);
+          if (!kanal) {
+            console.error("Etiket kanalı bulunamadı!");
+            return;
+          }
+          const mesaj = await kanal.send(`${member.user}`);
+          setTimeout(() => {
+            mesaj.delete().catch((error) => {
+              console.error("Mesaj silinirken hata oluştu:", error);
+            });
+          }, 1000); 
+        }
         const hgbb = db.fetch(`hgbb_${member.guild.id}`);
         const sayacmessage = db.fetch(`sayacmessage_${member.guild.id}`);
         if (hgbb) {
@@ -33,7 +47,7 @@ module.exports = {
                 .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 256 }))
                 .setURL(`${config["website"]}`)
                 .setDescription(`:inbox_tray: | ${member} Sunucumuza Katıldı! \n Sunucumuz **${member.guild.memberCount}** kişi oldu!`)
-                .setImage('https://i.hizliresim.com/fp8i1ot.jpeg')
+                .setImage('https://i.imgur.com/wfGBUch.jpeg')
                 .setTimestamp();
                 try {
                     channel.send({ embeds: [normalmeesage] });

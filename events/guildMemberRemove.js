@@ -30,7 +30,7 @@ module.exports = {
                         .setThumbnail(member.user.displayAvatarURL({ dynamic: true, size: 256 }))
                         .setURL(`${config["website"]}`)
                         .setDescription(`📤 | ${member} Sunucudan ayrıldı.\n Sunucumuz **${member.guild.memberCount}** kişi kaldı!`)
-                        .setImage('https://i.hizliresim.com/fp8i1ot.jpeg')
+                        .setImage('https://i.imgur.com/wfGBUch.jpeg')
                         .setTimestamp();
                     try {
                         kanal.send({ embeds: [normalmesaj] });

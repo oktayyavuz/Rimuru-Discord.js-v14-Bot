@@ -32,7 +32,7 @@ module.exports = {
       const response = await axios.get(avatarURL, { responseType: 'arraybuffer' });
       const avatarBuffer = Buffer.from(response.data, 'binary');
 
-      const backgroundUrl = 'https://i.hizliresim.com/2tj1nu4.jpg'; 
+      const backgroundUrl = 'https://i.imgur.com/ahLvKvk.jpeg'; 
       const backgroundResponse = await axios.get(backgroundUrl, { responseType: 'arraybuffer' });
       const backgroundBuffer = Buffer.from(backgroundResponse.data, 'binary');
 

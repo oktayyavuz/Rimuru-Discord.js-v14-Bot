@@ -47,7 +47,7 @@ module.exports = {
             .setTitle("🎉 Çekiliş Başladı! 🎉")
             .setDescription(`Ödül: **${ödül}**\nSüre: **<t:${Math.floor(bitişZamanı / 1000)}:R>**\nKazancak üye sayısı: ${kazananSayisi}\nKatılmak için aşağıdaki 🎉 butonuna tıklayın!`)
             .setColor("Random")
-            .setImage("https://i.hizliresim.com/d7vr6rv.gif")
+            .setImage("https://i.imgur.com/4rixXcp.gif")
             .setTimestamp()
             .setThumbnail(serverIcon);
 
@@ -115,7 +115,7 @@ async function cekilisYap(katilimcilar, kazananSayisi, ödül, interaction, serv
         .setTitle("🎉 Çekiliş Sona Erdi! 🎉")
         .setDescription(`Ödül: **${ödül}**\nKazananlar: ${kazananListesi}\nTebrikler!`)
         .setColor("Random")
-        .setImage("https://i.hizliresim.com/mv9iwzl.gif")
+        .setImage("https://i.imgur.com/CclI9Kp.gif")
         .setTimestamp()
         .setThumbnail(serverIcon);
 
@@ -128,7 +128,7 @@ async function cekilisYap(katilimcilar, kazananSayisi, ödül, interaction, serv
                 .setTitle("🎉 Tebrikler! 🎉")
                 .setDescription(`Kazandığınız ödül: **${ödül}**\nSunucu: **${interaction.guild.name}**`)
                 .setColor("Random")
-                .setImage("https://i.hizliresim.com/mv9iwzl.gif")
+                .setImage("https://i.imgur.com/CclI9Kp.gif")
                 .setTimestamp()
                 .setThumbnail(serverIcon);
 

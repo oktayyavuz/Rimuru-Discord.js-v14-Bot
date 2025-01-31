@@ -36,7 +36,7 @@ module.exports = {
     const embed = new EmbedBuilder()
       .setColor("Random")
       .setDescription(`✅ | Hoşgeldin kanalı <#${kanal2.id}> Görüşürüz kanalı <#${kanal3.id}> olarak ayarlandı!`)
-      .setImage("https://i.hizliresim.com/41b2xmi.gif")
+      .setImage("https://i.imgur.com/43jv10x.gif")
 
     interaction.reply({ embeds: [embed] });
   },

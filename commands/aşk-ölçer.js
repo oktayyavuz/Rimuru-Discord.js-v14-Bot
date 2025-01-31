@@ -50,7 +50,7 @@ module.exports = {
       .setTitle("Aşk Ölçer")
       .setDescription(`**${user1.username}** ile **${user2.username}** arasındaki aşk oranı: **${lovePercentage}%** ${loveEmoji}\n\n${loveLevel} Seviye Aşk!`)
       .setColor(loveColor)
-      .setImage("https://i.hizliresim.com/buqtroe.gif")
+      .setImage("https://i.imgur.com/Cv8vw2J.gif")
       .setFooter({ text: `Komutu kullanan: ${interaction.user.tag}`, iconURL: interaction.user.displayAvatarURL() }); 
 
     await interaction.reply({ embeds: [embed] });

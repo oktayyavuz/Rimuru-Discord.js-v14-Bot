@@ -15,7 +15,7 @@ module.exports = {
       .setTitle(`${config["bot-adi"]} - Özel Komut Sistemi!`)
       .setDescription("Aşağıdaki seçim menüsünü kullanarak özel komutlarını yönet.")
       .setColor("#ff0000")
-      .setImage("https://i.hizliresim.com/orosrif.gif")
+      .setImage("https://i.imgur.com/eINVOb7.gif")
 
 
     const row = new ActionRowBuilder()

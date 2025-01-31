@@ -46,7 +46,7 @@ module.exports = {
         const embed = new EmbedBuilder()
           .setColor("Random")
           .setDescription("✅ | Başarılı bir şekilde sistem açıldı!")
-          .setImage("https://i.hizliresim.com/gkrz199.gif")
+          .setImage("https://i.imgur.com/a2gudYY.gif")
         return interaction.reply({ embeds: [embed] });
       }
 

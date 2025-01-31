@@ -25,7 +25,7 @@ module.exports = {
     const permissionsMemberCount = interaction.guild.members.cache.filter(member => member.permissions.has(PermissionsBitField.Flags.Administrator)).size;
 
 
-    const iconURL = interaction.guild.iconURL({ dynamic: true }) || 'https://i.hizliresim.com/n5271mq.jpg';
+    const iconURL = interaction.guild.iconURL({ dynamic: true }) || 'https://i.imgur.com/idyWQkD.jpeg';
 
     const embed = new EmbedBuilder()
       .setTitle(`${config["bot-adi"]} Bot`)
