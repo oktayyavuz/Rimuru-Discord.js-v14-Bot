@@ -3,23 +3,23 @@ const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 module.exports = {
     createButton(interaction, options) {
         const { user } = interaction;
- 
+
         const id = options.id;
         const id_name = options.id_name;
         const label = options.label;
         const button_style = options.style;
 
-        if(id.includes("_")) {
+        if (id.includes("_")) {
             throw new TypeError("Geçersiz ID. '_' olmadan kullanın.")
         }
 
-        if(id_name.includes("_")) {
+        if (id_name.includes("_")) {
             throw new TypeError("Geçersiz ID Name. '_' olmadan kullanın.")
         }
 
-        const { emoji } = options;
+        let { emoji } = options;
 
-        if(!emoji) {
+        if (!emoji) {
             emoji = null
         }
 
@@ -32,9 +32,9 @@ module.exports = {
     deleteMessageButton(interaction, options) {
         const { user } = interaction;
 
-        const { label, style, emoji } = options;
+        let { label, style, emoji } = options;
 
-        if(!emoji) {
+        if (!emoji) {
             emoji = null
         }
 

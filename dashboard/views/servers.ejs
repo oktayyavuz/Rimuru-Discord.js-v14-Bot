@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunucular - Rimuru Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.imgur.com/8hKOYAX.png" alt="Rimuru Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+                Rimuru Bot
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i> Panel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/servers">
+                            <i class="fas fa-server me-1"></i> Sunucular
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/commands">
+                            <i class="fas fa-terminal me-1"></i> Komutlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stats">
+                            <i class="fas fa-chart-bar me-1"></i> İstatistikler
+                        </a>
+                    </li>
+                    <% if (isAdmin) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/settings">
+                            <i class="fas fa-cogs me-1"></i> Ayarlar
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <% if (user.avatar) { %>
+                                <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" class="rounded-circle me-1" width="24" height="24">
+                            <% } else { %>
+                                <i class="fas fa-user-circle me-1"></i>
+                            <% } %>
+                            <%= user.username || user.id %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/"><i class="fas fa-home me-2"></i>Ana Sayfa</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sol Sidebar -->
+            <div class="col-md-2 col-lg-2 d-none d-md-block">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/dashboard/servers">
+                                <i class="fas fa-server"></i> Sunucular
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">
+                                <i class="fas fa-terminal"></i> Komutlar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/stats">
+                                <i class="fas fa-chart-bar"></i> İstatistikler
+                            </a>
+                        </li>
+                        <% if (isAdmin) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/settings">
+                                <i class="fas fa-cogs"></i> Ayarlar
+                            </a>
+                        </li>
+                        <% } %>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="https://discord.gg/dvCKjxHn35" target="_blank">
+                                <i class="fab fa-discord"></i> Destek Sunucusu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands" target="_blank">
+                                <i class="fas fa-plus-circle"></i> Botu Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ana İçerik -->
+            <div class="col-md-10 col-lg-10">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h1><i class="fas fa-server me-2"></i>Sunucularınız</h1>
+                        <p class="lead">Botun eklendiği ve yönetici olduğunuz sunucular listesi</p>
+                    </div>
+                </div>
+
+                <!-- Filtreler -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                                    <div class="mb-2 mb-md-0">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-outline-primary active" id="show-all">Tümünü Göster</button>
+                                            <button type="button" class="btn btn-outline-primary" id="show-bot">Bot Olanlar</button>
+                                            <button type="button" class="btn btn-outline-primary" id="show-no-bot">Bot Olmayanlar</button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <input type="text" class="form-control me-2" id="search-server" placeholder="Sunucu ara...">
+                                        <button class="btn btn-primary" id="search-button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunucu Listesi -->
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4" id="server-list">
+                    <% if (guilds && guilds.length > 0) { %>
+                        <% guilds.forEach(guild => { %>
+                            <div class="col server-item" data-has-bot="<%= guild.botInGuild %>">
+                                <div class="card h-100">
+                                    <div class="card-body text-center">
+                                        <% if (guild.icon) { %>
+                                            <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" class="rounded-circle mb-3" width="80" height="80">
+                                        <% } else { %>
+                                            <div class="avatar-placeholder mb-3">
+                                                <%= guild.name.charAt(0) %>
+                                            </div>
+                                        <% } %>
+                                        <h5 class="card-title"><%= guild.name %></h5>
+                                        <p class="card-text small text-muted">
+                                            <i class="fas fa-id-card me-1"></i> <%= guild.id %>
+                                        </p>
+                                        <% if (guild.botInGuild) { %>
+                                            <span class="badge bg-success mb-3">
+                                                <i class="fas fa-check-circle me-1"></i> Bot Aktif
+                                            </span>
+                                        <% } else { %>
+                                            <span class="badge bg-secondary mb-3">
+                                                <i class="fas fa-times-circle me-1"></i> Bot Yok
+                                            </span>
+                                        <% } %>
+                                        <div class="d-grid gap-2">
+                                            <% if (guild.botInGuild) { %>
+                                                <a href="/dashboard/server/<%= guild.id %>" class="btn btn-primary">
+                                                    <i class="fas fa-cog me-1"></i> Yönet
+                                                </a>
+                                            <% } else { %>
+                                                <a href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands&guild_id=<%= guild.id %>" target="_blank" class="btn btn-outline-primary">
+                                                    <i class="fas fa-plus-circle me-1"></i> Botu Ekle
+                                                </a>
+                                            <% } %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="col-md-12">
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle me-2"></i> Yönetebileceğiniz sunucu bulunamadı. Botun ekli olduğu ve sizin yönetici olduğunuz sunucular burada görünecektir.
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+
+                <!-- Boş Sunucu Listesi (Arama sonucu boş ise gösterilir) -->
+                <div class="row mt-4 d-none" id="no-results">
+                    <div class="col-md-12">
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i> Aramanızla eşleşen sunucu bulunamadı.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtre butonları
+            const showAllBtn = document.getElementById('show-all');
+            const showBotBtn = document.getElementById('show-bot');
+            const showNoBotBtn = document.getElementById('show-no-bot');
+            const searchInput = document.getElementById('search-server');
+            const searchBtn = document.getElementById('search-button');
+            const serverItems = document.querySelectorAll('.server-item');
+            const noResults = document.getElementById('no-results');
+            
+            // Tümünü göster
+            showAllBtn.addEventListener('click', function() {
+                this.classList.add('active');
+                showBotBtn.classList.remove('active');
+                showNoBotBtn.classList.remove('active');
+                
+                serverItems.forEach(item => {
+                    item.classList.remove('d-none');
+                });
+                
+                filterBySearchTerm();
+            });
+            
+            // Botu olanları göster
+            showBotBtn.addEventListener('click', function() {
+                this.classList.add('active');
+                showAllBtn.classList.remove('active');
+                showNoBotBtn.classList.remove('active');
+                
+                serverItems.forEach(item => {
+                    if (item.getAttribute('data-has-bot') === 'true') {
+                        item.classList.remove('d-none');
+                    } else {
+                        item.classList.add('d-none');
+                    }
+                });
+                
+                filterBySearchTerm();
+            });
+            
+            // Botu olmayanları göster
+            showNoBotBtn.addEventListener('click', function() {
+                this.classList.add('active');
+                showAllBtn.classList.remove('active');
+                showBotBtn.classList.remove('active');
+                
+                serverItems.forEach(item => {
+                    if (item.getAttribute('data-has-bot') === 'false') {
+                        item.classList.remove('d-none');
+                    } else {
+                        item.classList.add('d-none');
+                    }
+                });
+                
+                filterBySearchTerm();
+            });
+            
+            // Arama işlemi
+            function filterBySearchTerm() {
+                const searchTerm = searchInput.value.toLowerCase();
+                let visibleCount = 0;
+                
+                serverItems.forEach(item => {
+                    if (!item.classList.contains('d-none')) {
+                        const serverName = item.querySelector('.card-title').textContent.toLowerCase();
+                        const serverId = item.querySelector('.card-text').textContent.toLowerCase();
+                        
+                        if (serverName.includes(searchTerm) || serverId.includes(searchTerm)) {
+                            item.classList.remove('d-none');
+                            visibleCount++;
+                        } else {
+                            item.classList.add('d-none');
+                        }
+                    }
+                });
+                
+                // Sonuç yoksa mesaj göster
+                if (visibleCount === 0) {
+                    noResults.classList.remove('d-none');
+                } else {
+                    noResults.classList.add('d-none');
+                }
+            }
+            
+            searchBtn.addEventListener('click', filterBySearchTerm);
+            searchInput.addEventListener('keyup', function(e) {
+                if (e.key === 'Enter') {
+                    filterBySearchTerm();
+                }
+            });
+            
+            // Sunucu bulunamazsa avatarları için yer tutucu stilini ekle
+            document.querySelectorAll('.avatar-placeholder').forEach(placeholder => {
+                placeholder.style.width = '80px';
+                placeholder.style.height = '80px';
+                placeholder.style.borderRadius = '50%';
+                placeholder.style.backgroundColor = 'var(--accent-color)';
+                placeholder.style.color = 'white';
+                placeholder.style.display = 'flex';
+                placeholder.style.alignItems = 'center';
+                placeholder.style.justifyContent = 'center';
+                placeholder.style.fontSize = '2rem';
+                placeholder.style.margin = '0 auto';
+            });
+        });
+    </script>
+</body>
+</html> 

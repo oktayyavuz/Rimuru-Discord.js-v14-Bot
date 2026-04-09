@@ -101,33 +101,3 @@ module.exports = {
   }
 };
 
-client.on('interactionCreate', async buttonInteraction => {
-  if (!buttonInteraction.isButton()) return;
-  const { customId } = buttonInteraction;
-
-  if (customId.startsWith('rol_')) {
-    const rolID = customId.split('_')[1];
-    const rol = buttonInteraction.guild.roles.cache.get(rolID);
-    if (!rol) return;
-
-    const member = buttonInteraction.member;
-    const botRole = buttonInteraction.guild.members.me.roles.highest;
-
-    if (rol.position >= botRole.position) {
-      return buttonInteraction.reply({ content: `❌ | Bot, ${rol.name} rolünü vermek veya almak için yeterli yetkiye sahip değil.`, ephemeral: true });
-    }
-
-    try {
-      if (member.roles.cache.has(rolID)) {
-        await member.roles.remove(rolID);
-        await buttonInteraction.reply({ content: `❌ | ${rol.name} rolü kaldırıldı!`, ephemeral: true });
-      } else {
-        await member.roles.add(rolID);
-        await buttonInteraction.reply({ content: `✅ | ${rol.name} rolü verildi!`, ephemeral: true });
-      }
-    } catch (error) {
-      console.error('Rol verme/alma işlemi sırasında hata:', error);
-      await buttonInteraction.reply({ content: `❌ | Rol işlemi sırasında bir hata oluştu.`, ephemeral: true });
-    }
-  }
-});

@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Özel Komutlar - <%= guild.name %> - Rimuru Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.imgur.com/8hKOYAX.png" alt="Rimuru Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+                Rimuru Bot
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i> Panel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/servers">
+                            <i class="fas fa-server me-1"></i> Sunucular
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/commands">
+                            <i class="fas fa-terminal me-1"></i> Komutlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stats">
+                            <i class="fas fa-chart-bar me-1"></i> İstatistikler
+                        </a>
+                    </li>
+                    <% if (isAdmin) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/settings">
+                            <i class="fas fa-cogs me-1"></i> Ayarlar
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <% if (user.avatar) { %>
+                                <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" class="rounded-circle me-1" width="24" height="24">
+                            <% } else { %>
+                                <i class="fas fa-user-circle me-1"></i>
+                            <% } %>
+                            <%= user.username || user.id %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/"><i class="fas fa-home me-2"></i>Ana Sayfa</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sol Sidebar -->
+            <div class="col-md-2 col-lg-2 d-none d-md-block">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/dashboard/servers">
+                                <i class="fas fa-server"></i> Sunucular
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">
+                                <i class="fas fa-terminal"></i> Komutlar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/stats">
+                                <i class="fas fa-chart-bar"></i> İstatistikler
+                            </a>
+                        </li>
+                        <% if (isAdmin) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/settings">
+                                <i class="fas fa-cogs"></i> Ayarlar
+                            </a>
+                        </li>
+                        <% } %>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="https://discord.gg/dvCKjxHn35" target="_blank">
+                                <i class="fab fa-discord"></i> Destek Sunucusu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands" target="_blank">
+                                <i class="fas fa-plus-circle"></i> Botu Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ana İçerik -->
+            <div class="col-md-10 col-lg-10">
+                <!-- Üst Gezinme Menüsü ve Başlık -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/dashboard">Panel</a></li>
+                                <li class="breadcrumb-item"><a href="/dashboard/servers">Sunucular</a></li>
+                                <li class="breadcrumb-item"><a href="/dashboard/server/<%= guild.id %>"><%= guild.name %></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Özel Komutlar</li>
+                            </ol>
+                        </nav>
+                        <h1 class="mb-0">
+                            <% if (guild.icon) { %>
+                                <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" class="rounded-circle me-2" width="45" height="45">
+                            <% } %>
+                            <%= guild.name %> - Özel Komutlar
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Özel Komutlar Listesi -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-terminal me-2"></i>Özel Komutlar</h5>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCommandModal">
+                                    <i class="fas fa-plus me-1"></i> Yeni Komut Ekle
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <% if (customCommands && customCommands.length > 0) { %>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Komut/Tetikleyici</th>
+                                                    <th>Yanıt</th>
+                                                    <th>Tip</th>
+                                                    <th width="120">İşlemler</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% customCommands.forEach(command => { %>
+                                                    <tr data-command-name="<%= command.name %>">
+                                                        <td><code><%= command.name %></code></td>
+                                                        <td>
+                                                            <div style="max-width: 300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                <%= command.response %>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <% if (command.isRegex) { %>
+                                                                <span class="badge bg-info">Regex</span>
+                                                            <% } else { %>
+                                                                <span class="badge bg-primary">Normal</span>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-primary edit-command" 
+                                                                    data-command-name="<%= command.name %>" 
+                                                                    data-command-response="<%= command.response %>"
+                                                                    data-command-regex="<%= command.isRegex %>">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                            <button class="btn btn-sm btn-danger delete-command"
+                                                                    data-command-name="<%= command.name %>">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i> Bu sunucu için tanımlanmış özel komut bulunmuyor. "Yeni Komut Ekle" butonuna tıklayarak özel komut ekleyebilirsiniz.
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bilgi Kartı -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Özel Komutlar Hakkında Bilgi</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Özel komutlar, sunucunuz için benzersiz yanıtlar oluşturmanıza olanak tanır. İki tür özel komut oluşturabilirsiniz:</p>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-6">
+                                        <div class="card card-body mb-3">
+                                            <h5><i class="fas fa-comment me-2 text-primary"></i>Normal Komutlar</h5>
+                                            <p>Kullanıcı tam olarak belirttiğiniz metni yazdığında bot yanıt verir.</p>
+                                            <p><strong>Örnek:</strong> Komut olarak "merhaba" eklerseniz, kullanıcı "merhaba" yazdığında bot yanıt verir.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card card-body mb-3">
+                                            <h5><i class="fas fa-code me-2 text-primary"></i>Regex Komutlar</h5>
+                                            <p>Düzenli ifadeler (regex) kullanarak daha gelişmiş eşleştirmeler yapabilirsiniz.</p>
+                                            <p><strong>Örnek:</strong> <code>selam.*nasılsın</code> deseni "selam, nasılsın" veya "selam arkadaşlar nasılsın" gibi metinlerle eşleşir.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-warning">
+                                    <i class="fas fa-exclamation-triangle me-2"></i> <strong>Not:</strong> Özel komutlar, bot prefixiyle veya prefixsiz çalışabilir. Örneğin, "merhaba" komutu hem doğrudan "merhaba" yazıldığında hem de "!merhaba" yazıldığında çalışacaktır.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Komut Ekleme Modal -->
+    <div class="modal fade" id="addCommandModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Özel Komut Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCommandForm">
+                        <div class="mb-3">
+                            <label for="commandNameInput" class="form-label">Komut/Tetikleyici</label>
+                            <input type="text" class="form-control" id="commandNameInput" required>
+                            <div class="form-text">Botun yanıt vereceği mesaj içeriğini yazın.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="commandResponseInput" class="form-label">Yanıt</label>
+                            <textarea class="form-control" id="commandResponseInput" rows="4" required></textarea>
+                            <div class="form-text">Botun göndereceği yanıt mesajını yazın.</div>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="isRegexInput">
+                            <label class="form-check-label" for="isRegexInput">Regex (Düzenli İfade) Kullan</label>
+                            <div class="form-text">Gelişmiş metin eşleştirme için regex kullanabilirsiniz.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Komut Düzenleme Modal -->
+    <div class="modal fade" id="editCommandModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Özel Komut Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCommandForm">
+                        <input type="hidden" id="originalCommandNameInput">
+                        <div class="mb-3">
+                            <label for="editCommandNameInput" class="form-label">Komut/Tetikleyici</label>
+                            <input type="text" class="form-control" id="editCommandNameInput" required>
+                            <div class="form-text">Botun yanıt vereceği mesaj içeriğini yazın.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCommandResponseInput" class="form-label">Yanıt</label>
+                            <textarea class="form-control" id="editCommandResponseInput" rows="4" required></textarea>
+                            <div class="form-text">Botun göndereceği yanıt mesajını yazın.</div>
+                        </div>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="editIsRegexInput">
+                            <label class="form-check-label" for="editIsRegexInput">Regex (Düzenli İfade) Kullan</label>
+                            <div class="form-text">Gelişmiş metin eşleştirme için regex kullanabilirsiniz.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Güncelle</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Komut Ekleme Formu
+            const addCommandForm = document.getElementById('addCommandForm');
+            const addCommandModal = new bootstrap.Modal(document.getElementById('addCommandModal'));
+            
+            addCommandForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('commandNameInput').value;
+                const response = document.getElementById('commandResponseInput').value;
+                const isRegex = document.getElementById('isRegexInput').checked;
+                
+                fetch(`/api/server/<%= guild.id %>/custom-commands`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, response, isRegex })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Özel komut eklendi:', data);
+                    
+                    if (data.success) {
+                        showAlert('Özel komut başarıyla eklendi!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                    } else {
+                        showAlert(data.error || 'Komut eklenirken bir hata oluştu!', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showAlert('Komut eklenirken bir hata oluştu!', 'danger');
+                });
+                
+                // Formu sıfırla ve modalı kapat
+                addCommandForm.reset();
+                addCommandModal.hide();
+            });
+            
+            // Komut Düzenleme
+            const editButtons = document.querySelectorAll('.edit-command');
+            const editCommandForm = document.getElementById('editCommandForm');
+            const editCommandModal = new bootstrap.Modal(document.getElementById('editCommandModal'));
+            
+            editButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const commandName = this.getAttribute('data-command-name');
+                    const commandResponse = this.getAttribute('data-command-response');
+                    const isRegex = this.getAttribute('data-command-regex') === 'true';
+                    
+                    // Form alanlarını doldur
+                    document.getElementById('originalCommandNameInput').value = commandName;
+                    document.getElementById('editCommandNameInput').value = commandName;
+                    document.getElementById('editCommandResponseInput').value = commandResponse;
+                    document.getElementById('editIsRegexInput').checked = isRegex;
+                    
+                    // Modal'ı göster
+                    editCommandModal.show();
+                });
+            });
+            
+            editCommandForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const originalName = document.getElementById('originalCommandNameInput').value;
+                const name = document.getElementById('editCommandNameInput').value;
+                const response = document.getElementById('editCommandResponseInput').value;
+                const isRegex = document.getElementById('editIsRegexInput').checked;
+                
+                // Eğer isim değiştiyse, önce eski komutu sil sonra yenisini ekle
+                if (originalName !== name) {
+                    // Eski komutu sil
+                    fetch(`/api/server/<%= guild.id %>/custom-commands/${originalName}`, {
+                        method: 'DELETE'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Başarıyla silindi, şimdi yeni komutu ekle
+                            addNewCommand(name, response, isRegex);
+                        } else {
+                            showAlert(data.error || 'Komut güncellenirken bir hata oluştu!', 'danger');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Hata:', error);
+                        showAlert('Komut güncellenirken bir hata oluştu!', 'danger');
+                    });
+                } else {
+                    // İsim değişmediyse, doğrudan güncelle
+                    addNewCommand(name, response, isRegex);
+                }
+                
+                // Modal'ı kapat
+                editCommandModal.hide();
+            });
+            
+            // Yeni komut eklemek için fonksiyon
+            function addNewCommand(name, response, isRegex) {
+                fetch(`/api/server/<%= guild.id %>/custom-commands`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, response, isRegex })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showAlert('Özel komut başarıyla güncellendi!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                    } else {
+                        showAlert(data.error || 'Komut güncellenirken bir hata oluştu!', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showAlert('Komut güncellenirken bir hata oluştu!', 'danger');
+                });
+            }
+            
+            // Komut Silme
+            const deleteButtons = document.querySelectorAll('.delete-command');
+            
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const commandName = this.getAttribute('data-command-name');
+                    
+                    if (confirm(`"${commandName}" komutunu silmek istediğinize emin misiniz?`)) {
+                        fetch(`/api/server/<%= guild.id %>/custom-commands/${commandName}`, {
+                            method: 'DELETE'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Özel komut silindi:', data);
+                            
+                            if (data.success) {
+                                // Başarılı olduysa tablodan satırı sil
+                                document.querySelector(`tr[data-command-name="${commandName}"]`).remove();
+                                showAlert('Özel komut başarıyla silindi!', 'success');
+                                
+                                // Eğer tüm komutlar silindiyse, sayfayı yenile
+                                const rows = document.querySelectorAll('tbody tr');
+                                if (rows.length === 0) {
+                                    setTimeout(() => window.location.reload(), 1000);
+                                }
+                            } else {
+                                showAlert(data.error || 'Komut silinirken bir hata oluştu!', 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Hata:', error);
+                            showAlert('Komut silinirken bir hata oluştu!', 'danger');
+                        });
+                    }
+                });
+            });
+            
+            // Alert göster
+            function showAlert(message, type) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show fixed-top mx-auto mt-3`;
+                alertDiv.style.maxWidth = '500px';
+                alertDiv.style.left = '0';
+                alertDiv.style.right = '0';
+                alertDiv.style.zIndex = '9999';
+                
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                document.body.appendChild(alertDiv);
+                
+                // 5 saniye sonra otomatik kapat
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level Sistemi - <%= guild.name %> - Rimuru Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.imgur.com/8hKOYAX.png" alt="Rimuru Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+                Rimuru Bot
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i> Panel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard/servers">
+                            <i class="fas fa-server me-1"></i> Sunucular
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/commands">
+                            <i class="fas fa-terminal me-1"></i> Komutlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stats">
+                            <i class="fas fa-chart-bar me-1"></i> İstatistikler
+                        </a>
+                    </li>
+                    <% if (isAdmin) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/settings">
+                            <i class="fas fa-cogs me-1"></i> Ayarlar
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <% if (user.avatar) { %>
+                                <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" class="rounded-circle me-1" width="24" height="24">
+                            <% } else { %>
+                                <i class="fas fa-user-circle me-1"></i>
+                            <% } %>
+                            <%= user.username || user.id %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/"><i class="fas fa-home me-2"></i>Ana Sayfa</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sol Sidebar -->
+            <div class="col-md-2 col-lg-2 d-none d-md-block">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/dashboard/servers">
+                                <i class="fas fa-server"></i> Sunucular
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">
+                                <i class="fas fa-terminal"></i> Komutlar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/stats">
+                                <i class="fas fa-chart-bar"></i> İstatistikler
+                            </a>
+                        </li>
+                        <% if (isAdmin) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/settings">
+                                <i class="fas fa-cogs"></i> Ayarlar
+                            </a>
+                        </li>
+                        <% } %>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="https://discord.gg/dvCKjxHn35" target="_blank">
+                                <i class="fab fa-discord"></i> Destek Sunucusu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands" target="_blank">
+                                <i class="fas fa-plus-circle"></i> Botu Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ana İçerik -->
+            <div class="col-md-10 col-lg-10">
+                <!-- Üst Gezinme Menüsü ve Başlık -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/dashboard">Panel</a></li>
+                                <li class="breadcrumb-item"><a href="/dashboard/servers">Sunucular</a></li>
+                                <li class="breadcrumb-item"><a href="/dashboard/server/<%= guild.id %>"><%= guild.name %></a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Level Sistemi</li>
+                            </ol>
+                        </nav>
+                        <h1 class="mb-0">
+                            <% if (guild.icon) { %>
+                                <img src="https://cdn.discordapp.com/icons/<%= guild.id %>/<%= guild.icon %>.png" class="rounded-circle me-2" width="45" height="45">
+                            <% } %>
+                            <%= guild.name %> - Level Sistemi
+                        </h1>
+                    </div>
+                </div>
+
+                <!-- Level Sistemi Ayarları Kartı -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Level Sistemi Ayarları</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="levelSettingsForm">
+                                    <div class="mb-3 form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="levelSystemEnabled" <%= levelSystemEnabled ? 'checked' : '' %>>
+                                        <label class="form-check-label" for="levelSystemEnabled">Level Sistemi Aktif</label>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="levelUpChannel" class="form-label">Level Atlama Bildirimi Kanalı</label>
+                                        <select class="form-select" id="levelUpChannel">
+                                            <option value="">Seçilmedi (Komutun kullanıldığı kanalda bildirilir)</option>
+                                            <% channels.forEach(channel => { %>
+                                                <option value="<%= channel.id %>" <%= levelUpChannel === channel.id ? 'selected' : '' %>><%= channel.name %></option>
+                                            <% }) %>
+                                        </select>
+                                        <div class="form-text">Level atlama bildirimlerinin hangi kanalda yapılacağını seçin.</div>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level Rolleri Kartı -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-award me-2"></i>Level Rolleri</h5>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addLevelRoleModal">
+                                    <i class="fas fa-plus me-1"></i> Yeni Rol Ekle
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <% if (levelRoles && levelRoles.length > 0) { %>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Seviye</th>
+                                                    <th>Rol</th>
+                                                    <th width="100">İşlem</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="levelRolesTable">
+                                                <% levelRoles.forEach(roleData => { 
+                                                    const role = roles.find(r => r.id === roleData.roleId);
+                                                %>
+                                                    <tr data-role-id="<%= roleData.roleId %>">
+                                                        <td><%= roleData.level %></td>
+                                                        <td>
+                                                            <span class="badge" style="background-color: <%= role ? role.color : '#555555' %>;">
+                                                                <%= role ? role.name : 'Silinmiş Rol' %>
+                                                            </span>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-danger delete-level-role" data-role-id="<%= roleData.roleId %>">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i> Henüz level rolü eklenmemiş. Belirli seviyelere ulaşan kullanıcılara otomatik rol vermek için rol ekleyin.
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Liderlik Tablosu Kartı -->
+                    <div class="col-md-6">
+                        <div class="card h-100">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-trophy me-2"></i>Level Sıralaması</h5>
+                            </div>
+                            <div class="card-body">
+                                <% if (leaderboard && leaderboard.length > 0) { %>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th width="50">#</th>
+                                                    <th>Kullanıcı</th>
+                                                    <th>Seviye</th>
+                                                    <th>XP</th>
+                                                    <th width="100">İşlem</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% leaderboard.forEach((userData, index) => { %>
+                                                    <tr>
+                                                        <td><strong><%= index + 1 %></strong></td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <% if (userData.avatar) { %>
+                                                                    <img src="<%= userData.avatar %>" class="rounded-circle me-2" width="30" height="30">
+                                                                <% } else { %>
+                                                                    <div class="avatar-placeholder rounded-circle me-2" style="width: 30px; height: 30px; font-size: 14px;">
+                                                                        <%= userData.username.charAt(0).toUpperCase() %>
+                                                                    </div>
+                                                                <% } %>
+                                                                <%= userData.username %>
+                                                            </div>
+                                                        </td>
+                                                        <td><%= userData.level %></td>
+                                                        <td><%= userData.xp %> / <%= userData.level * 100 %></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-primary edit-user-xp" 
+                                                                    data-user-id="<%= userData.userId %>" 
+                                                                    data-username="<%= userData.username %>"
+                                                                    data-level="<%= userData.level %>"
+                                                                    data-xp="<%= userData.xp %>">
+                                                                <i class="fas fa-edit"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-info-circle me-2"></i> Henüz hiçbir kullanıcı XP kazanmamış.
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level Sistemi Bilgi Kartı -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Level Sistemi Nasıl Çalışır?</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Rimuru Bot'un level sistemi, sunucunuzdaki aktif kullanıcıları ödüllendirmenin en iyi yoludur.</p>
+                                
+                                <div class="row mt-3">
+                                    <div class="col-md-4">
+                                        <div class="card card-body">
+                                            <h5><i class="fas fa-comment me-2 text-primary"></i>Mesaj XP</h5>
+                                            <p>Kullanıcılar her mesaj gönderdiklerinde XP kazanırlar. Spam önlemek için dakikada bir XP verilir.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card card-body">
+                                            <h5><i class="fas fa-microphone me-2 text-primary"></i>Ses XP</h5>
+                                            <p>Kullanıcılar ses kanallarında vakit geçirdiklerinde dakika başına XP kazanırlar.</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card card-body">
+                                            <h5><i class="fas fa-award me-2 text-primary"></i>Level Rolleri</h5>
+                                            <p>Belirli seviyelere ulaşan kullanıcılara otomatik olarak özel roller verilebilir.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rol Ekleme Modal -->
+    <div class="modal fade" id="addLevelRoleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus-circle me-2"></i>Level Rolü Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addLevelRoleForm">
+                        <div class="mb-3">
+                            <label for="roleSelect" class="form-label">Rol</label>
+                            <select class="form-select" id="roleSelect" required>
+                                <option value="">Rol seçin</option>
+                                <% roles.filter(r => r.name !== '@everyone').forEach(role => { %>
+                                    <option value="<%= role.id %>" data-color="<%= role.color %>"><%= role.name %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="levelInput" class="form-label">Minimum Seviye</label>
+                            <input type="number" class="form-control" id="levelInput" min="1" value="5" required>
+                            <div class="form-text">Kullanıcılar bu seviyeye ulaştığında rol otomatik olarak verilecektir.</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- XP Düzenleme Modal -->
+    <div class="modal fade" id="editUserXpModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-edit me-2"></i>Kullanıcı XP Düzenle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserXpForm">
+                        <input type="hidden" id="userIdInput">
+                        <div class="mb-3">
+                            <label class="form-label">Kullanıcı</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary">
+                                    <i class="fas fa-user"></i>
+                                </span>
+                                <input type="text" class="form-control" id="usernameInput" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userLevelInput" class="form-label">Seviye</label>
+                            <input type="number" class="form-control" id="userLevelInput" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userXpInput" class="form-label">XP</label>
+                            <input type="number" class="form-control" id="userXpInput" min="0" required>
+                            <div class="form-text">Geçerli seviye için maksimum XP: <span id="maxXpText"></span></div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kaydet</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Level Ayarları Formu
+            const levelSettingsForm = document.getElementById('levelSettingsForm');
+            
+            levelSettingsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const levelSystemEnabled = document.getElementById('levelSystemEnabled').checked;
+                const levelUpChannel = document.getElementById('levelUpChannel').value;
+                
+                // Level sistemi ayarını güncelle
+                fetch(`/api/server/<%= guild.id %>/settings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ setting: 'levelSystem', value: levelSystemEnabled })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Level sistem ayarı güncellendi:', data);
+                })
+                .catch(error => console.error('Hata:', error));
+                
+                // Level kanal ayarını güncelle
+                fetch(`/api/server/<%= guild.id %>/settings`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ setting: 'levelUpChannel', value: levelUpChannel })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Level kanal ayarı güncellendi:', data);
+                    showAlert('Ayarlar başarıyla kaydedildi!', 'success');
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showAlert('Ayarlar kaydedilirken bir hata oluştu!', 'danger');
+                });
+            });
+            
+            // Rol Ekleme Formu
+            const addLevelRoleForm = document.getElementById('addLevelRoleForm');
+            
+            addLevelRoleForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const roleId = document.getElementById('roleSelect').value;
+                const level = document.getElementById('levelInput').value;
+                
+                fetch(`/api/server/<%= guild.id %>/level-roles`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ roleId, level })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Level rolü eklendi:', data);
+                    
+                    if (data.success) {
+                        // Başarılı olduysa sayfayı yenile
+                        showAlert('Level rolü başarıyla eklendi!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                    } else {
+                        showAlert(data.error || 'Rol eklenirken bir hata oluştu!', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showAlert('Rol eklenirken bir hata oluştu!', 'danger');
+                });
+                
+                // Modal'ı kapat
+                bootstrap.Modal.getInstance(document.getElementById('addLevelRoleModal')).hide();
+            });
+            
+            // Rol Silme Butonları
+            document.querySelectorAll('.delete-level-role').forEach(button => {
+                button.addEventListener('click', function() {
+                    const roleId = this.getAttribute('data-role-id');
+                    
+                    if (confirm('Bu seviye rolünü silmek istediğinize emin misiniz?')) {
+                        fetch(`/api/server/<%= guild.id %>/level-roles/${roleId}`, {
+                            method: 'DELETE'
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Level rolü silindi:', data);
+                            
+                            if (data.success) {
+                                // Başarılı olduysa tablodan satırı sil
+                                document.querySelector(`tr[data-role-id="${roleId}"]`).remove();
+                                showAlert('Level rolü başarıyla silindi!', 'success');
+                            } else {
+                                showAlert(data.error || 'Rol silinirken bir hata oluştu!', 'danger');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Hata:', error);
+                            showAlert('Rol silinirken bir hata oluştu!', 'danger');
+                        });
+                    }
+                });
+            });
+            
+            // XP Düzenleme
+            const editXpButtons = document.querySelectorAll('.edit-user-xp');
+            const editUserXpForm = document.getElementById('editUserXpForm');
+            const editUserXpModal = new bootstrap.Modal(document.getElementById('editUserXpModal'));
+            
+            editXpButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const userId = this.getAttribute('data-user-id');
+                    const username = this.getAttribute('data-username');
+                    const level = this.getAttribute('data-level');
+                    const xp = this.getAttribute('data-xp');
+                    
+                    // Form alanlarını doldur
+                    document.getElementById('userIdInput').value = userId;
+                    document.getElementById('usernameInput').value = username;
+                    document.getElementById('userLevelInput').value = level;
+                    document.getElementById('userXpInput').value = xp;
+                    document.getElementById('maxXpText').textContent = level * 100;
+                    
+                    // Level inputu değiştiğinde max XP'yi güncelle
+                    document.getElementById('userLevelInput').addEventListener('change', function() {
+                        document.getElementById('maxXpText').textContent = this.value * 100;
+                    });
+                    
+                    // Modal'ı göster
+                    editUserXpModal.show();
+                });
+            });
+            
+            editUserXpForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const userId = document.getElementById('userIdInput').value;
+                const level = document.getElementById('userLevelInput').value;
+                const xp = document.getElementById('userXpInput').value;
+                
+                fetch(`/api/server/<%= guild.id %>/user/${userId}/xp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ level, xp })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Kullanıcı XP güncellendi:', data);
+                    
+                    if (data.success) {
+                        showAlert('Kullanıcı XP bilgileri başarıyla güncellendi!', 'success');
+                        setTimeout(() => window.location.reload(), 1000);
+                    } else {
+                        showAlert(data.error || 'XP güncellenirken bir hata oluştu!', 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Hata:', error);
+                    showAlert('XP güncellenirken bir hata oluştu!', 'danger');
+                });
+                
+                // Modal'ı kapat
+                editUserXpModal.hide();
+            });
+            
+            // Alert göster
+            function showAlert(message, type) {
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show fixed-top mx-auto mt-3`;
+                alertDiv.style.maxWidth = '500px';
+                alertDiv.style.left = '0';
+                alertDiv.style.right = '0';
+                alertDiv.style.zIndex = '9999';
+                
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+                
+                document.body.appendChild(alertDiv);
+                
+                // 5 saniye sonra otomatik kapat
+                setTimeout(() => {
+                    alertDiv.remove();
+                }, 5000);
+            }
+        });
+    </script>
+</body>
+</html> 

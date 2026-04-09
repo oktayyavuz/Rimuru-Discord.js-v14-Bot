@@ -75,32 +75,8 @@ module.exports = {
       }
     }
 
-    if (levelSystem && levelSystemTrue === "ac" && logChannel) {
-      client.on("messageCreate", async (message) => {
-        if (message.author.bot) return;
+    return interaction.reply({ embeds: [embed] });
+  }
+}
 
-        const userId = message.author.id;
-        const guildId = guild.id;
 
-        const level = db.fetch(`level_${guildId}_${userId}`) || 1;
-        const experience = db.fetch(`experience_${guildId}_${userId}`) || 0;
-        const experiencePointsForNextLevel = 5 * Math.pow(level, 2) + 50 * level + config.levelXp;
-
-        const experiencePerMessage = 10;
-        db.add(`experience_${guildId}_${userId}`, experiencePerMessage);
-
-        if (experience + experiencePerMessage >= experiencePointsForNextLevel) {
-          db.set(`level_${guildId}_${userId}`, level + 1);
-          db.set(`experience_${guildId}_${userId}`, experience + experiencePerMessage - experiencePointsForNextLevel);
-
-          const rankMessage = new EmbedBuilder()
-            .setTitle(`${message.author.username} Seviyesi Arttı!`)
-            .setDescription(`${message.author} kullanıcısının seviyesi <:level:1033329322044303410> **${level + 1}** seviyeye ulaştı!`)
-            .setColor("Green");
-
-          logChannel.send({ embeds: [rankMessage] });
-        }
-      });
-    }
-  },
-};

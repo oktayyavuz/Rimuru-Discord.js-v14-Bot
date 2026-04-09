@@ -1,31 +1,44 @@
 const Discord = require("discord.js");
-const { EmbedBuilder,MessageEmbed } = require("discord.js")
+const { EmbedBuilder } = require("discord.js")
 const fs = require("fs");
-const db = require('croxydb')
+const dbManager = require('./helpers/database');
 const config = require("./config.json");
 const functions = require('./function/functions');
 const Rest = require("@discordjs/rest");
 const DiscordApi = require("discord-api-types/v10");
 
 const client = new Discord.Client({
-	intents:  3276543,
-    partials: Object.values(Discord.Partials),
+	intents: 3276543,
+	partials: Object.values(Discord.Partials),
 	allowedMentions: {
 		parse: ["users", "roles", "everyone"]
 	},
 	retryLimit: 3
 });
 
+client.setMaxListeners(30);
+
+
+process.on('unhandledRejection', (reason, promise) => {
+	console.error('[x] Yakalanmayan Red (Unhandled Rejection):', reason);
+});
+
+process.on('uncaughtException', (err, origin) => {
+	console.error('[x] Yakalanmayan İstisna (Uncaught Exception):', err);
+});
+
+
 global.client = client;
 client.commands = (global.commands = []);
+client.config = config;
+client.db = dbManager;
 
-//
-console.log(`[-] ${fs.readdirSync("./commands").length} komut algılandı.`)
+// Komutları yükle
+const commandFiles = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+console.log(`[-] ${commandFiles.length} komut algılandı.`)
 
-for(let commandName of fs.readdirSync("./commands")) {
-	if(!commandName.endsWith(".js")) return;
-
-	const command = require(`./commands/${commandName}`);	
+for (let commandName of commandFiles) {
+	const command = require(`./commands/${commandName}`);
 	client.commands.push({
 		name: command.name.toLowerCase(),
 		description: command.description.toLowerCase(),
@@ -37,66 +50,45 @@ for(let commandName of fs.readdirSync("./commands")) {
 	console.log(`[+] ${commandName} komutu başarıyla yüklendi.`)
 }
 
-client.on('messageCreate', msg => { 
-	
-	if (msg.content === `<@${config["bot-id"]}>`) {
-        msg.reply('Birisi Beni Çağırdı Sanırım Komutlarıma `/yardım` ile bakabilirsin  💕');
-    }
-	
-  });
-  client.on('messageCreate', msg => {
-    const content = msg.content.toLowerCase(); 
 
-    const replies = {
-        'sa': 'as cnm la naber 😋',
-        'naber': 'iyi senden naber 😃',
-        'sea': 'as cnm la naber 😋',
-        'selam': 'as cnm la naber 😋',
-        'selamun aleyküm': 'as cnm la naber 😋',
-        'selamunaleyküm': 'as cnm la naber 😋',
-        'selamunaleykum': 'as cnm la naber 😋'
-    };
-		if (replies[content]) {
-			msg.reply(replies[content]);
-		}
-	});
-// 
+const eventFiles = fs.readdirSync("./events").filter(file => file.endsWith(".js"));
+console.log(`[-] ${eventFiles.length} olay algılandı.`);
 
-console.log(`[-] ${fs.readdirSync("./events").length} olay algılandı.`)
+const eventHandlers = new Map();
 
-for(let eventName of fs.readdirSync("./events")) {
-	if(!eventName.endsWith(".js")) return;
+for (let file of eventFiles) {
+	const event = require(`./events/${file}`);
+	const name = event.name || file.split(".")[0];
 
-	const event = require(`./events/${eventName}`);	
-	const evenet_name = eventName.split(".")[0];
+	if (!eventHandlers.has(name)) {
+		eventHandlers.set(name, []);
+	}
+	eventHandlers.get(name).push(event);
+}
 
-	client.on(event.name, (...args) => {
-		event.run(client, ...args)
-	});
+for (const [name, handlers] of eventHandlers) {
+	const isOnce = handlers.some(h => h.once);
 
-	console.log(`[+] ${eventName} olayı başarıyla yüklendi.`)
+	if (isOnce) {
+		client.once(name, (...args) => {
+			handlers.forEach(h => h.run(client, ...args));
+		});
+	} else {
+		client.on(name, (...args) => {
+			handlers.forEach(h => h.run(client, ...args));
+		});
+	}
+	console.log(`[+] ${name} olayı için ${handlers.length} işleyici yüklendi.`);
 }
 
 
 
-client.once("ready", async() => {
-	const rest = new Rest.REST({ version: "10" }).setToken(config.token);
-  try {
-    await rest.put(DiscordApi.Routes.applicationCommands(client.user.id), {
-      body: client.commands,  //
-    });
-	
-	console.log(`${client.user.tag} Aktif! 💕`);
-	db.set("botAcilis_", Date.now());
-
-  } catch (error) {
-    throw error;
-  }
-});
-
 client.login(config.token).then(() => {
 	console.log(`[-] Discord API'ye istek gönderiliyor.`);
-	eval("console.clear()")
-}).catch(() => {
-	console.log(`[x] Discord API'ye istek gönderimi başarısız(token girmeyi unutmuşsun).`);
-});    
+}).catch((err) => {
+	console.log(`[x] Discord API'ye istek gönderimi başarısız: ${err.message}`);
+});
+
+// Client'ı dışa aktar (dashboard için)
+module.exports = { client };
+

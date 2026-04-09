@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel - Rimuru Yönetim Paneli</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <img src="https://i.imgur.com/8hKOYAX.png" alt="Rimuru Logo" width="30" height="30" class="d-inline-block align-text-top me-2">
+                Rimuru Bot
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i> Panel
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/servers">
+                            <i class="fas fa-server me-1"></i> Sunucular
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/commands">
+                            <i class="fas fa-terminal me-1"></i> Komutlar
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/stats">
+                            <i class="fas fa-chart-bar me-1"></i> İstatistikler
+                        </a>
+                    </li>
+                    <% if (isAdmin) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard/settings">
+                            <i class="fas fa-cogs me-1"></i> Ayarlar
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <% if (user.avatar) { %>
+                                <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.png" class="rounded-circle me-1" width="24" height="24">
+                            <% } else { %>
+                                <i class="fas fa-user-circle me-1"></i>
+                            <% } %>
+                            <%= user.username || user.id %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="/"><i class="fas fa-home me-2"></i>Ana Sayfa</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sol Sidebar -->
+            <div class="col-md-2 col-lg-2 d-none d-md-block">
+                <div class="sidebar">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/dashboard">
+                                <i class="fas fa-tachometer-alt"></i> Ana Sayfa
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/servers">
+                                <i class="fas fa-server"></i> Sunucular
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/commands">
+                                <i class="fas fa-terminal"></i> Komutlar
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/stats">
+                                <i class="fas fa-chart-bar"></i> İstatistikler
+                            </a>
+                        </li>
+                        <% if (isAdmin) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/dashboard/settings">
+                                <i class="fas fa-cogs"></i> Ayarlar
+                            </a>
+                        </li>
+                        <% } %>
+                        <li class="nav-item mt-3">
+                            <a class="nav-link" href="https://discord.gg/dvCKjxHn35" target="_blank">
+                                <i class="fab fa-discord"></i> Destek Sunucusu
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands" target="_blank">
+                                <i class="fas fa-plus-circle"></i> Botu Ekle
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Ana İçerik -->
+            <div class="col-md-10 col-lg-10">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h1 class="mb-4">Hoş Geldiniz, <%= user.username || user.id %></h1>
+                    </div>
+                </div>
+
+                <!-- Bot Durum Kartları -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-label"><i class="fas fa-server me-2"></i>Sunucu Sayısı</div>
+                            <div class="stat-value"><%= botStatus.guildCount %></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-label"><i class="fas fa-users me-2"></i>Kullanıcı Sayısı</div>
+                            <div class="stat-value"><%= botStatus.userCount %></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-label"><i class="fas fa-hashtag me-2"></i>Kanal Sayısı</div>
+                            <div class="stat-value"><%= botStatus.channelCount %></div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-label"><i class="fas fa-terminal me-2"></i>Komut Sayısı</div>
+                            <div class="stat-value"><%= botStatus.commandCount %></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ping ve Uptime -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-tachometer-alt me-2"></i>Bot Performansı</h5>
+                                <p>Ping: <span class="badge bg-primary"><%= botStatus.ping %> ms</span></p>
+                                <p>
+                                    Çalışma Süresi: 
+                                    <span class="badge bg-success">
+                                        <%= Math.floor(botStatus.uptime / 86400000) %> gün, 
+                                        <%= Math.floor((botStatus.uptime % 86400000) / 3600000) %> saat, 
+                                        <%= Math.floor((botStatus.uptime % 3600000) / 60000) %> dakika
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-hand-sparkles me-2"></i>Hızlı Erişim</h5>
+                                <div class="d-grid gap-2">
+                                    <a href="/dashboard/stats" class="btn btn-outline-primary mb-2">
+                                        <i class="fas fa-chart-bar me-2"></i>İstatistikler
+                                    </a>
+                                    <a href="/dashboard/commands" class="btn btn-outline-primary">
+                                        <i class="fas fa-terminal me-2"></i>Komutları Yönet
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sunucu Listesi -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="fas fa-server me-2"></i>Yönetebileceğiniz Sunucular</h5>
+                                <a href="/dashboard/servers" class="btn btn-sm btn-primary">Tümünü Gör</a>
+                            </div>
+                            <div class="card-body">
+                                <% if (guilds && guilds.length > 0) { %>
+                                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                                        <% for (let i = 0; i < Math.min(guilds.length, 6); i++) { %>
+                                            <div class="col">
+                                                <div class="card h-100">
+                                                    <div class="card-body text-center">
+                                                        <% if (guilds[i].icon) { %>
+                                                            <img src="https://cdn.discordapp.com/icons/<%= guilds[i].id %>/<%= guilds[i].icon %>.png" class="rounded-circle mb-3" width="64" height="64">
+                                                        <% } else { %>
+                                                            <div class="avatar-placeholder mb-3">
+                                                                <%= guilds[i].name.charAt(0) %>
+                                                            </div>
+                                                        <% } %>
+                                                        <h5 class="card-title"><%= guilds[i].name %></h5>
+                                                        <% if (guilds[i].botInGuild) { %>
+                                                            <a href="/dashboard/server/<%= guilds[i].id %>" class="btn btn-primary btn-sm mt-2">
+                                                                <i class="fas fa-cog me-1"></i>Yönet
+                                                            </a>
+                                                        <% } else { %>
+                                                            <a href="https://discord.com/oauth2/authorize?client_id=1229312139517235281&permissions=8&scope=bot+applications.commands&guild_id=<%= guilds[i].id %>" target="_blank" class="btn btn-outline-primary btn-sm mt-2">
+                                                                <i class="fas fa-plus-circle me-1"></i>Botu Ekle
+                                                            </a>
+                                                        <% } %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                <% } else { %>
+                                    <div class="alert alert-info">
+                                        Yönetebileceğiniz sunucu bulunamadı. Botun ekli olduğu ve sizin yönetici olduğunuz sunucular burada görünecektir.
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/main.js"></script>
+</body>
+</html> 

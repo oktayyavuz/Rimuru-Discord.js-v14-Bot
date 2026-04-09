@@ -188,14 +188,3 @@ async function finishOylama(client, msgId) {
   db.delete(`oylama_${msgId}`);
 }
 
-client.on('ready', async () => {
-  const allData = db.all();
-  if (Array.isArray(allData)) {
-    const oylamaKeys = allData
-      .filter(entry => entry.ID.startsWith('oylama_'))
-      .map(entry => entry.ID);
-    oylamaKeys.forEach(key => checkOylamaSüresi(client, key.split('_')[1]));
-  } else {
-    console.error("db.all() did not return an array.");
-  }
-});

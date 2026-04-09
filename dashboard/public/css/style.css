@@ -1,0 +1,349 @@
+/* Karanlık Tema Değişkenleri */
+:root {
+    --bg-color: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2d2d2d;
+    --text-color: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --accent-color: #7289da;
+    --accent-hover: #5b6eae;
+    --success-color: #43b581;
+    --warning-color: #faa61a;
+    --error-color: #f04747;
+    --border-color: #333333;
+    --card-bg: #1e1e1e;
+    --navbar-bg: #1a1a1a;
+    --footer-bg: #1a1a1a;
+    --input-bg: #2d2d2d;
+    --input-color: #e0e0e0;
+    --dropdown-bg: #2d2d2d;
+    --table-border: #333333;
+    --table-header-bg: #2d2d2d;
+    --table-row-hover: #333333;
+}
+
+/* Genel Stiller */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', 'Roboto', sans-serif;
+}
+
+a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration: none;
+}
+
+/* Navbar Stilleri */
+.navbar {
+    background-color: var(--navbar-bg) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: var(--text-color) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: var(--text-secondary);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: var(--text-color);
+}
+
+.dropdown-menu {
+    background-color: var(--dropdown-bg);
+    border: 1px solid var(--border-color);
+}
+
+.dropdown-item {
+    color: var(--text-color);
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    background-color: var(--bg-tertiary);
+    color: var(--text-color);
+}
+
+/* Kart Stilleri */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.card-title {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--text-secondary);
+}
+
+/* Buton Stilleri */
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    color: white;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-warning {
+    background-color: var(--warning-color);
+    border-color: var(--warning-color);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    border-color: var(--error-color);
+}
+
+/* Form Stilleri */
+.form-control, .form-select {
+    background-color: var(--input-bg);
+    border-color: var(--border-color);
+    color: var(--input-color);
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: var(--input-bg);
+    border-color: var(--accent-color);
+    color: var(--input-color);
+    box-shadow: 0 0 0 0.2rem rgba(114, 137, 218, 0.25);
+}
+
+.form-label {
+    color: var(--text-color);
+}
+
+/* Tablo Stilleri */
+.table {
+    color: var(--text-color);
+    border-color: var(--table-border);
+}
+
+.table thead th {
+    background-color: var(--table-header-bg);
+    border-bottom: 1px solid var(--table-border);
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.table tbody tr:hover {
+    background-color: var(--table-row-hover);
+}
+
+.table td, .table th {
+    border-top: 1px solid var(--table-border);
+}
+
+/* Footer Stilleri */
+.footer {
+    background-color: var(--footer-bg);
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 0;
+    text-align: center;
+}
+
+/* Aktivite Tablosu Stilleri */
+.activity-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.875rem;
+}
+
+.status-success {
+    background-color: rgba(67, 181, 129, 0.2);
+    color: var(--success-color);
+}
+
+.status-warning {
+    background-color: rgba(250, 166, 26, 0.2);
+    color: var(--warning-color);
+}
+
+.status-error {
+    background-color: rgba(240, 71, 71, 0.2);
+    color: var(--error-color);
+}
+
+/* Loading Stilleri */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(18, 18, 18, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Animasyonlar */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in;
+}
+
+/* Notification Stilleri */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 15px 20px;
+    border-radius: 4px;
+    max-width: 350px;
+}
+
+/* Komut Kartları */
+.command-card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+    margin-bottom: 15px;
+}
+
+.command-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 10px rgba(114, 137, 218, 0.3);
+}
+
+.command-card .card-header {
+    background-color: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Özelleştirme Paneli */
+.customization-panel {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+}
+
+/* İstatistik Kartları */
+.stat-card {
+    background-color: var(--card-bg);
+    border-left: 4px solid var(--accent-color);
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.stat-card .stat-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.stat-card .stat-label {
+    color: var(--text-secondary);
+}
+
+/* Sol Menü */
+.sidebar {
+    background-color: var(--navbar-bg);
+    min-height: calc(100vh - 56px);
+    border-right: 1px solid var(--border-color);
+    position: sticky;
+    top: 56px;
+}
+
+.sidebar .nav-link {
+    color: var(--text-secondary);
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-left: 3px solid transparent;
+}
+
+.sidebar .nav-link i {
+    margin-right: 10px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background-color: var(--bg-tertiary);
+    color: var(--text-color);
+    border-left-color: var(--accent-color);
+}
+
+/* Responsive Düzenlemeler */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Discord Buton Stilleri */
+.discord-btn {
+    background-color: #7289da;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.discord-btn:hover {
+    background-color: #5b6eae;
+    color: white;
+}
+
+.discord-btn i {
+    margin-right: 8px;
+}
+
+/* Kullanıcı Profil Stilleri */
+.user-profile {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 8px;
+} 

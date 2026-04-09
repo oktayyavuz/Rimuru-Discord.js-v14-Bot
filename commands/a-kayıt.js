@@ -58,13 +58,3 @@ module.exports = {
     }
 };
 
-client.on('interactionCreate', async (interaction) => {
-  if (interaction.isModalSubmit()) {
-        const kayitsistemi = db.fetch(`kayıtsistemi_${interaction.guild.id}`);
-        if (!kayitsistemi) return;
-    }
-});
-
-client.on("guildMemberRemove", async (member) => {
-    db.delete(`uye_${member.id}`);
-});

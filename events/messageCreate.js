@@ -1,150 +1,123 @@
-const db = require("croxydb");
-const { PermissionFlagsBits, EmbedBuilder, Events, PermissionsBitField  } = require("discord.js");
-const Discord = require("discord.js")
+const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const dbManager = require('../helpers/database');
+const config = require('../config.json');
 
 module.exports = {
     name: "messageCreate",
     once: false,
     run: async (client, message) => {
         try {
-            if (message.author.bot) return;
-            if (!message.guild) return;
+            if (message.author.bot || !message.guild) return;
 
-            const xp = db.fetch(`xpPos_${message.author.id}${message.guild.id}`);
-            const levellog = db.fetch(`level_log_${message.guild.id}`);
-            const level = db.fetch(`levelPos_${message.author.id}${message.guild.id}`);
+            const guildId = message.guild.id;
+            const content = message.content.toLowerCase();
 
-            const acikmi = db.fetch(`acikmiLevel_${message.guild.id}`) ? true : false;
-            if (acikmi) {
-				if (xp >= 99) {
-                    db.subtract(`xpPos_${message.author.id}${message.guild.id}`, xp);
-                    db.add(`levelPos_${message.author.id}${message.guild.id}`, 1);
+            // Kara liste kontrolü
+            const blacklistedUsers = dbManager.get('blacklistedUsers') || [];
+            if (blacklistedUsers.includes(message.author.id)) return;
 
-                    client.channels.cache.get(levellog).send(`${message.author} GG!, artık yeni seviyene ulaştın, tebrikler! Yeni seviyen: **${level + 1}**`);
-                } else {
-                    db.add(`xpPos_${message.author.id}${message.guild.id}`, 1);
+            const blacklistedGuilds = dbManager.get('blacklistedGuilds') || [];
+            if (blacklistedGuilds.includes(guildId)) return;
+
+            // AFK Sistemi
+            const afkReason = dbManager.get(`afk_${message.author.id}`);
+            if (afkReason) {
+                const afkData = dbManager.get(`afkDate_${message.author.id}`);
+                const date = `${message.author} Hoş geldin! **${afkReason}** sebebiyle <t:${parseInt(afkData?.date / 1000)}:R> afk'ydın.`;
+                dbManager.delete(`afk_${message.author.id}`);
+                dbManager.delete(`afkDate_${message.author.id}`);
+                message.reply(date);
+            }
+
+            const mentionedUser = message.mentions.users.first();
+            if (mentionedUser) {
+                const targetAfkReason = dbManager.get(`afk_${mentionedUser.id}`);
+                if (targetAfkReason) {
+                    message.reply(`❔ | Etiketlediğin kullanıcı **${targetAfkReason}** sebebiyle AFK modunda!`);
                 }
             }
 
-            if (await db.get(`afk_${message.author.id}`)) {
-                const afkDate = db.fetch(`afkDate_${message.author.id}`);
-                const sebep = db.fetch(`afk_${message.author.id}`);
-
-                if (afkDate && sebep) {
-                    const date = `${message.author} Hoş geldin! **${sebep}** sebebiyle <t:${parseInt(afkDate.date / 1000)}:R> afk'ydın`;
-                    db.delete(`afk_${message.author.id}`);
-                    db.delete(`afkDate_${message.author.id}`);
-
-                    message.reply(date);
+            // Koruma Sistemleri (Sadece Adminsizler İçin)
+            if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+                // Küfür Engel
+                const antiSwear = dbManager.get(`kufur_${guildId}`) || dbManager.get(`kufurengel_${guildId}`);
+                if (antiSwear) {
+                    const swearWords = ["sikik", "sikeyim", "piç", "yarrak", "oç", "göt", "orospu", "sikim", "oruspu çocugu", "amk", "aq", "amcık", "taşak"];
+                    if (swearWords.some(word => content.includes(word))) {
+                        await message.delete().catch(() => { });
+                        const embed = new EmbedBuilder()
+                            .setColor("Red")
+                            .setTitle(`❗ **UYARI!**`)
+                            .setDescription(`✋ | ${message.author}, Küfür etmek bu sunucuda yasaktır!`);
+                        return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete().catch(() => { }), 5000));
+                    }
                 }
-            }
 
-            const kullanıcı = message.mentions.users.first();
-            if (kullanıcı) {
-                const afkDate = db.fetch(`afkDate_${kullanıcı.id}`);
-                const sebep = await db.get(`afk_${kullanıcı.id}`);
-
-                if (sebep) {
-                    const sebeps = `❔ | Etiketlediğin kullanıcı **${sebep}** sebebiyle afk modunda!`;
-                    message.reply(sebeps);
+                // Reklam Engel
+                const antiAd = dbManager.get(`reklam_${guildId}`) || dbManager.get(`reklamengel_${guildId}`);
+                if (antiAd) {
+                    const adPattern = /(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+|(\.com|\.net|\.org|\.tk|\.cf|\.gg)/i;
+                    if (adPattern.test(content)) {
+                        await message.delete().catch(() => { });
+                        const embed = new EmbedBuilder()
+                            .setColor("Red")
+                            .setTitle(`❗ **UYARI!**`)
+                            .setDescription(`✋ | ${message.author}, Reklam yapmak bu sunucuda yasaktır!`);
+                        return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete().catch(() => { }), 5000));
+                    }
                 }
-            }
 
-            const kufur = db.fetch(`kufurengel_${message.guild.id}`);
-
-            if (kufur) {
-                const kufurler = ["sikik","sikeyim", "piç", "yarrak", "oç", "göt", "orospu", "sikim", "sikeyim", "oruspu çocugu", "orospu","ailen oç", "Allahı sikeyim", "Allahı siktim öldü", "Allahın amk", "Allahını sikerim", "Allahını sikeyim", "Allah'ını sikeyim", "Allahini sikeyim", "Allah'ini sikeyim" ];
-                if (kufurler.some((word) => message.content.toLowerCase().includes(word))) {
-                  if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                    message.delete();
-                    const embed = new EmbedBuilder()
-                      .setTitle(`❗ **UYARI!**`)
-                      .setDescription(`✋ | ${message.author}, Küfür etmeye devam edersen banlanacaksın!`);
-                    const msg = await message.channel.send({ embeds: [embed] });
-                    if (msg) setTimeout(() => msg.delete(), 5000);
-                  }
-                }
-              }
-
-            const reklamlar = db.fetch(`reklamengel_${message.guild.id}`);
-
-            if (reklamlar) {
-                const linkler = [".com.tr", ".net", ".org", ".tk", ".cf", ".gf", "https://", ".gq", "http://", ".com", ".gg", ".porn", ".edu"];
-
-                if (linkler.some(alo => message.content.toLowerCase().includes(alo))) {
-                    if (message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
-                    if (message.author.bot) return;
-
-                    message.delete();
-                    const embed = new EmbedBuilder()
-                    .setTitle(`❗ **UYARI!**`)
-                    .setDescription(`✋ | ${message.author}, Reklam atmaya devam edersen banlanacaksın!`);
-                const msg = await message.channel.send({ embeds: [embed] });
-                if (msg) setTimeout(() => msg.delete(), 5000);
-                }
-            }
-
-            const kanal = db.get(`görselengel.${message.guild.id}`);
-            if (message.channel.id == kanal) {
-                if (!message.attachments.first()) {
-                    if (message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
-                    if (message.author.bot) return;
-
-                    message.delete();
-                    const msg = await message.channel.send(`${message.author}, Bu Kanalda Sadece GIF & Resim Atabilirsiniz.`);
-                    if (msg) setTimeout(() => msg.delete(), 5000);
-                }
-            }
-
-            const data = db.fetch(`yasaklı_kelime_${message.guild.id}`);
-if (data) {
-    if (message.member.permissions.has(PermissionsBitField.Flags.Administrator)) return;
-    if (message.author.bot) return;
-
-    const mesajIcerigi = message.content.toLowerCase();
-    const yasakliKelimeler = data.map(kelime => kelime.toLowerCase());
-
-    for (const kelime of yasakliKelimeler) {
-        if (mesajIcerigi.includes(kelime)) {
-            await message.delete();
-            const embed = new EmbedBuilder()
-                .setTitle(`❗ **UYARI!**`)
-                .setDescription(`✋ | ${message.author}, Yasaklı Kelime Kulanmayınız!`);
-            const msg = await message.channel.send({ embeds: [embed] });
-            if (msg) setTimeout(() => msg.delete(), 5000);
-            break;
-        }
-    }
-}
-
-            const saas = db.fetch(`saas_${message.guild.id}`);
-
-            if (saas) {
-                const selaamlar = message.content.toLowerCase();
-                if (selaamlar === 'sa' || selaamlar === 'slm' || selaamlar === 'sea' || selaamlar === ' selamünaleyküm' || selaamlar === 'selamün aleyküm' || selaamlar === 'selam') {
-                    message.channel.send(`<@${message.author.id}> as cnm la naber 😋`);
-                }
-            }
-
-            if (message.content.length > 4) {
-                if (db.fetch(`capslockengel_${message.guild.id}`)) {
-                    const caps = message.content.toUpperCase();
-                    if (message.content === caps) {
-                        if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                            if (!message.mentions.users.first()) {
-                                message.delete();
-                                const embed = new EmbedBuilder()
-                                    .setTitle(`❗ **UYARI!**`)
-                                    .setDescription(`✋ | ${message.author}, Bu sunucuda büyük harf kullanımı engelleniyor!`);
-                                const msg = await message.channel.send({ embeds: [embed] });
-                                if (msg) setTimeout(() => msg.delete(), 5000);
-                            }
-                        }
+                // Capslock Engel
+                const antiCaps = dbManager.get(`capslock_${guildId}`) || dbManager.get(`capslockengel_${guildId}`);
+                if (antiCaps && content.length > 5) {
+                    const upperCaseCount = message.content.replace(/[^A-ZĞÜŞİÖÇ]/g, '').length;
+                    const totalLength = message.content.replace(/[^a-zA-ZĞÜŞİÖÇğüşıöç]/g, '').length;
+                    if (totalLength > 0 && (upperCaseCount / totalLength) > 0.7) {
+                        await message.delete().catch(() => { });
+                        const embed = new EmbedBuilder()
+                            .setColor("Orange")
+                            .setTitle(`❗ **UYARI!**`)
+                            .setDescription(`✋ | ${message.author}, Lütfen fazla büyük harf kullanmayın!`);
+                        return message.channel.send({ embeds: [embed] }).then(msg => setTimeout(() => msg.delete().catch(() => { }), 5000));
                     }
                 }
             }
+
+            // Görsel Engel
+            const mediaChannel = dbManager.get(`medyaKanal_${guildId}`) || dbManager.get(`görselengel.${guildId}`);
+            if (message.channel.id === mediaChannel) {
+                if (!message.attachments.first() && !message.content.includes("http")) {
+                    if (!message.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+                        await message.delete().catch(() => { });
+                        return message.channel.send(`${message.author}, Bu kanalda sadece görsel paylaşabilirsiniz.`).then(msg => setTimeout(() => msg.delete().catch(() => { }), 5000));
+                    }
+                }
+            }
+
+            // Özel Komutlar / Oto Yanıt
+            const customCommands = dbManager.get(`customCommands_${guildId}`) || [];
+            const saasEnabled = dbManager.get(`saas_${guildId}`);
+            const prefix = dbManager.get(`prefix_${guildId}`) || config.prefix;
+
+            if (saasEnabled && (content === 'sa' || content === 'as' || content === 'selam' || content === 'slm')) {
+                message.reply(`as cnm la naber 😋`);
+            }
+
+            for (const cmd of customCommands) {
+                const match = cmd.isRegex ? new RegExp(cmd.name, 'i').test(content) : (content === cmd.name.toLowerCase() || content === `${prefix}${cmd.name.toLowerCase()}`);
+                if (match) {
+                    message.channel.send(cmd.response);
+                    return;
+                }
+            }
+
+            // Ping Komutu (Hızlı Kontrol İçin)
+            if (content === 'ping') {
+                message.reply(`🏓 Pong! Bot ping: **${client.ws.ping}ms**`);
+            }
+
         } catch (err) {
-            console.error('An error occurred:', err);
+            console.error('messageCreate hatası:', err);
         }
     }
 };

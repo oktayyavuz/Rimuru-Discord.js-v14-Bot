@@ -27,12 +27,3 @@ module.exports = {
   }
 };
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isModalSubmit()) return;
-
-  if (interaction.customId === 'sendMessageModal') {
-    const mesaj = interaction.fields.getTextInputValue('messageInput');
-    await interaction.channel.send({ content: mesaj });
-    await interaction.reply({ content: 'Mesaj başarıyla gönderildi!', ephemeral: true });
-  }
-});
