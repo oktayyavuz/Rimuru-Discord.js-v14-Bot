@@ -8,7 +8,15 @@ module.exports = {
     run: async (client, guild) => {
         const kanal = config["log"];
 
-        const owner = await client.users.fetch(guild.ownerId)
+        let owner = { tag: "Bilinmiyor", id: "Bilinmiyor" };
+        if (guild.ownerId) {
+            try {
+                owner = await client.users.fetch(guild.ownerId);
+            } catch (e) {
+                console.error("Kurucu bilgisi alınamadı", e);
+            }
+        }
+        
         const embed = new EmbedBuilder() 
             .setDescription(`Bir Sunucudan Atıldım!
     Sunucu İsmi: ${guild.name}

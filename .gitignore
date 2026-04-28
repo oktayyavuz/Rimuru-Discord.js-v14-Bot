@@ -1,0 +1,5 @@
+node_modules/
+bun.lock
+package-lock.json
+hata.log
+croxydb/croxydb.json

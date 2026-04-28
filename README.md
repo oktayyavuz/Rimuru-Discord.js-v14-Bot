@@ -1,4 +1,4 @@
-# Rimuru Discord.js v14 Bot v3.2
+# Rimuru Discord.js v14 Bot v2.9
 
 <p align="center">
   <a href="https://api.weblutions.com/discord/invite/dvCKjxHn35">
@@ -10,11 +10,17 @@
 Genel Discord Botu
 
 # Yapılan Değişiklikler: 
-   * doğruluk cesaretlik, 
-   * çekiliş, 
-   * emoji kopyalama veya toplu emoji çekme, 
-   * random anime, random manga, 
+   * teknik sorun düzeltme
+   * web ui paneli (basit)
+   * node uyumluluk sorunları
    * bazı bugların fixlenmesi ve kritik hata çözümleri
+
+### Son Güncellemeler ve Optimizasyonlar:
+* **Modül (C++) Derleme Hatası Çözümü:** Windows/Linux sunucularda C++ Development Kit (`node-gyp`) kaynaklı indirme hatalarına yol açan eski `canvas` modülü kaldırılarak, yerine derleme gerektirmeyen `@napi-rs/canvas` modülü entegre edildi (`helpers/rcapchta.js` buna göre uyarlandı).
+* **Syntax Hatası Giderildi:** `commands/botlist.js` komutunda botun çökmesine sebep olan yazım hatası düzeltildi.
+* **Port Çakışması Engellendi:** Bot başlatılırken Web arayüzünün aynı portu iki defa dinlemeye çalışmasından doğan `ERR_SERVER_ALREADY_LISTEN` hatası `events/ready.js` üzerinden giderildi. Artık panel hatasız başlatılıyor.
+* **API Çökmesi (Invalid Form Body) Çözüldü:** `events/guildDelete.js` içerisinde sunucu sahibinin `null` dönmesi (DiscordAPIError[50035]) kaynaklı çökme tespit edilip `null` kontrolü ile onarıldı.
+* **Discord.js Deprecation Uyarısı:** Bot aktif olduğunda konsolda beliren `DeprecationWarning: The ready event has been renamed to clientReady` uyarısı, tüm "ready" olay dosyaları "clientReady" ile değiştirilerek ortadan kaldırıldı.
 
 ## İçerik tablosu
 

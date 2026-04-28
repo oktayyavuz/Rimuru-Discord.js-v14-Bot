@@ -1,5 +1,5 @@
 function rcaptcha(text) {
-  const Canvas = require('canvas');
+  const Canvas = require('@napi-rs/canvas');
 
  const canvas = Canvas.createCanvas(900, 300);
  const ctx = canvas.getContext('2d');
@@ -12,7 +12,7 @@ function rcaptcha(text) {
  ctx.strokeStyle = "#ffffff";
  ctx.strokeText(text, canvas.width / 2, canvas.height / 1.7);
   
- return canvas.toBuffer(); 
+ return canvas.toBuffer('image/png'); 
  }
 
 module.exports = rcaptcha;

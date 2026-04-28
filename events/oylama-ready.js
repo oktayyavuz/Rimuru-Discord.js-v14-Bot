@@ -2,7 +2,7 @@ const db = require("croxydb");
 const { EmbedBuilder } = require("discord.js");
 
 module.exports = {
-  name: "ready",
+  name: "clientReady",
   once: true,
   run: async (client) => {
     const allData = db.all();

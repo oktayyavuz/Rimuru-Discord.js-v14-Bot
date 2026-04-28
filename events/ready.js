@@ -3,7 +3,7 @@ const config = require("../config.json");
 const dbManager = require('../helpers/database');
 
 module.exports = {
-    name: 'ready',
+    name: 'clientReady',
     once: true,
     run: async (client) => {
         const rest = new REST({ version: "10" }).setToken(config.token);
@@ -26,11 +26,8 @@ module.exports = {
             // Web kontrol panelini başlat
             if (config.panel) {
                 try {
-                    const dashboardServer = require('../dashboard/server')(client);
-                    const port = config.panel.port || 3000;
-                    dashboardServer.listen(port, () => {
-                        console.log(`[+] Web kontrol paneli http://localhost:${port} adresinde başlatıldı.`);
-                    });
+                    require('../dashboard/server')(client);
+                    console.log(`[+] Web kontrol paneli başlatıldı.`);
                 } catch (error) {
                     console.error('[x] Web kontrol paneli başlatılamadı:', error);
                 }

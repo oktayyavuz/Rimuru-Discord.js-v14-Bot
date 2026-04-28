@@ -132,4 +132,3 @@ module.exports = {
         db.set(`botSira_${interaction.guild.id}`, 1);
     }
 };
-};
